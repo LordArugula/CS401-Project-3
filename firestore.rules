@@ -1,0 +1,25 @@
+rules_version = '2';
+service cloud.firestore {
+    match /databases/{database}/documents {
+        // Determine if the value of the field "key" is the same
+        // before and after the request.
+        function isUnchanged(key) {
+            return (key in resource.data)
+                   && (key in request.resource.data)
+                   && (resource.data[key] == request.resource.data[key]);
+        }
+
+        // Restaurants
+        match /restaurant/{restaurantId} {
+            // Any signed-in user can read
+            allow read: if request.auth != null;
+
+            // Any signed-in user can create if their uid matches the document
+            allow create: if request.auth != null
+                             && request.resource.data.userId == request.auth.uid;
+
+            // Deletes and updates are not allowed (default)
+            allow update, delete: if false;
+        }
+    }
+}
