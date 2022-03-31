@@ -1,12 +1,8 @@
 rules_version = '2';
 service cloud.firestore {
     match /databases/{database}/documents {
-        // Determine if the value of the field "key" is the same
-        // before and after the request.
-        function isUnchanged(key) {
-            return (key in resource.data)
-                   && (key in request.resource.data)
-                   && (resource.data[key] == request.resource.data[key]);
+        match /{document=**} {
+            allow read, write: if request.auth.uid != null;
         }
     }
 }
