@@ -28,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
 
         FirebaseUser currentUser = auth.getCurrentUser();
         if(currentUser != null){
+            Toast.makeText(this, currentUser.getEmail() + ' ' + currentUser.getUid(), Toast.LENGTH_SHORT)
+                    .show();
             reload();
         }
     }
@@ -43,6 +45,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void reload() {
-        Toast.makeText(this, "TODO", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "TODO", Toast.LENGTH_SHORT).show();
     }
 }
