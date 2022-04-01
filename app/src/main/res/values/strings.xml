@@ -1,17 +1,16 @@
 <resources>
     <string name="app_name">CS401 Project 3</string>
-    <string name="email_hint_text">email address</string>
-    <string name="main_register_button_text">Register</string>
     <string name="main_title_text">Project Management Tool</string>
     <string name="password_hint_text">********</string>
     <string name="emailAddress_hint_text">Enter email address</string>
+    <string name="label_firstName">First Name</string>
+    <string name="label_lastName">Last Name</string>
     <string name="label_emailAddress">Email Address</string>
     <string name="label_password">Password</string>
-    <string name="main_login_button_text">Login</string>
-    <string name="login_button_text">Sign in</string>
-    <string name="back_button">Back</string>
-    <string name="register_button_text">Register Account</string>
     <string name="label_confirm_password">Confirm Password</string>
-    <string name="label_name">Name</string>
-    <string name="name_hint_text">Enter name</string>
+    <string name="login_button_text">Sign in</string>
+    <string name="register_button_text">Sign up</string>
+    <string name="back_button">Back</string>
+    <string name="firstName_hint_text">Enter first name</string>
+    <string name="lastName_hint_text">Enter last name</string>
 </resources>

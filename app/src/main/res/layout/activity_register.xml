@@ -11,7 +11,6 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -19,19 +18,36 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/label_name"
+            android:id="@+id/label_firstName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/label_name"
+            android:text="@string/label_firstName"
             android:textSize="@dimen/label_textSize" />
 
         <EditText
-            android:id="@+id/text_name"
+            android:id="@+id/text_firstName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/main_bottomMargin"
             android:autofillHints="name"
-            android:hint="@string/name_hint_text"
+            android:hint="@string/firstName_hint_text"
+            android:inputType="textPersonName"
+            android:minHeight="@dimen/editText_text_minHeight" />
+
+        <TextView
+            android:id="@+id/label_lastName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_lastName"
+            android:textSize="@dimen/label_textSize" />
+
+        <EditText
+            android:id="@+id/text_lastName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/main_bottomMargin"
+            android:autofillHints="name"
+            android:hint="@string/lastName_hint_text"
             android:inputType="textPersonName"
             android:minHeight="@dimen/editText_text_minHeight" />
 
