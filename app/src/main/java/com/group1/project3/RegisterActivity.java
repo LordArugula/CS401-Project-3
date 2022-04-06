@@ -41,7 +41,7 @@ public class RegisterActivity extends AppCompatActivity {
         Button registerButton = findViewById(R.id.register_button);
         registerButton.setEnabled(false);
 
-        TextWatcher textWatcher = new RegisterTextWatcher(firstNameText, lastNameText, emailText, passwordText, confirmPasswordText, registerButton);
+        TextWatcher textWatcher = new RegisterFormValidator(firstNameText, lastNameText, emailText, passwordText, confirmPasswordText, registerButton);
         firstNameText.addTextChangedListener(textWatcher);
         lastNameText.addTextChangedListener(textWatcher);
         emailText.addTextChangedListener(textWatcher);
