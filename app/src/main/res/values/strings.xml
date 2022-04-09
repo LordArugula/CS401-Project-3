@@ -13,4 +13,7 @@
     <string name="back_button">Back</string>
     <string name="firstName_hint_text">Enter first name</string>
     <string name="lastName_hint_text">Enter last name</string>
+    <string name="card_title_default_text">Card Title</string>
+    <string name="user_profile_image_description">User profile image</string>
+    <string name="card_default_date">04/26/22</string>
 </resources>
