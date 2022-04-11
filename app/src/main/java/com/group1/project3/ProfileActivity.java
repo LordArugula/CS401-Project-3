@@ -1,9 +1,6 @@
 package com.group1.project3;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -15,11 +12,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.EmailAuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -31,7 +26,7 @@ public class ProfileActivity extends AppCompatActivity {
     EditText text_newPassword;
     EditText text_confirmPassword;
 
-    String name, email;
+    String username, firstName, lastName, email, oldPassword, newPassword, confirmPassword;
     String uid;
 
     FirebaseUser user;
@@ -51,11 +46,11 @@ public class ProfileActivity extends AppCompatActivity {
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
-            name = user.getDisplayName();
+            username = user.getDisplayName();
             email = user.getEmail();
             uid = user.getUid();
 
-            text_userName.setText(name);
+            text_userName.setText(username);
             text_emailAddress.setText(email);
         }
         else {
@@ -69,29 +64,39 @@ public class ProfileActivity extends AppCompatActivity {
 
     public void changePassword(View view) {
         email = user.getEmail();
-        assert email != null;
-        AuthCredential credential = EmailAuthProvider.getCredential(email, text_oldPassword.getText().toString());
+        oldPassword = text_oldPassword.getText().toString();
+        newPassword = text_newPassword.getText().toString();
+        confirmPassword = text_confirmPassword.getText().toString();
 
-        user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    user.updatePassword(text_newPassword.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                Log.d("updatepassword", "Password updated");
-                            } else {
-                                Log.d("updatepassword", "Password not updated");
+        assert email != null;
+
+        if (!oldPassword.matches("") && !newPassword.matches("") && !confirmPassword.matches("")) {
+            AuthCredential credential = EmailAuthProvider.getCredential(email, oldPassword);
+
+            user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        user.updatePassword(newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Log.d("updatepassword", "Password updated");
+                                } else {
+                                    Log.d("updatepassword", "Password not updated");
+                                }
                             }
-                        }
-                    });
-                } else {
-                    Log.d("Reauth", "Error auth failed");
-                    Toast.makeText(ProfileActivity.this, "Password is incorrect", Toast.LENGTH_LONG).show();
+                        });
+                    } else {
+                        Log.d("Reauth", "Error auth failed");
+                        Toast.makeText(ProfileActivity.this, "Password is incorrect", Toast.LENGTH_LONG).show();
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            Toast.makeText(ProfileActivity.this, "One or more fields are empty", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     public void saveProfileChanges(View view) {
