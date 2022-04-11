@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);  //remember to change back
+        setContentView(R.layout.activity_main);  //remember to change back
 
         auth = FirebaseAuth.getInstance();
     }
@@ -28,8 +28,8 @@ public class MainActivity extends AppCompatActivity {
 
         FirebaseUser currentUser = auth.getCurrentUser();
         if(currentUser != null){
-            Toast.makeText(this, currentUser.getEmail() + ' ' + currentUser.getUid(), Toast.LENGTH_SHORT)
-                    .show();
+            /*Toast.makeText(this, currentUser.getEmail() + ' ' + currentUser.getUid(), Toast.LENGTH_SHORT)
+                    .show();*/
             reload();
         }
     }
