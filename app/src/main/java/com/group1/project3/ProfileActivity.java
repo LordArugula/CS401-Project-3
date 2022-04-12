@@ -1,6 +1,8 @@
 package com.group1.project3;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -15,6 +17,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -26,7 +29,8 @@ public class ProfileActivity extends AppCompatActivity {
     EditText text_newPassword;
     EditText text_confirmPassword;
 
-    String username, firstName, lastName, email, oldPassword, newPassword, confirmPassword;
+    String username, firstName, lastName, email;
+    String oldPassword, newPassword, confirmPassword;
     String uid;
 
     FirebaseUser user;
@@ -43,6 +47,11 @@ public class ProfileActivity extends AppCompatActivity {
         text_oldPassword = findViewById(R.id.text_oldPassword);
         text_newPassword = findViewById(R.id.text_password);
         text_confirmPassword = findViewById(R.id.text_confirmPassword);
+
+        //makes username field uneditable
+        text_userName.setKeyListener(null);
+        text_firstName.addTextChangedListener(textWatcherUsername);
+        text_lastName.addTextChangedListener(textWatcherUsername);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
@@ -63,6 +72,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     public void changePassword(View view) {
+        //update email in case it changed
         email = user.getEmail();
         oldPassword = text_oldPassword.getText().toString();
         newPassword = text_newPassword.getText().toString();
@@ -100,8 +110,27 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     public void saveProfileChanges(View view) {
-        /*if ()
-        if (!name.equals(text_userName.getText().toString())) {
-        }*/
+
     }
+
+    private TextWatcher textWatcherUsername = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            firstName = text_firstName.getText().toString();
+            lastName = text_lastName.getText().toString();
+            username = firstName + " " + lastName;
+
+            text_userName.setText(username);
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+
+        }
+    };
 }
