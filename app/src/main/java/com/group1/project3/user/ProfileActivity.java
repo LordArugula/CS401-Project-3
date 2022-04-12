@@ -1,4 +1,4 @@
-package com.group1.project3;
+package com.group1.project3.user;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -17,7 +17,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
+import com.group1.project3.R;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -32,6 +32,7 @@ public class ProfileActivity extends AppCompatActivity {
     String username, firstName, lastName, email;
     String oldPassword, newPassword, confirmPassword;
     String uid;
+
 
     Boolean nameEmailChanges = false;
 
@@ -150,14 +151,21 @@ public class ProfileActivity extends AppCompatActivity {
     };
 
     private TextWatcher textWatcherNameEmail = new TextWatcher() {
+        String oldUsername, oldFirst, oldLast, oldEmail;
+
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+            oldUsername = text_userName.getText().toString();
+            oldFirst = text_firstName.getText().toString();
+            oldLast = text_lastName.getText().toString();
+            oldEmail = text_emailAddress.getText().toString();
         }
 
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            nameEmailChanges = true;
+            if () {
+                nameEmailChanges = true;
+            }
         }
 
         @Override
