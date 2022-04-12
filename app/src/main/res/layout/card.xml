@@ -18,7 +18,7 @@
             android:id="@+id/card_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/card_title_default_text"
+            android:text="@string/card_default_title"
             android:textColor="@color/cardview_light_background"
             android:textSize="24sp" />
 
