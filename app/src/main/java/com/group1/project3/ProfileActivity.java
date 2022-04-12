@@ -33,6 +33,8 @@ public class ProfileActivity extends AppCompatActivity {
     String oldPassword, newPassword, confirmPassword;
     String uid;
 
+    Boolean nameEmailChanges = false;
+
     FirebaseUser user;
 
     @Override
@@ -52,6 +54,12 @@ public class ProfileActivity extends AppCompatActivity {
         text_userName.setKeyListener(null);
         text_firstName.addTextChangedListener(textWatcherUsername);
         text_lastName.addTextChangedListener(textWatcherUsername);
+
+        text_userName.addTextChangedListener(textWatcherNameEmail);
+        text_firstName.addTextChangedListener(textWatcherNameEmail);
+        text_lastName.addTextChangedListener(textWatcherNameEmail);
+        text_emailAddress.addTextChangedListener(textWatcherNameEmail);
+
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
@@ -110,7 +118,14 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     public void saveProfileChanges(View view) {
+        username = text_userName.getText().toString();
+        firstName = text_firstName.getText().toString();
+        lastName = text_lastName.getText().toString();
+        email = text_emailAddress.getText().toString();
 
+        if (nameEmailChanges) {
+
+        }
     }
 
     private TextWatcher textWatcherUsername = new TextWatcher() {
@@ -126,6 +141,23 @@ public class ProfileActivity extends AppCompatActivity {
             username = firstName + " " + lastName;
 
             text_userName.setText(username);
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+
+        }
+    };
+
+    private TextWatcher textWatcherNameEmail = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            nameEmailChanges = true;
         }
 
         @Override
