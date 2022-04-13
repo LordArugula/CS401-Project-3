@@ -12,11 +12,6 @@ public class Card {
     private final String id;
 
     /**
-     * The card title.
-     */
-    private String title;
-
-    /**
      * The card content.
      */
     private String content;
@@ -24,7 +19,7 @@ public class Card {
     /**
      * The tags on this card.
      */
-    private final HashSet<String> tags;
+    private final HashSet<Tag> tags;
 
     /**
      * The id of the user assigned to this card.
@@ -42,20 +37,18 @@ public class Card {
      * @param id The id of the card.
      */
     public Card(String id) {
-        this(id, null, null);
+        this(id, null);
     }
 
     /**
      * Creates a card with a title and content.
      *
      * @param id      The id of the card.
-     * @param title   The title of the card.
      * @param content The content of the card.
      */
-    public Card(String id, String title, String content) {
+    public Card(String id, String content) {
         this.id = id;
         this.content = content;
-        this.title = title;
         assignedDate = null;
         assignedUser = null;
         tags = new HashSet<>();
@@ -76,16 +69,7 @@ public class Card {
      * @return this card's title.
      */
     public String getTitle() {
-        return title;
-    }
-
-    /**
-     * Sets this card's title.
-     *
-     * @param title The card's title.
-     */
-    public void setTitle(String title) {
-        this.title = title;
+        return content.substring(0, content.indexOf('\n'));
     }
 
     /**
@@ -147,7 +131,7 @@ public class Card {
      *
      * @return a read-only collection of this card's tags.
      */
-    public Collection<String> getTags() {
+    public Collection<Tag> getTags() {
         return Collections.unmodifiableCollection(tags);
     }
 
@@ -157,7 +141,7 @@ public class Card {
      * @param tag The tag.
      * @return True if the tag was added to the card.
      */
-    public boolean addTag(String tag) {
+    public boolean addTag(Tag tag) {
         return tags.add(tag);
     }
 
