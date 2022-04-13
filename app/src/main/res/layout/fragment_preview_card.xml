@@ -28,7 +28,7 @@
                     android:id="@+id/card_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Hello"
+                    android:text="Hello world"
                     android:textSize="24sp" />
 
             </LinearLayout>
@@ -83,7 +83,7 @@
             android:layout_weight="1" />
 
         <LinearLayout
-            android:id="@+id/button_container"
+            android:id="@+id/button_container_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layoutDirection="rtl"
@@ -92,11 +92,45 @@
             android:padding="4dp">
 
             <Button
-                android:id="@+id/edit_card_button"
+                android:id="@+id/assign_date_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Edit"
-                android:onClick="editCard"/>
+                android:layout_marginHorizontal="4dp"
+                android:onClick="assignDate"
+                android:text="Date" />
+
+            <Button
+                android:id="@+id/assign_user_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:onClick="assignUser"
+                android:text="Assign" />
+
+            <Button
+                android:id="@+id/edit_tags_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:onClick="editTags"
+                android:text="Tags" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/button_container_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layoutDirection="rtl"
+            android:minHeight="36dp"
+            android:orientation="horizontal"
+            android:padding="4dp">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="editCard"
+                android:text="Edit" />
 
             <Space
                 android:layout_width="0dp"
@@ -107,8 +141,8 @@
                 android:id="@+id/delete_card_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Delete"
-                android:onClick="deleteCard"/>
+                android:onClick="deleteCard"
+                android:text="Delete" />
 
         </LinearLayout>
 
