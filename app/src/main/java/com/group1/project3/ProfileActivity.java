@@ -17,7 +17,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.group1.project3.user_model.User;
+import com.group1.project3.model.User;
 
 public class ProfileActivity extends AppCompatActivity {
 

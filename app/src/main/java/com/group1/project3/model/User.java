@@ -1,4 +1,4 @@
-package com.group1.project3.user_model;
+package com.group1.project3.model;
 
 import android.net.Uri;
 import android.util.Log;
