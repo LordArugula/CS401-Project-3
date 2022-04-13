@@ -107,10 +107,10 @@ public class User {
             firstLastPid.put(FIRST_NAME, null);
             firstLastPid.put(LAST_NAME, null);
 
-            String[] test = {"test2", "test1"};
-            firstLastPid.put(PROJECT_IDS, Arrays.asList(test));
+            /*String[] test = {"test2", "test1"};
+            firstLastPid.put(PROJECT_IDS, Arrays.asList(test));*/
 
-            //firstLastPid.put(PROJECT_IDS, null);
+            firstLastPid.put(PROJECT_IDS, null);
             userDocumentRef.set(firstLastPid, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
@@ -121,17 +121,6 @@ public class User {
                     }
                 }
             });
-
-            List<Object> old = Arrays.asList(this.firstLastPid.get(PROJECT_IDS));
-            String temp = old.toString();
-            temp = temp.replaceAll("[\\[\\](){}]","");
-            temp = temp.replaceAll("[^a-zA-Z0-9]", " ");
-            //System.out.println(temp);
-            String[] splited = temp.split("\\s+");
-            for (int i = 0; i < splited.length; i++) {
-                System.out.println(splited[i]);
-            }
-
         } else {
             Log.d(TAG, "User is not logged in");
         }
@@ -159,8 +148,10 @@ public class User {
      * @param username the user's updated username
      */
     public void setUsername(String username) {
+        //update locally
         this.username = username;
 
+        //update in FireBase Auth
         UserProfileChangeRequest usernameChange = new UserProfileChangeRequest.Builder().setDisplayName(username).build();
 
         user.updateProfile(usernameChange).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -188,8 +179,10 @@ public class User {
      * @param email the user's updated email address
      */
     public void setEmail(String email) {
+        //update locally
         this.email = email;
 
+        //update in FIreBase Auth
         user.updateEmail(email).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -215,8 +208,10 @@ public class User {
      * @param profilePic string of url pointing to image
      */
     public void setProfilePic(String profilePic) {
+        //update locally
         this.profilePic = Uri.parse(profilePic);
 
+        //update in FireBase Auth
         UserProfileChangeRequest profilePicChange = new UserProfileChangeRequest.Builder().setPhotoUri(Uri.parse(profilePic)).build();
 
         user.updateProfile(profilePicChange).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -248,16 +243,24 @@ public class User {
     }
 
     /**
-     * returns a string array of project ids
+     * returns a string array of project ids if it exists, otherwise returns null
      * @return an array of project ids
      */
     public String[] getProjectIds() {
-        return (String[]) firstLastPid.get(PROJECT_IDS);
+        if (this.firstLastPid.get(PROJECT_IDS) != null) {
+            List<Object> old = Arrays.asList(this.firstLastPid.get(PROJECT_IDS));
+            String temp = old.toString();
+            temp = temp.replaceAll("[\\[\\](){}]", "");
+            temp = temp.replaceAll("[^a-zA-Z0-9]", " ");
+            //System.out.println(temp);
+            String[] splited = temp.split("\\s+");
+            for (int i = 0; i < splited.length; i++) {
+                System.out.println(splited[i]);
 
-        /*List<Object> old = Arrays.asList(this.firstLastPid.get(PROJECT_IDS));
-        for (Object temp : old) {
-            System.out.println(temp.toString() + "asdf");
-        }*/
+                return splited;
+            }
+        }
+        return null;
     }
 
     /**
@@ -265,8 +268,10 @@ public class User {
      * @param firstName first name of the user
      */
     public void setFirstName(String firstName) {
+        //updates locally
         this.firstLastPid.put(FIRST_NAME, firstName);
 
+        //updates on the Firestore document
         userDocumentRef.set(firstLastPid, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -284,8 +289,10 @@ public class User {
      * @param lastName last name of the user
      */
     public void setLastName(String lastName) {
+        //updates locally
         this.firstLastPid.put(LAST_NAME, lastName);
 
+        //updates on the Firestore document
         userDocumentRef.set(firstLastPid, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -298,13 +305,28 @@ public class User {
         });
     }
 
+    /**
+     * adds a project id to the list that the user can access
+     * @param id a project id
+     */
     public void addProjectId(String id) {
-        String[] old = (String[]) this.firstLastPid.get(PROJECT_IDS);
-        if (old != null) {
-            List<String> oldAsList = new ArrayList<String>(Arrays.asList(old));
+
+        List<Object> old = Arrays.asList(this.firstLastPid.get(PROJECT_IDS));
+        String temp = old.toString();
+        temp = temp.replaceAll("[\\[\\](){}]","");
+        temp = temp.replaceAll("[^a-zA-Z0-9]", " ");
+        //System.out.println(temp);
+        String[] splited = temp.split("\\s+");
+        for (int i = 0; i < splited.length; i++) {
+            System.out.println(splited[i]);
         }
 
+        //update locally
+        List<String> addTo = new ArrayList<>(Arrays.asList(splited));
+        addTo.add(id);
+        firstLastPid.put(PROJECT_IDS, addTo.toArray());
 
+        //update Firestore document
         userDocumentRef.set(firstLastPid, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -317,6 +339,12 @@ public class User {
         });
     }
 
+    /**
+     * returns true if successfully re-authenticated and false otherwise
+     * @param email the user's email address
+     * @param password the user's password
+     * @return true if successfully re-authenticated
+     */
     public Boolean reauthenticate(String email, String password) {
         AuthCredential credential = EmailAuthProvider.getCredential(email, password);
 
@@ -334,6 +362,10 @@ public class User {
         return auth.isSuccessful();
     }
 
+    /**
+     * sets the user's password
+     * @param password the yser's updated password
+     */
     public void setPassword(String password) {
         this.password = password;
 
