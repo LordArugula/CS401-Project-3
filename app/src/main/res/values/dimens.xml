@@ -6,4 +6,5 @@
     <dimen name="editText_text_minHeight">48dp</dimen>
     <dimen name="label_textSize">20sp</dimen>
     <dimen name="main_bottomMargin">16dp</dimen>
+    <dimen name="header_textSize">25sp</dimen>
 </resources>
