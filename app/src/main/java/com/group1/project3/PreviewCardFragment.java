@@ -3,6 +3,7 @@ package com.group1.project3;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,6 +59,11 @@ public class PreviewCardFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        Fragment childFragment = new Fragment();
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.replace(R.id.tags_container, childFragment).commit();
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_preview_card, container, false);
     }

@@ -1,12 +1,13 @@
 package com.group1.project3;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,6 +15,8 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class EditCardFragment extends Fragment {
+
+    protected RecyclerView recyclerView;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -58,7 +61,17 @@ public class EditCardFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        View rootView = inflater.inflate(R.layout.fragment_edit_card, container, false);
+
+        Fragment childFragment = new Fragment();
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.replace(R.id.tags_container, childFragment).commit();
+
+        recyclerView = rootView.findViewById(R.id.tags_container);
+        recyclerView.setAdapter(new TagRecyclerViewAdapter(CardActivity.tags));
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_edit_card, container, false);
+        return rootView;
     }
 }

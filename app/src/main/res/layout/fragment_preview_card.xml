@@ -35,16 +35,23 @@
 
         </ScrollView>
 
-        <LinearLayout
+        <FrameLayout
             android:id="@+id/tags_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layoutDirection="rtl"
-            android:minHeight="36dp"
-            android:orientation="horizontal"
-            android:padding="4dp">
+            android:layout_height="wrap_content">
 
-        </LinearLayout>
+        </FrameLayout>
+
+        <!--        <LinearLayout-->
+        <!--            android:id="@+id/tags_container"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layoutDirection="rtl"-->
+        <!--            android:minHeight="36dp"-->
+        <!--            android:orientation="horizontal"-->
+        <!--            android:padding="4dp">-->
+
+        <!--        </LinearLayout>-->
 
         <RelativeLayout
             android:id="@+id/info_container"
@@ -66,6 +73,7 @@
                 android:minHeight="48dp" />
 
             <TextView
+                android:id="@+id/card_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
