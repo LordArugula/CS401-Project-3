@@ -15,7 +15,7 @@
         android:testOnly="true"
         android:theme="@style/Theme.CS401_Project3">
         <activity
-            android:name=".model.Project"
+            android:name=".ProjectActivity"
             android:exported="false" />
         <activity
             android:name=".CardActivity"
