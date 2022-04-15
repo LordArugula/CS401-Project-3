@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.group1.project3.repository.TagsRepository;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link EditCardFragment#newInstance} factory method to
@@ -26,6 +28,12 @@ public class EditCardFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private TagAdapter tagAdapter;
+
+    public TagAdapter getAdapter() {
+        return tagAdapter;
+    }
 
     public EditCardFragment() {
         // Required empty public constructor
@@ -69,7 +77,8 @@ public class EditCardFragment extends Fragment {
         transaction.replace(R.id.tags_container, childFragment).commit();
 
         recyclerView = rootView.findViewById(R.id.tags_container);
-        recyclerView.setAdapter(new TagRecyclerViewAdapter(CardActivity.tags));
+        tagAdapter = new TagAdapter(TagsRepository.ITEMS);
+        recyclerView.setAdapter(tagAdapter);
 
         // Inflate the layout for this fragment
         return rootView;

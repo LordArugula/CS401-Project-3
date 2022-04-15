@@ -15,25 +15,24 @@ import java.util.List;
  * {@link RecyclerView.Adapter} that can display a {@link Tag}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class TagRecyclerViewAdapter extends RecyclerView.Adapter<TagRecyclerViewAdapter.ViewHolder> {
+public class TagAdapter extends RecyclerView.Adapter<TagAdapter.ViewHolder> {
 
     private final List<Tag> mValues;
 
-    public TagRecyclerViewAdapter(List<Tag> items) {
+    public TagAdapter(List<Tag> items) {
         mValues = items;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-        return new ViewHolder(FragmentTagBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
-
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        return new ViewHolder(FragmentTagBinding.inflate(inflater, parent, false));
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).getName());
+        holder.mContentView.setText(mValues.get(position).getName());
     }
 
     @Override
@@ -42,19 +41,12 @@ public class TagRecyclerViewAdapter extends RecyclerView.Adapter<TagRecyclerView
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public final TextView mIdView;
         public final TextView mContentView;
         public Tag mItem;
 
         public ViewHolder(FragmentTagBinding binding) {
             super(binding.getRoot());
-            mIdView = binding.itemNumber;
             mContentView = binding.content;
-        }
-
-        @Override
-        public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
         }
     }
 }

@@ -11,22 +11,18 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.group1.project3.repository.TagsRepository;
+
 /**
  * A fragment representing a list of Items.
  */
 public class TagFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public TagFragment() {
-    }
+    // TODO: Customize parameter argument names
+    private static final String ARG_COLUMN_COUNT = "column-count";
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
@@ -36,6 +32,13 @@ public class TagFragment extends Fragment {
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    /**
+     * Mandatory empty constructor for the fragment manager to instantiate the
+     * fragment (e.g. upon screen orientation changes).
+     */
+    public TagFragment() {
     }
 
     @Override
@@ -61,7 +64,7 @@ public class TagFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new TagRecyclerViewAdapter(CardActivity.tags));
+            recyclerView.setAdapter(new TagAdapter(TagsRepository.ITEMS));
         }
         return view;
     }

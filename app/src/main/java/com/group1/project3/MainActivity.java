@@ -46,5 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void reload() {
 //        Toast.makeText(this, "TODO", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, CardActivity.class);
+        startActivity(intent);
     }
 }

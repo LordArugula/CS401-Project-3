@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.group1.project3.model.Tag;
 
@@ -22,10 +23,10 @@ import java.util.List;
 //import com.google.firebase.auth.FirebaseAuth;
 
 public class CardActivity extends AppCompatActivity {
-    private List<Tag> projectTags;
 
     //    private FirebaseAuth auth;
-    public static List<Tag> tags;
+
+    private List<Tag> projectTags;
 
     public CardActivity() {
     }
@@ -41,7 +42,6 @@ public class CardActivity extends AppCompatActivity {
         projectTags.add(new Tag("Hello"));
         projectTags.add(new Tag("World"));
         projectTags.add(new Tag("Test"));
-        tags = new ArrayList<>();
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
@@ -115,8 +115,13 @@ public class CardActivity extends AppCompatActivity {
         builder.setItems(tagNames, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                tags.add(projectTags.get(i));
-                updateTags();
+
+//                EditCardFragment fragmentById = (EditCardFragment) getSupportFragmentManager().findFragmentById(R.id.edit_card_fragment);
+//                fragmentById = (EditCardFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container_view);
+//
+//                fragmentById.getAdapter().addItem(projectTags.get(i));
+//                tags.add(projectTags.get(i));
+//                updateTags();
             }
         })
                 .create().show();
