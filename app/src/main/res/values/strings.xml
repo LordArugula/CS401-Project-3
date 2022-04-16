@@ -24,4 +24,15 @@
     <string name="card_default_title">Card Title</string>
     <string name="user_profile_image_description">User profile image</string>
     <string name="card_default_date">04/26/22</string>
+
+
+    <string name="project_a">Project</string>
+    <string name="back_log">This is back_log</string>
+    <string name="in_progress">In Progress</string>
+    <string name="needs_review">needs review</string>
+    <string name="completed">completed</string>
+    <string name="title">Title</string>
+    <string name="user">Assigned User</string>
+    <string name="date">Assigned Date</string>
+    <string name="content">Content</string>
 </resources>
