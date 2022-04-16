@@ -6,4 +6,17 @@
     android:orientation="vertical"
     tools:context=".ProjectMenuActivity">
 
+    <Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+<!--        <ImageButton-->
+<!--            android:id="@+id/profile_menu_button"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:contentDescription="Profile Menu Button"-->
+<!--            android:onClick="openProfileContextMenu"/>-->
+
+    </Toolbar>
+
 </LinearLayout>

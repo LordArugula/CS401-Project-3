@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <item
+        android:id="@+id/menu_open_account_profile"
+        android:title="@string/menu_profile_option_account" />
+
+    <item
+        android:id="@+id/menu_sign_out"
+        android:title="@string/menu_profile_option_signOut" />
+
+</menu>
