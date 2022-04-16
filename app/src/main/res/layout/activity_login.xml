@@ -8,7 +8,6 @@
     tools:context=".LoginActivity">
 
     <LinearLayout
-        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
@@ -19,53 +18,53 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/label_emailAddress"
+            android:id="@+id/login_label_emailAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/label_emailAddress"
+            android:text="@string/login_label_emailAddress"
             android:textSize="@dimen/label_textSize" />
 
         <EditText
-            android:id="@+id/text_emailAddress"
+            android:id="@+id/login_text_emailAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/main_bottomMargin"
             android:autofillHints="emailAddress"
-            android:hint="@string/emailAddress_hint_text"
+            android:hint="@string/login_hint_emailAddress"
             android:inputType="textEmailAddress"
             android:minHeight="@dimen/editText_text_minHeight" />
 
         <TextView
-            android:id="@+id/label_password"
+            android:id="@+id/login_label_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/label_password"
+            android:text="@string/login_label_password"
             android:textSize="@dimen/label_textSize" />
 
         <EditText
-            android:id="@+id/text_password"
+            android:id="@+id/login_text_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/main_bottomMargin"
             android:autofillHints="password"
-            android:hint="@string/password_hint_text"
+            android:hint="@string/login_hint_password"
             android:inputType="textPassword"
             android:minHeight="@dimen/editText_text_minHeight" />
 
         <Button
-            android:id="@+id/login_button"
+            android:id="@+id/login_submit_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/login_button_text"
-            android:onClick="signIn"/>
+            android:onClick="signIn"
+            android:text="@string/login_button_submit" />
 
     </LinearLayout>
 
     <Button
-        android:id="@+id/back_button"
+        android:id="@+id/login_back_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="toMainMenu"
-        android:text="@string/back_button"
+        android:text="@string/login_button_back"
         app:layout_constraintBottom_toBottomOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

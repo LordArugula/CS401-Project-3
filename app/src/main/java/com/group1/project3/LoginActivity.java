@@ -29,8 +29,8 @@ public class LoginActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
 
-        emailText = findViewById(R.id.text_emailAddress);
-        passwordText = findViewById(R.id.text_password);
+        emailText = findViewById(R.id.register_text_emailAddress);
+        passwordText = findViewById(R.id.register_text_password);
     }
 
     public void toMainMenu(View view) {
