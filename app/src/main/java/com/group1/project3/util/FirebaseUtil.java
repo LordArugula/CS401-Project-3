@@ -1,25 +1,42 @@
 package com.group1.project3.util;
 
-import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.group1.project3.BuildConfig;
 
 /**
- * Utility class for initializing Firebase services and connecting them to the Firebase Emulator
- * Suite if necessary.
+ * Utility class for initializing Firebase services and connecting them to
+ * the Firebase Emulator Suite if necessary.
  */
-public class FirebaseUtil {
+public final class FirebaseUtil {
 
     /**
      * Use emulators only in debug builds
      **/
     private static final boolean sUseEmulators = BuildConfig.DEBUG;
 
+    /**
+     * The FirebaseFirestore instance.
+     */
     private static FirebaseFirestore FIRESTORE;
-    private static FirebaseAuth AUTH;
-    private static AuthUI AUTH_UI;
 
+    /**
+     * The FirebaseAuth instance.
+     */
+    private static FirebaseAuth AUTH;
+
+    /**
+     * Private constructor to prevent instantiating this util class.
+     */
+    private FirebaseUtil() {
+        // Empty
+    }
+
+    /**
+     * Gets the Firestore instance.
+     * 
+     * @return the Firestore instance.
+     */
     public static FirebaseFirestore getFirestore() {
         if (FIRESTORE == null) {
             FIRESTORE = FirebaseFirestore.getInstance();
@@ -34,6 +51,11 @@ public class FirebaseUtil {
         return FIRESTORE;
     }
 
+    /**
+     * Gets the FirebaseAuth instance.
+     *
+     * @return the FirebaseAuth instance.
+     */
     public static FirebaseAuth getAuth() {
         if (AUTH == null) {
             AUTH = FirebaseAuth.getInstance();
@@ -46,5 +68,21 @@ public class FirebaseUtil {
         }
 
         return AUTH;
+    }
+
+    /**
+     * Checks if the user is signed in.
+     *
+     * @return True if the user is signed in.
+     */
+    public static boolean isSignedIn() {
+        return getAuth().getCurrentUser() != null;
+    }
+
+    /**
+     * Signs the user out.
+     */
+    public static void signOut() {
+        getAuth().signOut();
     }
 }
