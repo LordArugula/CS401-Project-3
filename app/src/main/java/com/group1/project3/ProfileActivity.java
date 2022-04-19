@@ -1,10 +1,13 @@
 package com.group1.project3;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -12,31 +15,27 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.group1.project3.model.User;
+import com.group1.project3.util.FirebaseUtil;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    EditText text_userName;
-    EditText text_firstName;
-    EditText text_lastName;
-    EditText text_emailAddress;
-    EditText text_oldPassword;
-    EditText text_newPassword;
-    EditText text_confirmPassword;
-
-    String username, firstName, lastName, email;
-    String oldPassword, newPassword, confirmPassword;
-    String uid;
-
-
-    Boolean nameEmailChanges = false;
-
-    FirebaseUser user;
+    private EditText text_userName;
+    private EditText text_firstName;
+    private EditText text_lastName;
+    private EditText text_emailAddress;
+    private EditText text_oldPassword;
+    private EditText text_newPassword;
+    private EditText text_confirmPassword;
+    private Button button_updateProfile;
+    private Button button_updatePassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,135 +43,181 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         text_userName = findViewById(R.id.text_userName);
-        text_firstName = findViewById(R.id.text_firstName);
-        text_lastName = findViewById(R.id.text_lastName);
-        text_emailAddress = findViewById(R.id.text_emailAddress);
+        text_firstName = findViewById(R.id.register_text_firstName);
+        text_lastName = findViewById(R.id.register_text_lastName);
+        text_emailAddress = findViewById(R.id.register_text_emailAddress);
         text_oldPassword = findViewById(R.id.text_oldPassword);
-        text_newPassword = findViewById(R.id.text_password);
-        text_confirmPassword = findViewById(R.id.text_confirmPassword);
+        text_newPassword = findViewById(R.id.register_text_password);
+        text_confirmPassword = findViewById(R.id.register_text_confirmPassword);
+        button_updateProfile = findViewById(R.id.button_updateProfile);
+        button_updatePassword = findViewById(R.id.button_updatePassword);
 
-        //makes username field uneditable
-        text_userName.setKeyListener(null);
-        text_firstName.addTextChangedListener(textWatcherUsername);
-        text_lastName.addTextChangedListener(textWatcherUsername);
+        TextWatcher profileWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-        text_userName.addTextChangedListener(textWatcherNameEmail);
-        text_firstName.addTextChangedListener(textWatcherNameEmail);
-        text_lastName.addTextChangedListener(textWatcherNameEmail);
-        text_emailAddress.addTextChangedListener(textWatcherNameEmail);
+            }
 
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                boolean error = false;
+                if (text_userName.getText().toString().isEmpty()) {
+                    error = true;
+                }
 
-        user = FirebaseAuth.getInstance().getCurrentUser();
+                if (text_firstName.getText().toString().isEmpty()) {
+                    error = true;
+                }
 
-        User test = new User();
-        if (user != null) {
-            username = user.getDisplayName();
-            email = user.getEmail();
-            uid = user.getUid();
+                if (text_lastName.getText().toString().isEmpty()) {
+                    error = true;
+                }
 
-            text_userName.setText(username);
-            text_emailAddress.setText(email);
-        }
-        else {
-            Toast.makeText(this, "An error occurred when retrieving your profile information.", Toast.LENGTH_SHORT).show();
-        }
+                String email = text_emailAddress.getText().toString();
+                if (email.isEmpty()) {
+                    error = true;
+                }
 
+                if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    error = true;
+                }
+
+                button_updateProfile.setEnabled(!error);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        };
+        text_userName.addTextChangedListener(profileWatcher);
+        text_firstName.addTextChangedListener(profileWatcher);
+        text_lastName.addTextChangedListener(profileWatcher);
+        text_emailAddress.addTextChangedListener(profileWatcher);
+
+        TextWatcher passwordWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                boolean error = false;
+
+                if (text_oldPassword.getText().toString().isEmpty()) {
+                    error = true;
+                }
+
+                String newPassword = text_newPassword.getText().toString();
+                if (newPassword.isEmpty()) {
+                    error = true;
+                }
+
+                String confirmPassword = text_confirmPassword.getText().toString();
+                if (confirmPassword.isEmpty()) {
+                    error = true;
+                }
+
+                if (!newPassword.equals(confirmPassword)) {
+                    error = true;
+                }
+
+                findViewById(R.id.button_updatePassword).setEnabled(!error);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        };
+        text_oldPassword.addTextChangedListener(passwordWatcher);
+        text_newPassword.addTextChangedListener(passwordWatcher);
+        text_confirmPassword.addTextChangedListener(passwordWatcher);
+
+        FirebaseUser user = FirebaseUtil.getAuth().getCurrentUser();
+        bind(user);
+    }
+
+    private void bind(FirebaseUser user) {
+        text_userName.setText(user.getDisplayName());
+        FirebaseUtil.getFirestore()
+                .collection("users")
+                .document(user.getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot result = task.getResult();
+                            User user1 = result.toObject(User.class);
+                            text_emailAddress.setText(user.getEmail());
+                            text_userName.setText(user.getDisplayName());
+                            text_firstName.setText(user1.getFirstName());
+                            text_lastName.setText((user1.getLastName()));
+                        }
+                    }
+                });
     }
 
     public void toProjectView(View view) {
+        Intent intent = new Intent(this, ProjectMenuActivity.class);
+        startActivity(intent);
+        startActivity(intent);
     }
 
-    public void changePassword(View view) {
-        //update email in case it changed
-        email = user.getEmail();
-        oldPassword = text_oldPassword.getText().toString();
-        newPassword = text_newPassword.getText().toString();
-        confirmPassword = text_confirmPassword.getText().toString();
+    public void updatePassword(View view) {
+        FirebaseUser user = FirebaseUtil.getAuth().getCurrentUser();
+        String email = user.getEmail();
+        String oldPassword = text_oldPassword.getText().toString();
+        String newPassword = text_newPassword.getText().toString();
 
-        assert email != null;
-
-        if (!oldPassword.matches("") && !newPassword.matches("") && !confirmPassword.matches("")) {
-            AuthCredential credential = EmailAuthProvider.getCredential(email, oldPassword);
-
-            user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()) {
-                        user.updatePassword(newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    Log.d("updatepassword", "Password updated");
-                                } else {
-                                    Log.d("updatepassword", "Password not updated");
-                                }
-                            }
-                        });
+        AuthCredential credentials = EmailAuthProvider.getCredential(email, oldPassword);
+        user.reauthenticate(credentials)
+                .addOnCompleteListener(authTask -> {
+                    if (authTask.isSuccessful()) {
+                        user.updatePassword(newPassword)
+                                .addOnSuccessListener(changePasswordTask -> {
+                                    Toast.makeText(ProfileActivity.this, "Updated password.", Toast.LENGTH_SHORT)
+                                            .show();
+                                })
+                                .addOnFailureListener(e -> {
+                                    Toast.makeText(ProfileActivity.this, e.getMessage(), Toast.LENGTH_SHORT)
+                                            .show();
+                                });
                     } else {
-                        Log.d("Reauth", "Error auth failed");
-                        Toast.makeText(ProfileActivity.this, "Password is incorrect", Toast.LENGTH_LONG).show();
+                        Toast.makeText(ProfileActivity.this, "Incorrect password", Toast.LENGTH_SHORT)
+                                .show();
                     }
-                }
-            });
-        } else {
-            Toast.makeText(ProfileActivity.this, "One or more fields are empty", Toast.LENGTH_SHORT).show();
-        }
-
+                });
     }
 
-    public void saveProfileChanges(View view) {
-        username = text_userName.getText().toString();
-        firstName = text_firstName.getText().toString();
-        lastName = text_lastName.getText().toString();
-        email = text_emailAddress.getText().toString();
+    public void updateProfile(View view) {
+        FirebaseUser user = FirebaseUtil.getAuth().getCurrentUser();
 
-        /*if (nameEmailChanges) {
+        String email = text_emailAddress.getText().toString().trim();
+        if (!user.getEmail().equals(email)) {
+            user.updateEmail(email);
+        }
 
-        }*/
+        String username = text_userName.getText().toString().trim();
+        if (!user.getDisplayName().equals(username)) {
+            UserProfileChangeRequest.Builder builder = new UserProfileChangeRequest.Builder()
+                    .setDisplayName(username);
+            user.updateProfile(builder.build());
+        }
+
+        FirebaseUtil.getFirestore().collection("users")
+                .document(user.getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(ProfileActivity.this, "Updated Profile", Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                    }
+                });
     }
-
-    private TextWatcher textWatcherUsername = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            firstName = text_firstName.getText().toString();
-            lastName = text_lastName.getText().toString();
-            username = firstName + " " + lastName;
-
-            text_userName.setText(username);
-        }
-
-        @Override
-        public void afterTextChanged(Editable editable) {
-
-        }
-    };
-
-    private TextWatcher textWatcherNameEmail = new TextWatcher() {
-        String oldUsername, oldFirst, oldLast, oldEmail;
-
-        @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            oldUsername = text_userName.getText().toString();
-            oldFirst = text_firstName.getText().toString();
-            oldLast = text_lastName.getText().toString();
-            oldEmail = text_emailAddress.getText().toString();
-        }
-
-        @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            /*if () {
-                nameEmailChanges = true;
-            }*/
-        }
-
-        @Override
-        public void afterTextChanged(Editable editable) {
-
-        }
-    };
 }

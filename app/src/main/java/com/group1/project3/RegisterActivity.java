@@ -18,7 +18,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.firestore.DocumentReference;
+import com.group1.project3.model.User;
 import com.group1.project3.util.FirebaseUtil;
 
 import java.util.HashMap;
@@ -71,31 +71,32 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            FirebaseUser user = auth.getCurrentUser();
-                            assert user != null;
+                            FirebaseUser firebaseUser = auth.getCurrentUser();
+                            assert firebaseUser != null;
 
-                            String firstName = text_firstName.getText().toString();
-                            String lastName = text_lastName.getText().toString();
+                            String firstName = text_firstName.getText().toString().trim();
+                            String lastName = text_lastName.getText().toString().trim();
+                            String username = text_username.getText().toString().trim();
+
+                            User user = new User(firebaseUser.getUid(), firstName, lastName, username, email);
 
                             UserProfileChangeRequest.Builder changeRequestBuilder = new UserProfileChangeRequest.Builder()
-                                    .setDisplayName(firstName + " " + lastName);
-                            user.updateProfile(changeRequestBuilder.build());
-
-                            Map<String, Object> userMap = new HashMap<>();
-                            userMap.put("first", firstName);
-                            userMap.put("last", lastName);
+                                    .setDisplayName(username);
+                            firebaseUser.updateProfile(changeRequestBuilder.build());
 
                             FirebaseUtil.getFirestore().collection("users")
-                                    .document(user.getUid())
-                                    .set(userMap)
+                                    .document(firebaseUser.getUid())
+                                    .set(user.serializeAsMap())
                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
-                                            Log.d("REGISTER", "Registered account");
+                                            if (task.isSuccessful()) {
+                                                Log.d("REGISTER", "Registered account");
+                                            }
                                         }
                                     });
 
-                            launchProfileMenuActivity(user);
+                            launchProfileMenuActivity(firebaseUser);
                         } else {
                             Toast.makeText(RegisterActivity.this, "Failed to register account.", Toast.LENGTH_SHORT)
                                     .show();

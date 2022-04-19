@@ -1,5 +1,6 @@
 package com.group1.project3;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -9,73 +10,65 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 
+import com.google.gson.Gson;
+import com.group1.project3.model.Card;
 import com.group1.project3.model.Tag;
+import com.group1.project3.repository.TagsRepository;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-
-//import com.google.firebase.auth.FirebaseAuth;
+import java.util.Map;
 
 public class CardActivity extends AppCompatActivity {
 
-    //    private FirebaseAuth auth;
-
-    private List<Tag> projectTags;
-
-    public CardActivity() {
-    }
+    private Card card;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card);
-//
-//        auth = FirebaseAuth.getInstance();
-
-        projectTags = new ArrayList<>();
-        projectTags.add(new Tag("Hello"));
-        projectTags.add(new Tag("World"));
-        projectTags.add(new Tag("Test"));
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .setReorderingAllowed(true)
-                    .add(R.id.fragment_container_view, PreviewCardFragment.class, null)
+                    .add(R.id.card_fragment_container_view, PreviewCardFragment.class, getIntent().getExtras())
                     .commit();
         }
+
+        String cardAsJson = getIntent().getStringExtra("card");
+        card = new Gson().fromJson(cardAsJson, Card.class);
     }
 
-    public void editCard(View view) {
+    public void editCardContent(View view) {
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container_view, EditCardFragment.class, null)
+                .replace(R.id.card_fragment_container_view, EditCardFragment.class, getIntent().getExtras())
                 .commit();
     }
 
-    public void previewCard(View view) {
+    public void previewCardContent(View view) {
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container_view, PreviewCardFragment.class, null)
+                .replace(R.id.card_fragment_container_view, PreviewCardFragment.class, getIntent().getExtras())
                 .commit();
     }
 
     public void deleteCard(View view) {
-        Toast.makeText(this, "Delete Card", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "TODO: Delete Card", Toast.LENGTH_SHORT).show();
     }
 
-    public void cancelChanges(View view) {
-        Toast.makeText(this, "Cancel Changes", Toast.LENGTH_SHORT).show();
+    public void cancelContentChange(View view) {
+        Toast.makeText(this, "TODO: Cancel Changes to Content", Toast.LENGTH_SHORT).show();
     }
 
-    public void saveChanges(View view) {
-        Toast.makeText(this, "Save Changes", Toast.LENGTH_SHORT).show();
+    public void saveContentChange(View view) {
+        Toast.makeText(this, "TODO: Save Changes to Content", Toast.LENGTH_SHORT).show();
     }
 
-    public void assignDate(View view) {
+    public void openDatePicker(View view) {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
@@ -85,13 +78,12 @@ public class CardActivity extends AppCompatActivity {
         DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                // TODO Update card
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(year, month, day);
                 Date date = calendar.getTime();
-                // card.setDate();
+                card.setAssignedDate(date);
 
-                TextView dateText = findViewById(R.id.card_date);
+                TextView dateText = findViewById(R.id.card_preview_date);
                 dateText.setText(DateFormat.format("MM/dd/yyyy", calendar));
             }
         }, year, month, day);
@@ -100,31 +92,45 @@ public class CardActivity extends AppCompatActivity {
     }
 
     public void assignUser(View view) {
+
     }
 
     public void editTags(View view) {
-
         // TODO get project tags
-        String[] tagNames = new String[projectTags.size()];
+        List<Tag> tags = TagsRepository.ITEMS;
+        String[] tagNames = new String[tags.size()];
+        boolean[] checked = new boolean[tags.size()];
 
-        tagNames = projectTags.stream()
-                .map(Tag::getName)
-                .toArray(String[]::new);
+        for (int i = 0; i < tags.size(); i++) {
+            tagNames[i] = tags.get(i).getName();
+            checked[i] = card.hasTag(tags.get(i));
+        }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setItems(tagNames, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-//                EditCardFragment fragmentById = (EditCardFragment) getSupportFragmentManager().findFragmentById(R.id.edit_card_fragment);
-//                fragmentById = (EditCardFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container_view);
-//
-//                fragmentById.getAdapter().addItem(projectTags.get(i));
-//                tags.add(projectTags.get(i));
-//                updateTags();
-            }
-        })
-                .create().show();
+        Map<Tag, Boolean> changeTags = new HashMap<>();
+        builder.setTitle("Edit tags")
+                .setMultiChoiceItems(tagNames, checked, (dialogInterface, i, b) -> {
+                    changeTags.put(tags.get(i), b);
+                })
+                .setPositiveButton("Set tags", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        for (Map.Entry<Tag, Boolean> entry : changeTags.entrySet()) {
+                            if (entry.getValue()) {
+                                card.addTag(entry.getKey());
+                            } else {
+                                card.removeTag(entry.getKey());
+                            }
+                        }
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .show();
     }
 
     private void updateTags() {

@@ -1,86 +1,53 @@
 package com.group1.project3;
 
 import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.RecyclerView;
+import com.google.gson.Gson;
+import com.group1.project3.model.Card;
 
-import com.group1.project3.repository.TagsRepository;
-
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link EditCardFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class EditCardFragment extends Fragment {
 
     protected RecyclerView recyclerView;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    private TagAdapter tagAdapter;
-
-    public TagAdapter getAdapter() {
-        return tagAdapter;
-    }
+    private EditText text_content;
+    private TextView text_date;
+    private Card card;
 
     public EditCardFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment EditCardFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static EditCardFragment newInstance(String param1, String param2) {
-        EditCardFragment fragment = new EditCardFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            String cardAsJson = getArguments().getString("card");
+            card = new Gson().fromJson(cardAsJson, Card.class);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        View rootView = inflater.inflate(R.layout.fragment_edit_card, container, false);
-
-        Fragment childFragment = new Fragment();
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.replace(R.id.tags_container, childFragment).commit();
-
-        recyclerView = rootView.findViewById(R.id.tags_container);
-        tagAdapter = new TagAdapter(TagsRepository.ITEMS);
-        recyclerView.setAdapter(tagAdapter);
-
         // Inflate the layout for this fragment
-        return rootView;
+        View view = inflater.inflate(R.layout.fragment_edit_card, container, false);
+
+        TextView text_cardContent = view.findViewById(R.id.card_edit_content);
+        text_cardContent.setText(card.getContent());
+
+        TextView text_date = view.findViewById(R.id.card_edit_date);
+        text_date.setText(card.getAssignedDate() == null ? "" : card.getAssignedDate().toString());
+
+        return view;
     }
 }

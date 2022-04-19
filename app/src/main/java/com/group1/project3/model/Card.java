@@ -1,15 +1,22 @@
 package com.group1.project3.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 
-public class Card {
+/**
+ * A card contains some content and can be used to represent a task in a {@link Project}.
+ */
+public class Card implements SerializableAsMap {
     /**
      * The card id.
      */
-    private final String id;
+    private String id;
 
     /**
      * The card content.
@@ -30,6 +37,13 @@ public class Card {
      * The date assigned to this card.
      */
     private Date assignedDate;
+
+    /**
+     * Creates an empty card.
+     */
+    public Card() {
+        this(null, null);
+    }
 
     /**
      * Creates an empty card.
@@ -64,12 +78,26 @@ public class Card {
     }
 
     /**
+     * Sets this card's id.
+     *
+     * @param id the card id.
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    /**
      * Gets this card's title.
      *
      * @return this card's title.
      */
     public String getTitle() {
-        return content.substring(0, content.indexOf('\n'));
+
+        int i = content.indexOf('\n');
+        if (i == -1) {
+            return content;
+        }
+        return content.substring(0, i);
     }
 
     /**
@@ -131,8 +159,8 @@ public class Card {
      *
      * @return a read-only collection of this card's tags.
      */
-    public Collection<Tag> getTags() {
-        return Collections.unmodifiableCollection(tags);
+    public List<Tag> getTags() {
+        return Collections.unmodifiableList(new ArrayList<>(tags));
     }
 
     /**
@@ -151,7 +179,7 @@ public class Card {
      * @param tag The tag.
      * @return True if this card has the tag.
      */
-    public boolean hasTag(String tag) {
+    public boolean hasTag(Tag tag) {
         return tags.contains(tag);
     }
 
@@ -161,7 +189,19 @@ public class Card {
      * @param tag The tag.
      * @return True if the tag was removed from this card.
      */
-    public boolean removeTag(String tag) {
+    public boolean removeTag(Tag tag) {
         return tags.remove(tag);
+    }
+
+    public Map<String, Object> serializeAsMap() {
+        HashMap<String, Object> map = new HashMap<>();
+
+        map.put("id", id);
+        map.put("content", content);
+        map.put("assignedUser", assignedUser);
+        map.put("assignedDate", assignedDate);
+        map.put("tags", new ArrayList<Tag>(tags));
+
+        return Collections.unmodifiableMap(map);
     }
 }

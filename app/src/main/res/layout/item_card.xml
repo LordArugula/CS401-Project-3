@@ -1,23 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    android:maxHeight="240dp"
+    android:minHeight="240dp"
     app:cardBackgroundColor="@color/cardview_dark_background"
     app:cardCornerRadius="10dp">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minWidth="200dp"
-        android:minHeight="240dp"
         android:orientation="vertical"
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/card_title"
+            android:id="@+id/item_card_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:breakStrategy="simple"
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:scrollHorizontally="false"
             android:text="@string/card_default_title"
             android:textColor="@color/cardview_light_background"
             android:textSize="24sp" />
@@ -27,19 +33,19 @@
             android:layout_height="0dp"
             android:layout_weight="1" />
 
-        <LinearLayout
-            android:id="@+id/tags_container"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/item_card_tag_recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layoutDirection="rtl"
-            android:minHeight="36dp"
             android:orientation="horizontal"
-            android:padding="4dp">
+            android:padding="4dp"
+            tools:ignore="SpeakableTextPresentCheck"
+            tools:listitem="@layout/item_tag">
 
-        </LinearLayout>
+        </androidx.recyclerview.widget.RecyclerView>
 
         <RelativeLayout
-            android:id="@+id/info_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="36dp"
@@ -47,7 +53,7 @@
             android:padding="4dp">
 
             <ImageView
-                android:id="@+id/assigned_user_profile_image"
+                android:id="@+id/item_card_assigned_user_profile_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -58,13 +64,14 @@
                 android:minHeight="28dp" />
 
             <TextView
-                android:textAlignment="textEnd"
+                android:id="@+id/item_card_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_toEndOf="@id/assigned_user_profile_image"
+                android:layout_toEndOf="@id/item_card_assigned_user_profile_image"
                 android:text="@string/card_default_date"
+                android:textAlignment="textEnd"
                 android:textColor="@color/cardview_light_background" />
 
         </RelativeLayout>
