@@ -21,6 +21,11 @@ class RegisterFormValidator implements TextWatcher {
     private final EditText lastNameText;
 
     /**
+     * The username text field.
+     */
+    private final EditText usernameText;
+
+    /**
      * The email address text field.
      */
     private final EditText emailText;
@@ -42,21 +47,23 @@ class RegisterFormValidator implements TextWatcher {
 
     /**
      * @param firstNameText       The text field for the user's first name.
-     * @param lastName            The text field for the user's last name.
+     * @param lastNameText        The text field for the user's last name.
+     * @param usernameText        The text field for the user's username.
      * @param emailText           The text field for the user's email address.
      * @param passwordText        The text field for the password.
      * @param confirmPasswordText The text field to confirm the password.
      * @param submitButton        The button to submit the form.
-     * @param submitButton        The button to submit the form.
      */
     public RegisterFormValidator(EditText firstNameText,
-                                 EditText lastName,
+                                 EditText lastNameText,
+                                 EditText usernameText,
                                  EditText emailText,
                                  EditText passwordText,
                                  EditText confirmPasswordText,
                                  Button submitButton) {
         this.firstNameText = firstNameText;
-        this.lastNameText = lastName;
+        this.lastNameText = lastNameText;
+        this.usernameText = usernameText;
         this.emailText = emailText;
         this.passwordText = passwordText;
         this.confirmPasswordText = confirmPasswordText;
@@ -83,6 +90,7 @@ class RegisterFormValidator implements TextWatcher {
      */
     private boolean validate() {
         return validateName()
+                && validateUsername()
                 && validateEmail()
                 && validatePassword();
     }
@@ -93,9 +101,19 @@ class RegisterFormValidator implements TextWatcher {
      * @return True if the name fields are not empty.
      */
     private boolean validateName() {
-        String firstName = firstNameText.getText().toString();
-        String lastName = lastNameText.getText().toString();
+        String firstName = firstNameText.getText().toString().trim();
+        String lastName = lastNameText.getText().toString().trim();
         return !firstName.isEmpty() && !lastName.isEmpty();
+    }
+
+    /**
+     * Validates the username field.
+     *
+     * @return True if the username is not empty.
+     */
+    private boolean validateUsername() {
+        String username = usernameText.getText().toString().trim();
+        return !username.isEmpty();
     }
 
     /**
@@ -104,7 +122,7 @@ class RegisterFormValidator implements TextWatcher {
      * @return True if the email is in the valid format.
      */
     private boolean validateEmail() {
-        String email = emailText.getText().toString();
+        String email = emailText.getText().toString().trim();
         return !email.isEmpty()
                 && Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }

@@ -7,7 +7,6 @@
     tools:context=".CardActivity">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/card_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="16dp"
@@ -19,9 +18,10 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fragment_container_view"
+            android:id="@+id/card_fragment_container_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            tools:layout="@layout/fragment_edit_card" />
 
     </androidx.cardview.widget.CardView>
 

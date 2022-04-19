@@ -3,7 +3,7 @@ package com.group1.project3.model;
 import android.graphics.Color;
 
 /**
- * Tags are labels that can be added to cards.
+ * Tags are labels that can be added to {@link Card cards}.
  */
 public class Tag {
     /**

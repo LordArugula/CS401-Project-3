@@ -5,10 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.group1.project3.util.FirebaseUtil;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,25 +25,36 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        FirebaseUser currentUser = auth.getCurrentUser();
-        if(currentUser != null){
-            /*Toast.makeText(this, currentUser.getEmail() + ' ' + currentUser.getUid(), Toast.LENGTH_SHORT)
-                    .show();*/
-            reload();
+        if (FirebaseUtil.isSignedIn()) {
+            launchProjectMenuActivity();
         }
     }
 
-    public void login(View view) {
+    /**
+     * Launches the {@link LoginActivity}.
+     *
+     * @param view The view.
+     */
+    public void launchLoginActivity(View view) {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
 
-    public void register(View view) {
+    /**
+     * Launches the {@link RegisterActivity}.
+     *
+     * @param view The view.
+     */
+    public void launchRegisterActivity(View view) {
         Intent intent = new Intent(this, RegisterActivity.class);
         startActivity(intent);
     }
 
-    private void reload() {
-//        Toast.makeText(this, "TODO", Toast.LENGTH_SHORT).show();
+    /**
+     * Launches the {@link ProjectMenuActivity}.
+     */
+    private void launchProjectMenuActivity() {
+        Intent intent = new Intent(this, ProjectMenuActivity.class);
+        startActivity(intent);
     }
 }

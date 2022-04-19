@@ -8,7 +8,6 @@
     tools:context=".RegisterActivity">
 
     <LinearLayout
-        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -18,92 +17,109 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/label_firstName"
+            android:id="@+id/register_label_firstName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/label_firstName"
+            android:text="@string/register_label_firstName"
             android:textSize="@dimen/label_textSize" />
 
         <EditText
-            android:id="@+id/text_firstName"
+            android:id="@+id/register_text_firstName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/main_bottomMargin"
             android:autofillHints="name"
-            android:hint="@string/firstName_hint_text"
+            android:hint="@string/register_hint_firstName"
             android:inputType="textPersonName"
             android:minHeight="@dimen/editText_text_minHeight" />
 
         <TextView
-            android:id="@+id/label_lastName"
+            android:id="@+id/register_label_lastName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/label_lastName"
+            android:text="@string/register_label_lastName"
             android:textSize="@dimen/label_textSize" />
 
         <EditText
-            android:id="@+id/text_lastName"
+            android:id="@+id/register_text_lastName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/main_bottomMargin"
             android:autofillHints="name"
-            android:hint="@string/lastName_hint_text"
+            android:hint="@string/register_hint_lastName"
             android:inputType="textPersonName"
             android:minHeight="@dimen/editText_text_minHeight" />
 
         <TextView
-            android:id="@+id/label_emailAddress"
+            android:id="@+id/register_label_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/label_emailAddress"
+            android:text="@string/register_label_username"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/register_text_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/main_bottomMargin"
+            android:autofillHints="username"
+            android:hint="@string/register_hint_username"
+            android:inputType="text"
+            android:minHeight="@dimen/editText_text_minHeight" />
+
+        <TextView
+            android:id="@+id/register_label_emailAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/register_label_emailAddress"
             android:textSize="@dimen/label_textSize" />
 
         <EditText
-            android:id="@+id/text_emailAddress"
+            android:id="@+id/register_text_emailAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/main_bottomMargin"
             android:autofillHints="emailAddress"
-            android:hint="@string/emailAddress_hint_text"
+            android:hint="@string/register_hint_emailAddress"
             android:inputType="textEmailAddress"
             android:minHeight="@dimen/editText_text_minHeight" />
 
         <TextView
-            android:id="@+id/label_password"
+            android:id="@+id/register_label_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/label_password"
+            android:text="@string/register_label_password"
             android:textSize="@dimen/label_textSize" />
 
         <EditText
-            android:id="@+id/text_password"
+            android:id="@+id/register_text_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/main_bottomMargin"
             android:autofillHints="password"
-            android:hint="@string/password_hint_text"
+            android:hint="@string/register_hint_password"
             android:inputType="textPassword"
             android:minHeight="@dimen/editText_text_minHeight" />
 
         <TextView
-            android:id="@+id/label_confirmPassword"
+            android:id="@+id/register_label_confirmPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/label_confirm_password"
+            android:text="@string/register_label_confirm_password"
             android:textSize="@dimen/label_textSize" />
 
         <EditText
-            android:id="@+id/text_confirmPassword"
+            android:id="@+id/register_text_confirmPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/main_bottomMargin"
             android:autofillHints="password"
-            android:hint="@string/password_hint_text"
+            android:hint="@string/register_hint_password"
             android:inputType="textPassword"
             android:minHeight="@dimen/editText_text_minHeight" />
 
         <Button
-            android:id="@+id/register_button"
+            android:id="@+id/register_submit_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="registerAccount"
@@ -112,10 +128,10 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/back_button"
+        android:id="@+id/register_back_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="toMainMenu"
-        android:text="@string/back_button"
+        android:text="@string/register_button_back"
         app:layout_constraintBottom_toBottomOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

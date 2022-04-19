@@ -20,18 +20,18 @@
         android:textStyle="bold" />
 
     <Button
-        android:id="@+id/login_button"
+        android:id="@+id/login_submit_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="login"
-        android:text="@string/login_button_text"
+        android:onClick="launchLoginActivity"
+        android:text="@string/login_button_submit"
         android:textSize="@dimen/main_text_size" />
 
     <Button
-        android:id="@+id/register_button"
+        android:id="@+id/register_submit_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="register"
+        android:onClick="launchRegisterActivity"
         android:text="@string/register_button_text"
         android:textSize="@dimen/main_text_size" />
 

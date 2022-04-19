@@ -14,7 +14,6 @@
         android:padding="16dp">
 
         <ScrollView
-            android:id="@+id/card_content_scrollView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -25,7 +24,7 @@
                 android:orientation="vertical">
 
                 <EditText
-                    android:id="@+id/card_title"
+                    android:id="@+id/card_edit_content"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:inputType="textMultiLine"
@@ -37,7 +36,7 @@
         </ScrollView>
 
         <LinearLayout
-            android:id="@+id/tags_container"
+            android:id="@+id/card_tag_recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layoutDirection="rtl"
@@ -56,7 +55,7 @@
             android:padding="4dp">
 
             <ImageView
-                android:id="@+id/assigned_user_profile_image"
+                android:id="@+id/card_edit_assigned_user_profile_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -67,11 +66,12 @@
                 android:minHeight="48dp" />
 
             <TextView
+                android:id="@+id/card_edit_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_toEndOf="@id/assigned_user_profile_image"
+                android:layout_toEndOf="@id/card_edit_assigned_user_profile_image"
                 android:text="@string/card_default_date"
                 android:textAlignment="textEnd"
                 android:textSize="18sp" />
@@ -97,8 +97,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="4dp"
-                android:onClick="assignDate"
-                android:text="Assign Date" />
+                android:onClick="openDatePicker"
+                android:text="Date" />
 
             <Button
                 android:id="@+id/assign_user_button"
@@ -106,7 +106,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="4dp"
                 android:onClick="assignUser"
-                android:text="Assign User" />
+                android:text="User" />
 
             <Button
                 android:id="@+id/edit_tags_button"
@@ -132,7 +132,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="4dp"
-                android:onClick="saveChanges"
+                android:onClick="saveContentChange"
                 android:text="Save" />
 
             <Button
@@ -140,7 +140,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="4dp"
-                android:onClick="cancelChanges"
+                android:onClick="cancelContentChange"
                 android:text="Cancel" />
 
             <Space
@@ -153,7 +153,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="4dp"
-                android:onClick="previewCard"
+                android:onClick="previewCardContent"
                 android:text="Preview" />
 
         </LinearLayout>

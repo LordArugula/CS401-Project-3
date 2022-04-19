@@ -29,7 +29,7 @@
             android:id="@+id/label_userName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/label_userName"
+            android:text="@string/profile_label_username"
             android:textSize="@dimen/label_textSize" />
 
         <EditText
@@ -43,70 +43,70 @@
             android:minHeight="@dimen/editText_text_minHeight" />
 
         <TextView
-            android:id="@+id/label_firstName"
+            android:id="@+id/register_label_firstName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/label_firstName"
+            android:text="@string/register_label_firstName"
             android:textSize="@dimen/label_textSize" />
 
         <EditText
-            android:id="@+id/text_firstName"
+            android:id="@+id/register_text_firstName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/main_bottomMargin"
             android:autofillHints="first name"
-            android:hint="@string/firstName_hint_text"
+            android:hint="@string/register_hint_firstName"
             android:inputType="textPersonName"
             android:minHeight="@dimen/editText_text_minHeight" />
 
         <TextView
-            android:id="@+id/label_lastName"
+            android:id="@+id/register_label_lastName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/label_lastName"
+            android:text="@string/register_label_lastName"
             android:textSize="@dimen/label_textSize" />
 
         <EditText
-            android:id="@+id/text_lastName"
+            android:id="@+id/register_text_lastName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/main_bottomMargin"
             android:autofillHints="last name"
-            android:hint="@string/lastName_hint_text"
+            android:hint="@string/register_hint_lastName"
             android:inputType="textPersonName"
             android:minHeight="@dimen/editText_text_minHeight" />
 
         <TextView
-            android:id="@+id/label_emailAddress"
+            android:id="@+id/register_label_emailAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/label_emailAddress"
+            android:text="@string/register_label_emailAddress"
             android:textSize="@dimen/label_textSize" />
 
         <EditText
-            android:id="@+id/text_emailAddress"
+            android:id="@+id/register_text_emailAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/main_bottomMargin"
             android:autofillHints="emailAddress"
-            android:hint="@string/emailAddress_hint_text"
+            android:hint="@string/register_hint_emailAddress"
             android:inputType="textEmailAddress"
             android:minHeight="@dimen/editText_text_minHeight" />
 
         <Button
-            android:id="@+id/save_button"
+            android:id="@+id/button_updateProfile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/main_bottomMargin"
-            android:onClick="saveProfileChanges"
+            android:onClick="updateProfile"
             android:text="@string/save_button_text" />
 
-        <!--<View
+        <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_marginBottom="@dimen/main_bottomMargin"
             android:background="@android:color/darker_gray"
-            android:visibility="visible" />-->
+            android:visibility="visible" />
 
         <TextView
             android:id="@+id/label_changePassword"
@@ -129,7 +129,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/main_bottomMargin"
             android:autofillHints="password"
-            android:hint="@string/password_hint_text"
+            android:hint="@string/register_hint_password"
             android:inputType="textPassword"
             android:minHeight="@dimen/editText_text_minHeight" />
 
@@ -141,38 +141,38 @@
             android:textSize="@dimen/label_textSize" />
 
         <EditText
-            android:id="@+id/text_password"
+            android:id="@+id/register_text_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/main_bottomMargin"
             android:autofillHints="password"
-            android:hint="@string/password_hint_text"
+            android:hint="@string/register_hint_password"
             android:inputType="textPassword"
             android:minHeight="@dimen/editText_text_minHeight" />
 
         <TextView
-            android:id="@+id/label_confirmPassword"
+            android:id="@+id/register_label_confirmPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/label_confirm_password"
+            android:text="@string/register_label_confirm_password"
             android:textSize="@dimen/label_textSize" />
 
         <EditText
-            android:id="@+id/text_confirmPassword"
+            android:id="@+id/register_text_confirmPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/main_bottomMargin"
             android:autofillHints="password"
-            android:hint="@string/password_hint_text"
+            android:hint="@string/register_hint_password"
             android:inputType="textPassword"
             android:minHeight="@dimen/editText_text_minHeight" />
 
         <Button
-            android:id="@+id/changePassword_button"
+            android:id="@+id/button_updatePassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/main_bottomMargin"
-            android:onClick="changePassword"
+            android:onClick="updatePassword"
             android:text="@string/changePassword_button_text" />
 
         <View
@@ -183,11 +183,11 @@
             android:visibility="visible" />
 
         <Button
-            android:id="@+id/back_button"
-            android:layout_width="match_parent"
+            android:id="@+id/register_back_button"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="toProjectView"
-            android:text="@string/back_button"
+            android:text="@string/register_button_back"
             app:layout_constraintBottom_toBottomOf="parent" />
 
     </LinearLayout>

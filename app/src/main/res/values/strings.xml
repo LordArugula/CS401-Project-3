@@ -1,19 +1,25 @@
 <resources>
     <string name="app_name">CS401 Project 3</string>
     <string name="main_title_text">Project Management Tool</string>
-    <string name="password_hint_text">********</string>
-    <string name="emailAddress_hint_text">Enter email address</string>
-    <string name="label_firstName">First Name</string>
-    <string name="label_lastName">Last Name</string>
-    <string name="label_emailAddress">Email Address</string>
-    <string name="label_password">Password</string>
-    <string name="label_confirm_password">Confirm Password</string>
-    <string name="login_button_text">Sign in</string>
+    <string name="register_label_username">Username</string>
+    <string name="register_label_firstName">First Name</string>
+    <string name="register_label_lastName">Last Name</string>
+    <string name="register_label_emailAddress">Email Address</string>
+    <string name="register_label_password">Password</string>
+    <string name="register_label_confirm_password">Confirm Password</string>
+    <string name="register_hint_username">Enter username</string>
+    <string name="register_hint_firstName">Enter first name</string>
+    <string name="register_hint_lastName">Enter last name</string>
+    <string name="register_hint_emailAddress">Enter email address</string>
+    <string name="register_hint_password">********</string>
     <string name="register_button_text">Sign up</string>
-    <string name="back_button">Back</string>
-    <string name="firstName_hint_text">Enter first name</string>
-    <string name="lastName_hint_text">Enter last name</string>
-    <string name="label_userName">Username</string>
+    <string name="register_button_back">Back</string>
+    <string name="login_label_emailAddress">Email Address</string>
+    <string name="login_label_password">Password</string>
+    <string name="login_hint_emailAddress">Enter email address</string>
+    <string name="login_hint_password">********</string>
+    <string name="login_button_submit">Sign in</string>
+    <string name="login_button_back">Back</string>
     <string name="userName_hint_text">Enter username</string>
     <string name="save_button_text">Save</string>
     <string name="changePassword_button_text">Change Password</string>
@@ -24,4 +30,7 @@
     <string name="card_default_title">Card Title</string>
     <string name="user_profile_image_description">User profile image</string>
     <string name="card_default_date">04/26/22</string>
+    <string name="menu_profile_option_account">Account</string>
+    <string name="menu_profile_option_signOut">Sign Out</string>
+    <string name="profile_label_username">Username</string>
 </resources>
