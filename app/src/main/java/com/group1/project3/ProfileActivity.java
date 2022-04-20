@@ -61,19 +61,19 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 boolean error = false;
-                if (text_userName.getText().toString().isEmpty()) {
+                if (text_userName.getText().toString().trim().isEmpty()) {
                     error = true;
                 }
 
-                if (text_firstName.getText().toString().isEmpty()) {
+                if (text_firstName.getText().toString().trim().isEmpty()) {
                     error = true;
                 }
 
-                if (text_lastName.getText().toString().isEmpty()) {
+                if (text_lastName.getText().toString().trim().isEmpty()) {
                     error = true;
                 }
 
-                String email = text_emailAddress.getText().toString();
+                String email = text_emailAddress.getText().toString().trim();
                 if (email.isEmpty()) {
                     error = true;
                 }
@@ -135,29 +135,39 @@ public class ProfileActivity extends AppCompatActivity {
         text_newPassword.addTextChangedListener(passwordWatcher);
         text_confirmPassword.addTextChangedListener(passwordWatcher);
 
-        FirebaseUser user = FirebaseUtil.getAuth().getCurrentUser();
-        bind(user);
+        bind(getUserFromAuth(FirebaseUtil.getAuth().getCurrentUser()));
     }
 
-    private void bind(FirebaseUser user) {
-        text_userName.setText(user.getDisplayName());
+    private User getUserFromAuth(FirebaseUser currentUser) {
+        User user = null;
         FirebaseUtil.getFirestore()
                 .collection("users")
-                .document(user.getUid())
+                .document(currentUser.getUid())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
                             DocumentSnapshot result = task.getResult();
-                            User user1 = result.toObject(User.class);
-                            text_emailAddress.setText(user.getEmail());
-                            text_userName.setText(user.getDisplayName());
-                            text_firstName.setText(user1.getFirstName());
-                            text_lastName.setText((user1.getLastName()));
+                            user = result.toObject(User.class);
+                        } else {
+                            Toast.makeText(ProfileActivity.this, "Could not get user", Toast.LENGTH_SHORT)
+                                    .show();
                         }
                     }
                 });
+        return user;
+    }
+
+    private void bind(User user) {
+        if (user == null) {
+            return;
+        }
+        text_userName.setText(user.getUsername());
+        text_emailAddress.setText(user.getEmail());
+        text_userName.setText(user.getUsername());
+        text_firstName.setText(user.getFirstName());
+        text_lastName.setText((user.getLastName()));
     }
 
     public void toProjectView(View view) {
