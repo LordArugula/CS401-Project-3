@@ -1,13 +1,10 @@
 package com.group1.project3.model;
 
-import android.net.Uri;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class User implements SerializableAsMap {
     /**
@@ -38,18 +35,18 @@ public class User implements SerializableAsMap {
     /**
      * uri to the user's profile picture
      */
-    private Uri profilePic;
+    private String profilePic;
 
     /**
      * The projects this user has access too.
      */
-    private final Set<String> projectIds;
+    private final List<String> projectIds;
 
     /**
      * Constructor for User class
      */
     public User() {
-        projectIds = new HashSet<>();
+        projectIds = new ArrayList<>();
     }
 
     public User(String id, String first, String last, String username, String email) {
@@ -111,7 +108,7 @@ public class User implements SerializableAsMap {
      *
      * @return uri of profile picture
      */
-    public Uri getProfilePicUri() {
+    public String getProfilePicUri() {
         return profilePic;
     }
 
@@ -120,7 +117,7 @@ public class User implements SerializableAsMap {
      *
      * @param profilePic string of url pointing to image
      */
-    public void setProfilePicUri(Uri profilePic) {
+    public void setProfilePicUri(String profilePic) {
         this.profilePic = profilePic;
     }
 
@@ -147,8 +144,8 @@ public class User implements SerializableAsMap {
      *
      * @return a read-only set of project ids
      */
-    public Set<String> getProjectIds() {
-        return Collections.unmodifiableSet(projectIds);
+    public List<String> getProjectIds() {
+        return projectIds;
     }
 
     /**
@@ -200,10 +197,13 @@ public class User implements SerializableAsMap {
     @Override
     public Map<String, Object> serializeAsMap() {
         Map<String, Object> map = new HashMap<>();
+        map.put("email", email);
+        map.put("profilePic", profilePic);
+        map.put("id", id);
         map.put("username", username);
         map.put("firstName", firstName);
         map.put("lastName", lastName);
-        map.put("projects", new ArrayList<String>(projectIds));
+        map.put("projectIds", new ArrayList<>(projectIds));
 
         return Collections.unmodifiableMap(map);
     }
