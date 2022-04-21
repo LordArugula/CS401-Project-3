@@ -20,6 +20,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentReference;
@@ -27,6 +28,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.group1.project3.model.User;
 import com.group1.project3.util.FirebaseUtil;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -39,6 +43,8 @@ public class ProfileActivity extends AppCompatActivity {
     private EditText text_confirmPassword;
     private Button button_updateProfile;
     private Button button_updatePassword;
+
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,41 +144,25 @@ public class ProfileActivity extends AppCompatActivity {
         text_newPassword.addTextChangedListener(passwordWatcher);
         text_confirmPassword.addTextChangedListener(passwordWatcher);
 
-        bind(getUserFromAuth(FirebaseUtil.getAuth().getCurrentUser()));
+        getUserFromAuth(FirebaseAuth.getInstance().getCurrentUser());
     }
 
-    private User getUserFromAuth(FirebaseUser currentUser) {
-        final User[] user = {null};
-        FirebaseUtil.getFirestore()
-                .collection("users")
-                .document(currentUser.getUid())
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot result = task.getResult();
-                            user[0] = result.toObject(User.class);
-                        } else {
-                            Toast.makeText(ProfileActivity.this, "Could not get user", Toast.LENGTH_SHORT)
-                                    .show();
-                        }
-                    }
-                });
-        return user[0];
+    private void getUserFromAuth(FirebaseUser currentUser) {
+        if (currentUser != null) {
+            DocumentReference userDocRef = FirebaseFirestore.getInstance().document("users/" + currentUser.getUid());
+            Task<DocumentSnapshot> documentSnapshot = userDocRef.get();
 
-        /*DocumentReference userDocRef = FirebaseFirestore.getInstance().document("users/" + currentUser.getUid());
-        final User[] user = {null};
-        userDocRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                user[0] = documentSnapshot.toObject(User.class);
-            }
-        });
+            documentSnapshot.addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    user = documentSnapshot.toObject(User.class);
+                    bind(user);
+                }
+            });
+        } else {
+            Log.d("ProfileActivity", "User == null");
+        }
 
-        System.out.println(user);
-
-        return user[0];*/
     }
 
     private void bind(User user) {
