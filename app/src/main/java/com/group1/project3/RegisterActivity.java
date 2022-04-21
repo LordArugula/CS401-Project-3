@@ -21,9 +21,6 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 import com.group1.project3.model.User;
 import com.group1.project3.util.FirebaseUtil;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText text_firstName;
@@ -96,7 +93,7 @@ public class RegisterActivity extends AppCompatActivity {
                                         }
                                     });
 
-                            launchProfileMenuActivity(firebaseUser);
+                            launchProjectMenuActivity(firebaseUser);
                         } else {
                             Toast.makeText(RegisterActivity.this, "Failed to register account.", Toast.LENGTH_SHORT)
                                     .show();
@@ -105,7 +102,7 @@ public class RegisterActivity extends AppCompatActivity {
                 });
     }
 
-    private void launchProfileMenuActivity(FirebaseUser user) {
+    private void launchProjectMenuActivity(FirebaseUser user) {
         Intent intent = new Intent(this, ProjectMenuActivity.class);
         startActivity(intent);
     }
