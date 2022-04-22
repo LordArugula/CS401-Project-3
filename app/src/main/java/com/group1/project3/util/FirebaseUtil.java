@@ -1,6 +1,13 @@
 package com.group1.project3.util;
 
+import android.net.Uri;
+
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.group1.project3.BuildConfig;
 
@@ -34,7 +41,7 @@ public final class FirebaseUtil {
 
     /**
      * Gets the Firestore instance.
-     * 
+     *
      * @return the Firestore instance.
      */
     public static FirebaseFirestore getFirestore() {
@@ -84,5 +91,55 @@ public final class FirebaseUtil {
      */
     public static void signOut() {
         getAuth().signOut();
+    }
+
+    /**
+     * Signs the user in.
+     *
+     * @param email    the user's email address.
+     * @param password the user's password.
+     * @return A {@link Task<AuthResult>} representing the sign in request.
+     */
+    public static Task<AuthResult> signIn(String email, String password) {
+        return getAuth().signInWithEmailAndPassword(email, password);
+    }
+
+    /**
+     * Updates the user's profile.
+     *
+     * @param username the username.
+     * @param photoUri the photo {@link Uri}.
+     * @return a {@link Task<Void>} representing the profile change request.
+     */
+    public static Task<Void> updateProfile(String username, Uri photoUri) {
+        UserProfileChangeRequest.Builder changeRequestBuilder = new UserProfileChangeRequest.Builder()
+                .setDisplayName(username)
+                .setPhotoUri(photoUri);
+
+        return getAuth().getCurrentUser()
+                .updateProfile(changeRequestBuilder.build());
+    }
+
+    /**
+     * Updates the user's password.
+     *
+     * @param password the password.
+     * @return a {@link Task<Void>} that represents the update password request.
+     */
+    public static Task<Void> updatePassword(String password) {
+        return getAuth().getCurrentUser()
+                .updatePassword(password);
+    }
+
+    /**
+     * Reauthenticates the user using their email and password.
+     *
+     * @param email    the email.
+     * @param password the password.
+     * @return a {@link Task<Void>} that represents the reauthenticate request.
+     */
+    public static Task<Void> reauthenticate(String email, String password) {
+        AuthCredential credential = EmailAuthProvider.getCredential(email, password);
+        return getAuth().getCurrentUser().reauthenticate(credential);
     }
 }
