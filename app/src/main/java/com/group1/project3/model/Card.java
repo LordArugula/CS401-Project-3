@@ -5,14 +5,14 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 /**
  * A card contains some content and can be used to represent a task in a {@link Project}.
  */
-public class Card implements SerializableAsMap {
+public class Card {
     /**
      * The card id.
      */
@@ -26,7 +26,7 @@ public class Card implements SerializableAsMap {
     /**
      * The tags on this card.
      */
-    private final HashSet<Tag> tags;
+    private final List<Tag> tags;
 
     /**
      * The id of the user assigned to this card.
@@ -42,6 +42,7 @@ public class Card implements SerializableAsMap {
      * Creates an empty card.
      */
     public Card() {
+
         this(null, null);
     }
 
@@ -65,7 +66,7 @@ public class Card implements SerializableAsMap {
         this.content = content;
         assignedDate = null;
         assignedUser = null;
-        tags = new HashSet<>();
+        tags = new ArrayList<>();
     }
 
     /**
@@ -193,15 +194,16 @@ public class Card implements SerializableAsMap {
         return tags.remove(tag);
     }
 
-    public Map<String, Object> serializeAsMap() {
-        HashMap<String, Object> map = new HashMap<>();
-
-        map.put("id", id);
-        map.put("content", content);
-        map.put("assignedUser", assignedUser);
-        map.put("assignedDate", assignedDate);
-        map.put("tags", new ArrayList<Tag>(tags));
-
-        return Collections.unmodifiableMap(map);
-    }
+//    @Override
+//    public Map<String, Object> serializeAsMap() {
+//        HashMap<String, Object> map = new HashMap<>();
+//
+//        map.put("id", id);
+//        map.put("content", content);
+//        map.put("assignedUser", assignedUser);
+//        map.put("assignedDate", assignedDate);
+//        map.put("tags", new ArrayList<Tag>(tags));
+//
+//        return Collections.unmodifiableMap(map);
+//    }
 }

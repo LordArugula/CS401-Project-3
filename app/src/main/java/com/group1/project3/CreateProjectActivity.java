@@ -79,7 +79,7 @@ public class CreateProjectActivity extends AppCompatActivity {
         Project project = new Project(projectDoc.getId(), projectName, currentUser.getUid());
         project.setColor(getColor());
 
-        projectDoc.set(project.serializeAsMap());
+        projectDoc.set(project);
 
         return project;
     }

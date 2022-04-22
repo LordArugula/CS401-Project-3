@@ -44,7 +44,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), CardActivity.class);
-                String cardAsJson = new Gson().toJson(card.serializeAsMap());
+                String cardAsJson = new Gson().toJson(card);
                 intent.putExtra("card", cardAsJson);
                 view.getContext().startActivity(intent);
             }

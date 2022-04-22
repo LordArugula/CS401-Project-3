@@ -4,12 +4,9 @@ import android.net.Uri;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.List;
 
-public class User implements SerializableAsMap {
+public class User {
     /**
      * user's id
      */
@@ -43,13 +40,13 @@ public class User implements SerializableAsMap {
     /**
      * The projects this user has access too.
      */
-    private final Set<String> projectIds;
+    private final List<String> projectIds;
 
     /**
      * Constructor for User class
      */
     public User() {
-        projectIds = new HashSet<>();
+        projectIds = new ArrayList<>();
     }
 
     public User(String id, String first, String last, String username, String email) {
@@ -147,8 +144,8 @@ public class User implements SerializableAsMap {
      *
      * @return a read-only set of project ids
      */
-    public Set<String> getProjectIds() {
-        return Collections.unmodifiableSet(projectIds);
+    public List<String> getProjectIds() {
+        return Collections.unmodifiableList(projectIds);
     }
 
     /**
@@ -197,14 +194,14 @@ public class User implements SerializableAsMap {
         return projectIds.contains(projectId);
     }
 
-    @Override
-    public Map<String, Object> serializeAsMap() {
-        Map<String, Object> map = new HashMap<>();
-        map.put("username", username);
-        map.put("firstName", firstName);
-        map.put("lastName", lastName);
-        map.put("projects", new ArrayList<String>(projectIds));
-
-        return Collections.unmodifiableMap(map);
-    }
+//    @Override
+//    public Map<String, Object> serializeAsMap() {
+//        Map<String, Object> map = new HashMap<>();
+//        map.put("username", username);
+//        map.put("firstName", firstName);
+//        map.put("lastName", lastName);
+//        map.put("projects", new ArrayList<String>(projectIds));
+//
+//        return Collections.unmodifiableMap(map);
+//    }
 }
