@@ -27,6 +27,22 @@
     <string name="label_new_password">New Password</string>
     <string name="label_profile"><b>Profile</b></string>
     <string name="label_changePassword"><b>Change Password</b></string>
+
+    <string name="profile_title">Account</string>
+    <string name="profile_section_profile">Profile</string>
+    <string name="profile_input_hint_username">Username</string>
+    <string name="profile_input_hint_firstName">First Name</string>
+    <string name="profile_input_hint_lastName">Last Name</string>
+    <string name="profile_input_hint_email">Email Address</string>
+    <string name="profile_input_hint_profilePicUri">Profile Photo Url</string>
+    <string name="profile_button_text_saveProfile">Save Profile</string>
+    <string name="profile_button_text_revertProfile">Clear Changes</string>
+    <string name="profile_section_changePassword">Change Password</string>
+    <string name="profile_input_hint_oldPassword">Current Password</string>
+    <string name="profile_input_hint_newPassword">New Password</string>
+    <string name="profile_input_hint_confirmPassword">Confirm Password</string>
+    <string name="profile_button_text_updatePassword">Change Password</string>
+
     <string name="card_default_title">Card Title</string>
     <string name="user_profile_image_description">User profile image</string>
     <string name="card_default_date">04/26/22</string>

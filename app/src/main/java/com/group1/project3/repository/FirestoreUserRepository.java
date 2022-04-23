@@ -7,7 +7,7 @@ import com.group1.project3.util.FirebaseUtil;
 
 public class FirestoreUserRepository implements UserRepository {
 
-    private CollectionReference userCollection;
+    private final CollectionReference userCollection;
 
     public FirestoreUserRepository() {
         userCollection = FirebaseUtil.getFirestore()
@@ -30,5 +30,11 @@ public class FirestoreUserRepository implements UserRepository {
                     }
                     return null;
                 });
+    }
+
+    @Override
+    public Task<Void> updateUser(User user) {
+        return userCollection.document(user.getId())
+                .set(user);
     }
 }
