@@ -7,32 +7,32 @@
     android:orientation="vertical"
     android:paddingLeft="@dimen/main_padding"
     android:paddingRight="@dimen/main_padding"
-    tools:context=".MainActivity">
+    tools:context=".view.MainActivity">
 
     <TextView
         android:id="@+id/title_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="100dp"
-        android:text="@string/main_title_text"
+        android:text="@string/main_title"
         android:textAlignment="textEnd"
         android:textSize="@dimen/main_title_size"
         android:textStyle="bold" />
 
     <Button
-        android:id="@+id/login_submit_button"
+        android:id="@+id/main_button_text_signIn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="launchLoginActivity"
-        android:text="@string/login_button_submit"
+        android:text="@string/main_button_text_signIn"
         android:textSize="@dimen/main_text_size" />
 
     <Button
-        android:id="@+id/register_submit_button"
+        android:id="@+id/main_button_text_signUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="launchRegisterActivity"
-        android:text="@string/register_button_text"
+        android:text="@string/main_button_text_signUp"
         android:textSize="@dimen/main_text_size" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

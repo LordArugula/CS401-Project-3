@@ -1,4 +1,4 @@
-package com.group1.project3;
+package com.group1.project3.view;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -13,11 +13,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
+import com.group1.project3.R;
 import com.group1.project3.model.Card;
 import com.group1.project3.model.Tag;
 import com.group1.project3.repository.TagsRepository;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;

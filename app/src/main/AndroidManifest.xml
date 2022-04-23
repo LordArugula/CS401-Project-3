@@ -15,28 +15,25 @@
         android:testOnly="true"
         android:theme="@style/Theme.CS401_Project3">
         <activity
-            android:name=".ProjectActivity"
+            android:name=".view.ProjectActivity"
             android:exported="false" />
         <activity
-            android:name=".ProfileActivity"
+            android:name=".view.ProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".CreateProjectActivity"
+            android:name=".view.ProjectMenuActivity"
             android:exported="false" />
         <activity
-            android:name=".ProjectMenuActivity"
+            android:name=".view.CardActivity"
             android:exported="false" />
         <activity
-            android:name=".CardActivity"
+            android:name=".view.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".RegisterActivity"
+            android:name=".view.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
+            android:name=".view.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,17 +1,13 @@
 package com.group1.project3.model;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
 /**
  * A pipeline represents a category for tasks in a project.
  */
-public class Pipeline implements SerializableAsMap {
+public class Pipeline {
     /**
      * The pipeline name.
      */
@@ -20,7 +16,7 @@ public class Pipeline implements SerializableAsMap {
     /**
      * The cards in this pipeline.
      */
-    private final HashSet<Card> cards;
+    private final List<Card> cards;
 
     /**
      * Creates an empty pipeline with no name.
@@ -36,7 +32,7 @@ public class Pipeline implements SerializableAsMap {
      */
     public Pipeline(String name) {
         this.name = name;
-        cards = new HashSet<>();
+        cards = new ArrayList<>();
     }
 
     /**
@@ -112,19 +108,6 @@ public class Pipeline implements SerializableAsMap {
         }
 
         return dest.addCard(card);
-    }
-
-    public Map<String, Object> serializeAsMap() {
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("name", name);
-
-        List<Map<String, Object>> cardsAsMapList = new ArrayList<>();
-        for (Card card : cards) {
-            cardsAsMapList.add(card.serializeAsMap());
-        }
-
-        map.put("cards", cardsAsMapList);
-        return Collections.unmodifiableMap(map);
     }
 
     /**

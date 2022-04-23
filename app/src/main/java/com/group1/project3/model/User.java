@@ -2,11 +2,15 @@ package com.group1.project3.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-public class User implements SerializableAsMap {
+public class User {
+
+    /**
+     * The projects this user has access to.
+     */
+    private final List<String> projectIds;
+
     /**
      * user's id
      */
@@ -38,11 +42,6 @@ public class User implements SerializableAsMap {
     private String profilePic;
 
     /**
-     * The projects this user has access too.
-     */
-    private final List<String> projectIds;
-
-    /**
      * Constructor for User class
      */
     public User() {
@@ -56,6 +55,7 @@ public class User implements SerializableAsMap {
         this.lastName = last;
         this.username = username;
         this.email = email;
+        this.profilePic = null;
     }
 
     /**
@@ -65,6 +65,42 @@ public class User implements SerializableAsMap {
      */
     public String getId() {
         return id;
+    }
+
+    /**
+     * returns the user's first name
+     *
+     * @return the user's first name
+     */
+    public String getFirstName() {
+        return firstName;
+    }
+
+    /**
+     * sets the user's first name
+     *
+     * @param firstName first name of the user
+     */
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    /**
+     * returns the user's last name
+     *
+     * @return the user's last name
+     */
+    public String getLastName() {
+        return lastName;
+    }
+
+    /**
+     * sets the user's last name
+     *
+     * @param lastName last name of the user
+     */
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     /**
@@ -122,48 +158,12 @@ public class User implements SerializableAsMap {
     }
 
     /**
-     * returns the user's first name
-     *
-     * @return the user's first name
-     */
-    public String getFirstName() {
-        return firstName;
-    }
-
-    /**
-     * returns the user's last name
-     *
-     * @return the user's last name
-     */
-    public String getLastName() {
-        return lastName;
-    }
-
-    /**
      * returns a read-only set of this user's project ids.
      *
      * @return a read-only set of project ids
      */
     public List<String> getProjectIds() {
-        return projectIds;
-    }
-
-    /**
-     * sets the user's first name
-     *
-     * @param firstName first name of the user
-     */
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    /**
-     * sets the user's last name
-     *
-     * @param lastName last name of the user
-     */
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+        return Collections.unmodifiableList(projectIds);
     }
 
     /**
@@ -188,23 +188,9 @@ public class User implements SerializableAsMap {
      * Removes a project from the list that the user can access
      *
      * @param projectId the project id
-     * @return
+     * @return true if this user has access to the project.
      */
     public boolean hasProject(String projectId) {
         return projectIds.contains(projectId);
-    }
-
-    @Override
-    public Map<String, Object> serializeAsMap() {
-        Map<String, Object> map = new HashMap<>();
-        map.put("email", email);
-        map.put("profilePic", profilePic);
-        map.put("id", id);
-        map.put("username", username);
-        map.put("firstName", firstName);
-        map.put("lastName", lastName);
-        map.put("projectIds", new ArrayList<>(projectIds));
-
-        return Collections.unmodifiableMap(map);
     }
 }

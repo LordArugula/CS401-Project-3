@@ -3,17 +3,15 @@ package com.group1.project3.model;
 import android.graphics.Color;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
 /**
  * A {@link Project} represents a real-life project using cards.
  */
-public class Project implements SerializableAsMap {
+public class Project {
     /**
      * The project id.
      */
@@ -37,12 +35,12 @@ public class Project implements SerializableAsMap {
     /**
      * The project pipelines.
      */
-    private final HashSet<Pipeline> pipelines;
+    private final List<Pipeline> pipelines;
 
     /**
      * The card tags in this project.
      */
-    private final HashSet<Tag> tags;
+    private final List<Tag> tags;
 
     /**
      * The project color.
@@ -69,8 +67,8 @@ public class Project implements SerializableAsMap {
         this.ownerId = ownerId;
         editors = new HashMap<>();
         editors.put(ownerId, Role.Owner);
-        pipelines = new HashSet<>();
-        tags = new HashSet<>();
+        pipelines = new ArrayList<>();
+        tags = new ArrayList<>();
     }
 
     /**
@@ -196,8 +194,8 @@ public class Project implements SerializableAsMap {
      *
      * @return a read-only collection of the project {@link Pipeline pipelines}.
      */
-    public Collection<Pipeline> getPipelines() {
-        return Collections.unmodifiableSet(pipelines);
+    public List<Pipeline> getPipelines() {
+        return Collections.unmodifiableList(pipelines);
     }
 
     /**
@@ -225,8 +223,8 @@ public class Project implements SerializableAsMap {
      *
      * @return a read-only collection of the {@link Tag tags} in this project.
      */
-    public Collection<Tag> getTags() {
-        return Collections.unmodifiableSet(tags);
+    public List<Tag> getTags() {
+        return Collections.unmodifiableList(tags);
     }
 
     /**
@@ -278,17 +276,18 @@ public class Project implements SerializableAsMap {
         this.color = color;
     }
 
-    public Map<String, Object> serializeAsMap() {
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("name", name);
-        map.put("ownerId", ownerId);
-        map.put("color", color.toString());
-        List<Map<String, Object>> pipelinesAsMapArray = new ArrayList<>(pipelines.size());
-        for (Pipeline pipeline : pipelines) {
-            pipelinesAsMapArray.add(pipeline.serializeAsMap());
-        }
-        map.put("pipelines", pipelinesAsMapArray);
-
-        return Collections.unmodifiableMap(map);
-    }
+//    @Override
+//    public Map<String, Object> serializeAsMap() {
+//        HashMap<String, Object> map = new HashMap<>();
+//        map.put("name", name);
+//        map.put("ownerId", ownerId);
+//        map.put("color", color.toString());
+//        List<Map<String, Object>> pipelinesAsMapArray = new ArrayList<>(pipelines.size());
+//        for (Pipeline pipeline : pipelines) {
+//            pipelinesAsMapArray.add(pipeline.serializeAsMap());
+//        }
+//        map.put("pipelines", pipelinesAsMapArray);
+//
+//        return Collections.unmodifiableMap(map);
+//    }
 }

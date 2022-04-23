@@ -1,24 +1,23 @@
-package com.group1.project3;
-
-import androidx.appcompat.app.AppCompatActivity;
+package com.group1.project3.view;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.google.firebase.auth.FirebaseAuth;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.group1.project3.R;
 import com.group1.project3.util.FirebaseUtil;
 
+/**
+ * The Main activity is the title screen for the app.
+ */
 public class MainActivity extends AppCompatActivity {
-
-    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);  //remember to change back
-
-        auth = FirebaseAuth.getInstance();
+        setContentView(R.layout.activity_main);
     }
 
     @Override
@@ -28,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
         if (FirebaseUtil.isSignedIn()) {
             launchProjectMenuActivity();
         }
+
+        getSupportActionBar().hide();
     }
 
     /**
@@ -56,5 +57,6 @@ public class MainActivity extends AppCompatActivity {
     private void launchProjectMenuActivity() {
         Intent intent = new Intent(this, ProjectMenuActivity.class);
         startActivity(intent);
+        finish();
     }
 }
