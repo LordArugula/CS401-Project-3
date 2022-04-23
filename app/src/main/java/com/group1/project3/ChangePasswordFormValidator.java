@@ -5,19 +5,19 @@ import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class ChangePasswordWatcher implements TextWatcher {
+public class ChangePasswordFormValidator implements TextWatcher {
 
-    private final EditText text_oldPassword;
-    private final EditText text_newPassword;
-    private final EditText text_confirmPassword;
+    private final EditText oldPasswordText;
+    private final EditText newPasswordText;
+    private final EditText confirmPasswordText;
 
     private final Button submitButton;
 
-    public ChangePasswordWatcher(EditText oldPassword, EditText newPassword, EditText confirmNewPassword, Button submitButton) {
+    public ChangePasswordFormValidator(EditText oldPasswordText, EditText newPasswordText, EditText confirmPasswordText, Button submitButton) {
 
-        this.text_oldPassword = oldPassword;
-        this.text_newPassword = newPassword;
-        this.text_confirmPassword = confirmNewPassword;
+        this.oldPasswordText = oldPasswordText;
+        this.newPasswordText = newPasswordText;
+        this.confirmPasswordText = confirmPasswordText;
         this.submitButton = submitButton;
     }
 
@@ -28,14 +28,14 @@ public class ChangePasswordWatcher implements TextWatcher {
 
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        boolean error = text_oldPassword.getText().toString().isEmpty();
+        boolean error = oldPasswordText.getText().toString().isEmpty();
 
-        String newPassword = text_newPassword.getText().toString();
+        String newPassword = newPasswordText.getText().toString();
         if (newPassword.isEmpty()) {
             error = true;
         }
 
-        String confirmPassword = text_confirmPassword.getText().toString();
+        String confirmPassword = confirmPasswordText.getText().toString();
         if (confirmPassword.isEmpty()) {
             error = true;
         }

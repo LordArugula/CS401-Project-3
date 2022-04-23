@@ -1,6 +1,7 @@
 package com.group1.project3;
 
 import android.os.Bundle;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -30,6 +31,11 @@ public class LoginActivity extends AppCompatActivity {
 
         Button button_signIn = findViewById(R.id.login_button_signUp);
         button_signIn.setOnClickListener(this::onClickSignInButton);
+        button_signIn.setEnabled(false);
+
+        TextWatcher textWatcher = new LoginFormValidator(input_email, input_password, button_signIn);
+        input_email.addTextChangedListener(textWatcher);
+        input_password.addTextChangedListener(textWatcher);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(R.string.login_title);

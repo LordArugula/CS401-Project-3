@@ -8,20 +8,20 @@ import android.widget.EditText;
 
 import com.group1.project3.model.User;
 
-public class ChangeProfileWatcher implements TextWatcher {
+public class ChangeProfileFormValidator implements TextWatcher {
 
-    private final EditText text_username;
-    private final EditText text_first;
-    private final EditText text_last;
-    private final EditText text_email;
+    private final EditText usernameText;
+    private final EditText firstNameText;
+    private final EditText lastNameText;
+    private final EditText emailText;
     private final Button submitButton;
     private User user;
 
-    public ChangeProfileWatcher(EditText username, EditText first, EditText last, EditText email, Button submitButton) {
-        this.text_username = username;
-        this.text_first = first;
-        this.text_last = last;
-        this.text_email = email;
+    public ChangeProfileFormValidator(EditText usernameText, EditText firstNameText, EditText lastNameText, EditText emailText, Button submitButton) {
+        this.usernameText = usernameText;
+        this.firstNameText = firstNameText;
+        this.lastNameText = lastNameText;
+        this.emailText = emailText;
         this.submitButton = submitButton;
     }
 
@@ -37,22 +37,22 @@ public class ChangeProfileWatcher implements TextWatcher {
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         boolean canUpdateProfile = true;
-        String username = text_username.getText().toString().trim();
+        String username = usernameText.getText().toString().trim();
         if (username.isEmpty()) {
             canUpdateProfile = false;
         }
 
-        String firstName = text_first.getText().toString().trim();
+        String firstName = firstNameText.getText().toString().trim();
         if (firstName.isEmpty()) {
             canUpdateProfile = false;
         }
 
-        String lastName = text_last.getText().toString().trim();
+        String lastName = lastNameText.getText().toString().trim();
         if (lastName.isEmpty()) {
             canUpdateProfile = false;
         }
 
-        String email = text_email.getText().toString().trim();
+        String email = emailText.getText().toString().trim();
         if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             canUpdateProfile = false;
         }

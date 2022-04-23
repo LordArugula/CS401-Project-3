@@ -37,7 +37,6 @@ public class ProfileActivity extends AppCompatActivity {
     private UserRepository userRepository;
     private User user;
 
-    private ChangeProfileWatcher profileWatcher;
     private Button button_updateProfile;
     private Button button_updatePassword;
 
@@ -64,13 +63,13 @@ public class ProfileActivity extends AppCompatActivity {
         button_updatePassword = findViewById(R.id.profile_button_updatePassword);
         button_updatePassword.setOnClickListener(this::onClickUpdatePasswordButton);
 
-        profileWatcher = new ChangeProfileWatcher(input_username, input_firstName, input_lastName, input_emailAddress, button_updateProfile);
+        ChangeProfileFormValidator profileWatcher = new ChangeProfileFormValidator(input_username, input_firstName, input_lastName, input_emailAddress, button_updateProfile);
         input_username.addTextChangedListener(profileWatcher);
         input_firstName.addTextChangedListener(profileWatcher);
         input_lastName.addTextChangedListener(profileWatcher);
         input_emailAddress.addTextChangedListener(profileWatcher);
 
-        TextWatcher passwordWatcher = new ChangePasswordWatcher(text_oldPassword, text_newPassword, text_confirmPassword, button_updatePassword);
+        TextWatcher passwordWatcher = new ChangePasswordFormValidator(text_oldPassword, text_newPassword, text_confirmPassword, button_updatePassword);
         text_oldPassword.addTextChangedListener(passwordWatcher);
         text_newPassword.addTextChangedListener(passwordWatcher);
         text_confirmPassword.addTextChangedListener(passwordWatcher);
