@@ -1,12 +1,11 @@
 package com.group1.project3;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.google.firebase.auth.FirebaseAuth;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.group1.project3.util.FirebaseUtil;
 
 /**
@@ -27,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
         if (FirebaseUtil.isSignedIn()) {
             launchProjectMenuActivity();
         }
+
+        getSupportActionBar().hide();
     }
 
     /**

@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">CS401 Project 3</string>
-    <string name="main_title_text">Project Management Tool</string>
     <string name="register_label_username">Username</string>
     <string name="register_label_firstName">First Name</string>
     <string name="register_label_lastName">Last Name</string>
@@ -27,6 +26,7 @@
     <string name="label_new_password">New Password</string>
     <string name="label_profile"><b>Profile</b></string>
     <string name="label_changePassword"><b>Change Password</b></string>
+    <string name="main_title">Project Management Tool</string>
 
     <string name="profile_title">Account</string>
     <string name="profile_section_profile">Profile</string>
@@ -49,4 +49,6 @@
     <string name="menu_profile_option_account">Account</string>
     <string name="menu_profile_option_signOut">Sign Out</string>
     <string name="profile_label_username">Username</string>
+    <string name="main_button_text_signIn">Sign In</string>
+    <string name="main_button_text_signUp">Sign Up</string>
 </resources>
