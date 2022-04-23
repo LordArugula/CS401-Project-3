@@ -11,11 +11,7 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
@@ -36,7 +32,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="8dp"
                 android:autofillHints="username"
-                android:inputType="text" />
+                android:inputType="text"
+                android:nextFocusForward="@id/profile_input_profilePicUri" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -51,7 +48,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="8dp"
-                android:inputType="textUri" />
+                android:inputType="textUri"
+                android:nextFocusForward="@id/profile_input_firstName" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -67,7 +65,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autofillHints="name"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:nextFocusForward="@id/profile_input_lastName" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -83,7 +82,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autofillHints="name"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:nextFocusForward="@id/profile_input_email" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -99,7 +99,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autofillHints="emailAddress"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"
+                android:nextFocusForward="@id/profile_button_updateProfile" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -114,6 +115,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="4dp"
                 android:enabled="false"
+                android:nextFocusForward="@id/profile_button_revertProfile"
                 android:text="@string/profile_button_text_saveProfile" />
 
             <com.google.android.material.button.MaterialButton
@@ -121,6 +123,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="4dp"
+                android:nextFocusForward="@id/profile_input_username"
                 android:text="@string/profile_button_text_revertProfile" />
 
         </LinearLayout>
@@ -148,7 +151,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autofillHints="password"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:nextFocusForward="@id/profile_input_newPassword" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -164,7 +168,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autofillHints="password"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:nextFocusForward="@id/profile_input_confirmPassword" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -180,7 +185,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autofillHints="password"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:nextFocusForward="@id/profile_button_updatePassword" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -189,11 +195,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:enabled="false"
+            android:nextFocusForward="@id/profile_input_oldPassword"
             android:text="@string/profile_button_text_updatePassword" />
-
-        <com.google.android.material.divider.MaterialDivider
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

@@ -1,5 +1,6 @@
 package com.group1.project3;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextWatcher;
@@ -90,7 +91,8 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            finish();
+            Intent intent = new Intent(ProfileActivity.this, ProjectMenuActivity.class);
+            startActivity(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);
