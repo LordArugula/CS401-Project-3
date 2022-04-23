@@ -16,14 +16,21 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.group1.project3.model.User;
 import com.group1.project3.util.FirebaseUtil;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -37,20 +44,22 @@ public class ProfileActivity extends AppCompatActivity {
     private Button button_updateProfile;
     private Button button_updatePassword;
 
+    private User user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        text_userName = findViewById(R.id.text_userName);
-        text_firstName = findViewById(R.id.register_text_firstName);
-        text_lastName = findViewById(R.id.register_text_lastName);
-        text_emailAddress = findViewById(R.id.register_text_emailAddress);
-        text_oldPassword = findViewById(R.id.text_oldPassword);
-        text_newPassword = findViewById(R.id.register_text_password);
-        text_confirmPassword = findViewById(R.id.register_text_confirmPassword);
-        button_updateProfile = findViewById(R.id.button_updateProfile);
-        button_updatePassword = findViewById(R.id.button_updatePassword);
+        text_userName = findViewById(R.id.profile_text_userName);
+        text_firstName = findViewById(R.id.profile_text_firstName);
+        text_lastName = findViewById(R.id.profile_text_lastName);
+        text_emailAddress = findViewById(R.id.profile_text_emailAddress);
+        text_oldPassword = findViewById(R.id.profile_text_oldPassword);
+        text_newPassword = findViewById(R.id.profile_text_password);
+        text_confirmPassword = findViewById(R.id.profile_text_confirmPassword);
+        button_updateProfile = findViewById(R.id.profile_save_button);
+        button_updatePassword = findViewById(R.id.profile_changePassword_button);
 
         TextWatcher profileWatcher = new TextWatcher() {
             @Override
@@ -123,7 +132,7 @@ public class ProfileActivity extends AppCompatActivity {
                     error = true;
                 }
 
-                findViewById(R.id.button_updatePassword).setEnabled(!error);
+                findViewById(R.id.profile_changePassword_button).setEnabled(!error);
             }
 
             @Override
@@ -135,28 +144,25 @@ public class ProfileActivity extends AppCompatActivity {
         text_newPassword.addTextChangedListener(passwordWatcher);
         text_confirmPassword.addTextChangedListener(passwordWatcher);
 
-        bind(getUserFromAuth(FirebaseUtil.getAuth().getCurrentUser()));
+        getUserFromAuth(FirebaseAuth.getInstance().getCurrentUser());
     }
 
-    private User getUserFromAuth(FirebaseUser currentUser) {
-        User user = null;
-        FirebaseUtil.getFirestore()
-                .collection("users")
-                .document(currentUser.getUid())
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot result = task.getResult();
-                            user = result.toObject(User.class);
-                        } else {
-                            Toast.makeText(ProfileActivity.this, "Could not get user", Toast.LENGTH_SHORT)
-                                    .show();
-                        }
-                    }
-                });
-        return user;
+    private void getUserFromAuth(FirebaseUser currentUser) {
+        if (currentUser != null) {
+            DocumentReference userDocRef = FirebaseFirestore.getInstance().document("users/" + currentUser.getUid());
+            Task<DocumentSnapshot> documentSnapshot = userDocRef.get();
+
+            documentSnapshot.addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    user = documentSnapshot.toObject(User.class);
+                    bind(user);
+                }
+            });
+        } else {
+            Log.d("ProfileActivity", "User == null");
+        }
+
     }
 
     private void bind(User user) {
