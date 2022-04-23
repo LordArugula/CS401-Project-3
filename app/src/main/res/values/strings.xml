@@ -1,31 +1,23 @@
 <resources>
     <string name="app_name">CS401 Project 3</string>
-    <string name="register_label_username">Username</string>
-    <string name="register_label_firstName">First Name</string>
-    <string name="register_label_lastName">Last Name</string>
-    <string name="register_label_emailAddress">Email Address</string>
-    <string name="register_label_password">Password</string>
-    <string name="register_label_confirm_password">Confirm Password</string>
-    <string name="register_hint_username">Enter username</string>
-    <string name="register_hint_firstName">Enter first name</string>
-    <string name="register_hint_lastName">Enter last name</string>
-    <string name="register_hint_emailAddress">Enter email address</string>
-    <string name="register_hint_password">********</string>
-    <string name="register_button_text">Sign up</string>
-    <string name="register_button_back">Back</string>
-    <string name="userName_hint_text">Enter username</string>
-    <string name="save_button_text">Save</string>
-    <string name="changePassword_button_text">Change Password</string>
-    <string name="label_old_password">Old Password</string>
-    <string name="label_new_password">New Password</string>
-    <string name="label_profile"><b>Profile</b></string>
-    <string name="label_changePassword"><b>Change Password</b></string>
+
     <string name="main_title">Project Management Tool</string>
+    <string name="main_button_text_signIn">Sign In</string>
+    <string name="main_button_text_signUp">Sign Up</string>
 
     <string name="login_title">Sign In</string>
     <string name="login_input_hint_email">Email Address</string>
     <string name="login_input_hint_password">Password</string>
     <string name="login_button_text_signIn">Sign In</string>
+
+    <string name="register_title">Sign Up</string>
+    <string name="register_input_hint_firstName">First Name</string>
+    <string name="register_input_hint_lastName">Last Name</string>
+    <string name="register_input_hint_username">Username</string>
+    <string name="register_input_hint_email">Email Address</string>
+    <string name="register_input_hint_password">Password</string>
+    <string name="register_input_hint_confirmPassword">Confirm Password</string>
+    <string name="register_button_text_signUp">Sign Up</string>
 
     <string name="profile_title">Account</string>
     <string name="profile_section_profile">Profile</string>
@@ -47,7 +39,4 @@
     <string name="card_default_date">04/26/22</string>
     <string name="menu_profile_option_account">Account</string>
     <string name="menu_profile_option_signOut">Sign Out</string>
-    <string name="profile_label_username">Username</string>
-    <string name="main_button_text_signIn">Sign In</string>
-    <string name="main_button_text_signUp">Sign Up</string>
 </resources>
