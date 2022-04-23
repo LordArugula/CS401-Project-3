@@ -123,6 +123,17 @@ public final class FirebaseUtil {
     }
 
     /**
+     * Updates the user's email address.
+     *
+     * @param email the email address.
+     * @return a {@link Task<Void>} representing the update email request.
+     */
+    public static Task<Void> updateEmail(String email) {
+        return getAuth().getCurrentUser()
+                .updateEmail(email);
+    }
+
+    /**
      * Updates the user's password.
      *
      * @param password the password.

@@ -1,6 +1,7 @@
 package com.group1.project3.view;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextWatcher;
@@ -9,16 +10,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.group1.project3.R;
 import com.group1.project3.model.User;
 import com.group1.project3.repository.FirestoreUserRepository;
@@ -26,11 +28,12 @@ import com.group1.project3.repository.UserRepository;
 import com.group1.project3.util.FirebaseUtil;
 import com.group1.project3.view.validator.ChangePasswordFormValidator;
 import com.group1.project3.view.validator.ChangeProfileFormValidator;
+import com.squareup.picasso.Picasso;
 
 public class ProfileActivity extends AppCompatActivity {
 
+    private ImageView image_profilePic;
     private EditText input_username;
-    private EditText text_profilePicUri;
     private EditText input_firstName;
     private EditText input_lastName;
     private EditText input_emailAddress;
@@ -38,11 +41,14 @@ public class ProfileActivity extends AppCompatActivity {
     private EditText text_newPassword;
     private EditText text_confirmPassword;
 
+    private Uri profilePicUri;
+
     private UserRepository userRepository;
     private User user;
 
     private Button button_updateProfile;
     private Button button_updatePassword;
+    private ChangeProfileFormValidator profileWatcher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,13 +56,16 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         input_username = findViewById(R.id.profile_input_username);
-        text_profilePicUri = findViewById(R.id.profile_input_profilePicUri);
         input_firstName = findViewById(R.id.profile_input_firstName);
         input_lastName = findViewById(R.id.profile_input_lastName);
         input_emailAddress = findViewById(R.id.profile_input_email);
         text_oldPassword = findViewById(R.id.profile_input_oldPassword);
         text_newPassword = findViewById(R.id.profile_input_newPassword);
         text_confirmPassword = findViewById(R.id.profile_input_confirmPassword);
+
+        image_profilePic = findViewById(R.id.profile_image_profilePic);
+        Button button_updateImage = findViewById(R.id.profile_button_updateImage);
+        button_updateImage.setOnClickListener(this::onClickUpdateImageButton);
 
         button_updateProfile = findViewById(R.id.profile_button_updateProfile);
         button_updateProfile.setOnClickListener(this::onClickUpdateProfileButton);
@@ -67,7 +76,7 @@ public class ProfileActivity extends AppCompatActivity {
         button_updatePassword = findViewById(R.id.profile_button_updatePassword);
         button_updatePassword.setOnClickListener(this::onClickUpdatePasswordButton);
 
-        ChangeProfileFormValidator profileWatcher = new ChangeProfileFormValidator(input_username, input_firstName, input_lastName, input_emailAddress, button_updateProfile);
+        profileWatcher = new ChangeProfileFormValidator(input_username, input_firstName, input_lastName, input_emailAddress, profilePicUri, button_updateProfile);
         input_username.addTextChangedListener(profileWatcher);
         input_firstName.addTextChangedListener(profileWatcher);
         input_lastName.addTextChangedListener(profileWatcher);
@@ -89,6 +98,47 @@ public class ProfileActivity extends AppCompatActivity {
                     profileWatcher.setUser(user);
                     bind(user);
                 });
+    }
+
+    private void onClickUpdateImageButton(View view) {
+
+        AlertDialog dialogBuilder = new UploadImageDialogBuilder(ProfileActivity.this)
+                .setTitle("Upload Image from Url")
+                .setView(R.layout.dialog_image_url)
+                .setImageUri(profilePicUri)
+                .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
+                .setNeutralButton("Remove", (dialogInterface, i) -> {
+                    loadImage();
+                })
+                .setPositiveButton("Confirm", ((dialogInterface, i, imageUri) -> {
+                    Picasso.get()
+                            .load(imageUri)
+                            .resize(64, 64)
+                            .config(Bitmap.Config.ARGB_8888)
+                            .placeholder(R.drawable.ic_baseline_person_24)
+                            .into(image_profilePic);
+                    image_profilePic.setClipToOutline(true);
+
+                    profilePicUri = imageUri;
+                    profileWatcher.setImageUri(profilePicUri);
+                    profileWatcher.validateForm();
+                }))
+                .setPlaceholderImage(R.drawable.ic_baseline_person_24)
+                .show();
+    }
+
+    private void loadImage() {
+        Picasso.get()
+                .load(R.drawable.ic_baseline_person_24)
+                .resize(64, 64)
+                .config(Bitmap.Config.ARGB_8888)
+                .placeholder(R.drawable.ic_baseline_person_24)
+                .into(image_profilePic);
+        image_profilePic.setClipToOutline(true);
+
+        profilePicUri = null;
+        profileWatcher.setImageUri(profilePicUri);
+        profileWatcher.validateForm();
     }
 
     @Override
@@ -161,6 +211,13 @@ public class ProfileActivity extends AppCompatActivity {
         input_username.setText(user.getUsername());
         input_firstName.setText(user.getFirstName());
         input_lastName.setText((user.getLastName()));
+        profilePicUri = user.getProfilePicUri() == null ? Uri.EMPTY : Uri.parse(user.getProfilePicUri());
+        Picasso.get().load(profilePicUri)
+                .resize(64, 64)
+                .config(Bitmap.Config.ARGB_8888)
+                .placeholder(R.drawable.ic_baseline_person_24)
+                .into(image_profilePic);
+        image_profilePic.setClipToOutline(true);
     }
 
     /**
@@ -180,23 +237,20 @@ public class ProfileActivity extends AppCompatActivity {
      * Updates the user's profile.
      */
     private void updateProfile() {
-        FirebaseUser firebaseUser = FirebaseUtil.getAuth().getCurrentUser();
-
-        assert firebaseUser != null;
-
         String email = input_emailAddress.getText().toString().trim();
         String username = input_username.getText().toString().trim();
-        String profilePic = text_profilePicUri.getText().toString().trim();
         String first = input_firstName.getText().toString().trim();
         String last = input_lastName.getText().toString().trim();
 
-        Task<Void> updateEmailTask = updateAuthEmail(firebaseUser, email);
-        Task<Void> updateUsernameTask = updateAuthProfile(firebaseUser, username, Uri.parse(profilePic));
+        Task<Void> updateEmailTask = FirebaseUtil.updateEmail(email);
+        Task<Void> updateUsernameTask = FirebaseUtil.updateProfile(username, profilePicUri);
 
         user.setEmail(email);
         user.setUsername(username);
         user.setFirstName(first);
         user.setLastName(last);
+        user.setProfilePicUri(profilePicUri == null ? null : profilePicUri.toString());
+
         Task<Void> updateUserTask = userRepository.updateUser(user);
 
         Tasks.whenAll(updateEmailTask, updateUsernameTask, updateUserTask)
@@ -204,30 +258,4 @@ public class ProfileActivity extends AppCompatActivity {
                 .addOnSuccessListener((unused) -> Log.d("Profile", "Updated user profile"));
     }
 
-    /**
-     * Updates the user's username and profile picture.
-     *
-     * @param user          the Firebase user.
-     * @param username      the username.
-     * @param profilePicUri the profile picture {@link Uri}.
-     * @return a {@link Task<Void>} representing the user change request.
-     */
-    private Task<Void> updateAuthProfile(FirebaseUser user, String username, Uri profilePicUri) {
-        UserProfileChangeRequest changeRequest = new UserProfileChangeRequest.Builder()
-                .setDisplayName(username)
-                .setPhotoUri(profilePicUri)
-                .build();
-        return user.updateProfile(changeRequest);
-    }
-
-    /**
-     * Updates the user's email address.
-     *
-     * @param user  the Firebase user.
-     * @param email the email address.
-     * @return a {@link Task<Void>} representing the email change request.
-     */
-    private Task<Void> updateAuthEmail(FirebaseUser user, String email) {
-        return user.updateEmail(email);
-    }
 }
