@@ -1,4 +1,4 @@
-package com.group1.project3;
+package com.group1.project3.view.validator;
 
 import android.text.Editable;
 import android.text.TextWatcher;

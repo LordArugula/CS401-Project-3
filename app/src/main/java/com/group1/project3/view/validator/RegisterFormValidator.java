@@ -1,4 +1,4 @@
-package com.group1.project3;
+package com.group1.project3.view.validator;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -6,10 +6,12 @@ import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.group1.project3.view.RegisterActivity;
+
 /**
- * Validates changes to the form in the {@link RegisterActivity).
+ * Validates changes to the form in the {@link RegisterActivity ).
  */
-class RegisterFormValidator implements TextWatcher {
+public class RegisterFormValidator implements TextWatcher {
     /**
      * The first name text field.
      */

@@ -1,13 +1,13 @@
-package com.group1.project3;
+package com.group1.project3.view;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.group1.project3.R;
 import com.group1.project3.adapter.PipelineAdapter;
 import com.group1.project3.model.Card;
 import com.group1.project3.model.Pipeline;

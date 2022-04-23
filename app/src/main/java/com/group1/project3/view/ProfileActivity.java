@@ -1,4 +1,4 @@
-package com.group1.project3;
+package com.group1.project3.view;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -19,10 +19,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.group1.project3.R;
 import com.group1.project3.model.User;
 import com.group1.project3.repository.FirestoreUserRepository;
 import com.group1.project3.repository.UserRepository;
 import com.group1.project3.util.FirebaseUtil;
+import com.group1.project3.view.validator.ChangePasswordFormValidator;
+import com.group1.project3.view.validator.ChangeProfileFormValidator;
 
 public class ProfileActivity extends AppCompatActivity {
 

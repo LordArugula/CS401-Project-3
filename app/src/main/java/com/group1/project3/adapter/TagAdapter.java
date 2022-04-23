@@ -1,4 +1,4 @@
-package com.group1.project3;
+package com.group1.project3.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.group1.project3.R;
 import com.group1.project3.model.Tag;
 
 import java.util.List;

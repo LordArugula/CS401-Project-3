@@ -1,4 +1,4 @@
-package com.group1.project3;
+package com.group1.project3.view;
 
 import android.os.Bundle;
 import android.text.TextWatcher;
@@ -14,7 +14,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
+import com.group1.project3.R;
 import com.group1.project3.util.FirebaseUtil;
+import com.group1.project3.view.validator.LoginFormValidator;
 
 public class LoginActivity extends AppCompatActivity {
 

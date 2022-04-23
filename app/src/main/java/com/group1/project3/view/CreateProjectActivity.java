@@ -1,4 +1,4 @@
-package com.group1.project3;
+package com.group1.project3.view;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.gson.Gson;
+import com.group1.project3.R;
 import com.group1.project3.model.Project;
 import com.group1.project3.util.FirebaseUtil;
 import com.skydoves.colorpickerview.ColorEnvelope;

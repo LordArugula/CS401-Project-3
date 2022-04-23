@@ -1,4 +1,4 @@
-package com.group1.project3;
+package com.group1.project3.view;
 
 import android.os.Bundle;
 import android.text.TextWatcher;
@@ -18,10 +18,12 @@ import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.group1.project3.R;
 import com.group1.project3.model.User;
 import com.group1.project3.repository.FirestoreUserRepository;
 import com.group1.project3.repository.UserRepository;
 import com.group1.project3.util.FirebaseUtil;
+import com.group1.project3.view.validator.RegisterFormValidator;
 
 public class RegisterActivity extends AppCompatActivity {
 

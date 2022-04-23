@@ -11,9 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
-import com.group1.project3.CardActivity;
+import com.group1.project3.view.CardActivity;
 import com.group1.project3.R;
-import com.group1.project3.TagAdapter;
 import com.group1.project3.model.Card;
 
 import java.util.List;

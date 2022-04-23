@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:paddingLeft="@dimen/main_padding"
     android:paddingRight="@dimen/main_padding"
-    tools:context=".MainActivity">
+    tools:context=".view.MainActivity">
 
     <TextView
         android:id="@+id/title_text"

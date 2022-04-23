@@ -1,4 +1,4 @@
-package com.group1.project3;
+package com.group1.project3.view;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -12,13 +12,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.gson.Gson;
+import com.group1.project3.R;
 import com.group1.project3.adapter.ProjectAdapter;
 import com.group1.project3.model.Project;
-import com.group1.project3.model.User;
 import com.group1.project3.util.FirebaseUtil;
 
 import java.util.ArrayList;
@@ -29,7 +25,7 @@ public class ProjectMenuActivity extends AppCompatActivity {
     private RecyclerView projectRecyclerView;
     private ProjectAdapter projectAdapter;
 
-    private List<Project> projects;
+    private final List<Project> projects;
 
     public ProjectMenuActivity() {
         projects = new ArrayList<>();
@@ -92,8 +88,8 @@ public class ProjectMenuActivity extends AppCompatActivity {
 
     private void launchMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+        finish();
     }
 
     private void launchProfileActivity() {
