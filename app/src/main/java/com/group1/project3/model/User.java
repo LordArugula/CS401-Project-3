@@ -1,7 +1,5 @@
 package com.group1.project3.model;
 
-import android.net.Uri;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,7 +33,7 @@ public class User {
     /**
      * uri to the user's profile picture
      */
-    private Uri profilePic;
+    private String profilePic;
 
     /**
      * The projects this user has access too.
@@ -108,7 +106,7 @@ public class User {
      *
      * @return uri of profile picture
      */
-    public Uri getProfilePicUri() {
+    public String getProfilePicUri() {
         return profilePic;
     }
 
@@ -117,7 +115,7 @@ public class User {
      *
      * @param profilePic string of url pointing to image
      */
-    public void setProfilePicUri(Uri profilePic) {
+    public void setProfilePicUri(String profilePic) {
         this.profilePic = profilePic;
     }
 
@@ -193,15 +191,4 @@ public class User {
     public boolean hasProject(String projectId) {
         return projectIds.contains(projectId);
     }
-
-//    @Override
-//    public Map<String, Object> serializeAsMap() {
-//        Map<String, Object> map = new HashMap<>();
-//        map.put("username", username);
-//        map.put("firstName", firstName);
-//        map.put("lastName", lastName);
-//        map.put("projects", new ArrayList<String>(projectIds));
-//
-//        return Collections.unmodifiableMap(map);
-//    }
 }

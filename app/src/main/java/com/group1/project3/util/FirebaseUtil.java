@@ -32,6 +32,8 @@ public final class FirebaseUtil {
      */
     private static FirebaseAuth AUTH;
 
+    private static String TAG = "FirebaseUtil";
+
     /**
      * Private constructor to prevent instantiating this util class.
      */
