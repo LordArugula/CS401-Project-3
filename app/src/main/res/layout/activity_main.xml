@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="100dp"
-        android:text="@string/main_title_text"
+        android:text="@string/main_title"
         android:textAlignment="textEnd"
         android:textSize="@dimen/main_title_size"
         android:textStyle="bold" />
