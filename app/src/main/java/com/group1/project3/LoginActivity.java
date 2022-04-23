@@ -1,66 +1,66 @@
 package com.group1.project3;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.group1.project3.util.FirebaseUtil;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private FirebaseAuth auth;
-
-    private EditText emailText;
-    private EditText passwordText;
+    private EditText input_email;
+    private EditText input_password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        auth = FirebaseAuth.getInstance();
+        input_email = findViewById(R.id.login_input_email);
+        input_password = findViewById(R.id.login_input_password);
 
-        emailText = findViewById(R.id.login_text_emailAddress);
-        passwordText = findViewById(R.id.login_text_password);
+        Button button_signIn = findViewById(R.id.login_button_signUp);
+        button_signIn.setOnClickListener(this::onClickSignInButton);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle(R.string.login_title);
+        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
-    public void toMainMenu(View view) {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+    /**
+     * OnClick callback for the sign in button.
+     * Signs the user in.
+     *
+     * @param view the button that was clicked on.
+     */
+    private void onClickSignInButton(View view) {
+        signIn()
+                .addOnSuccessListener(authResult -> finish())
+                .addOnFailureListener(exception -> Toast.makeText(LoginActivity.this, exception.getMessage(), Toast.LENGTH_SHORT).show());
     }
 
-    public void signIn(View view) {
-        String email = emailText.getText().toString().trim();
-        String password = passwordText.getText().toString();
-
-        auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            FirebaseUser user = auth.getCurrentUser();
-                            launchProjectMenuActivity();
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Toast.makeText(LoginActivity.this, "Invalid email address or password.", Toast.LENGTH_SHORT)
-                                    .show();
-                        }
-                    }
-                });
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
-    private void launchProjectMenuActivity() {
-        Intent intent = new Intent(this, ProjectMenuActivity.class);
-        startActivity(intent);
+    private Task<AuthResult> signIn() {
+        String email = input_email.getText().toString().trim();
+        String password = input_password.getText().toString();
+
+        return FirebaseUtil.signIn(email, password);
     }
 }
