@@ -62,13 +62,13 @@ public class PipelineAdapter extends RecyclerView.Adapter<PipelineAdapter.ViewHo
             recyclerView_cards = itemView.findViewById(R.id.item_pipeline_card_recyclerView);
         }
 
+        public CardAdapter getAdapter() {
+            return cardAdapter;
+        }
+
         public void setAdapter(CardAdapter adapter) {
             this.cardAdapter = adapter;
             recyclerView_cards.setAdapter(adapter);
-        }
-
-        public CardAdapter getAdapter() {
-            return cardAdapter;
         }
     }
 }

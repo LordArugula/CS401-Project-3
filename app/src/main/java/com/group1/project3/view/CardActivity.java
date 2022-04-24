@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.gson.Gson;
 import com.group1.project3.R;
 import com.group1.project3.model.Card;
 import com.group1.project3.model.Tag;
@@ -40,8 +39,8 @@ public class CardActivity extends AppCompatActivity {
                     .commit();
         }
 
-        String cardAsJson = getIntent().getStringExtra("card");
-        card = new Gson().fromJson(cardAsJson, Card.class);
+//        String cardAsJson = getIntent().getStringExtra("card");
+//        card = new Gson().fromJson(cardAsJson, Card.class);
     }
 
     public void editCardContent(View view) {

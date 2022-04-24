@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
-import com.google.gson.Gson;
 import com.group1.project3.R;
 import com.group1.project3.model.Card;
 
@@ -25,8 +24,8 @@ public class PreviewCardFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
 
-            String cardAsJson = getArguments().getString("card");
-            card = new Gson().fromJson(cardAsJson, Card.class);
+//            String cardAsJson = getArguments().getString("card");
+//            card = new Gson().fromJson(cardAsJson, Card.class);
         }
     }
 
