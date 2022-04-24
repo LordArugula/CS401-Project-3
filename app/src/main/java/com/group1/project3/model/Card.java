@@ -1,13 +1,9 @@
 package com.group1.project3.model;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * A card contains some content and can be used to represent a task in a {@link Project}.

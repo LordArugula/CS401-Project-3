@@ -10,7 +10,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.Gson;
 import com.group1.project3.view.CardActivity;
 import com.group1.project3.R;
 import com.group1.project3.model.Card;
@@ -43,8 +42,8 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), CardActivity.class);
-                String cardAsJson = new Gson().toJson(card);
-                intent.putExtra("card", cardAsJson);
+//                String cardAsJson = new Gson().toJson(card);
+//                intent.putExtra("card", cardAsJson);
                 view.getContext().startActivity(intent);
             }
         });

@@ -6,43 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".view.ProjectMenuActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimaryVariant">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Projects"
-                android:textColor="@color/white"
-                android:textSize="24sp" />
-
-        </Toolbar>
-
-    </com.google.android.material.appbar.AppBarLayout>
-
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/project_menu_project_recyclerView"
+        android:id="@+id/project_menu_recyclerView_projects"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="?attr/actionBarSize"
         tools:listitem="@layout/item_project" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/project_menu_create_project_fab"
+        android:id="@+id/project_menu_fab_createProject"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:contentDescription="Add Project Button"
-        android:onClick="openCreateProjectDialog"
         app:srcCompat="@android:drawable/ic_input_add" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

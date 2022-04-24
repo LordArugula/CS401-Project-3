@@ -7,6 +7,9 @@ import com.google.firebase.firestore.CollectionReference;
 import com.group1.project3.model.Project;
 import com.group1.project3.util.FirebaseUtil;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class FirestoreProjectRepository implements ProjectRepository {
 
     private final CollectionReference projectCollection;
@@ -17,9 +20,12 @@ public class FirestoreProjectRepository implements ProjectRepository {
     }
 
     @Override
-    public Task<Void> createProject(Project project) {
-        return projectCollection.document(project.getId())
-                .set(project);
+    public Task<Void> createProject(@NonNull Project project) {
+        return projectCollection.add(project)
+                .onSuccessTask(documentReference -> {
+                    project.setId(documentReference.getId());
+                    return documentReference.set(project);
+                });
     }
 
     @Override

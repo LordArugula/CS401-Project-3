@@ -42,7 +42,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHold
         holder.text_projectName.setText(project.getName());
 
         ImageButton projectBackgroundButton = holder.imageButton_projectBackground;
-        projectBackgroundButton.setBackgroundColor(project.getColor().toArgb());
+        projectBackgroundButton.setBackgroundColor(project.getColor());
         projectBackgroundButton.setOnClickListener(view -> {
             projectCardClickListener.onClickProjectCard(project);
         });

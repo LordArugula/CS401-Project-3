@@ -26,6 +26,7 @@ import com.group1.project3.model.User;
 import com.group1.project3.repository.FirestoreUserRepository;
 import com.group1.project3.repository.UserRepository;
 import com.group1.project3.util.FirebaseUtil;
+import com.group1.project3.view.dialog.UploadImageDialogBuilder;
 import com.group1.project3.view.validator.ChangePasswordFormValidator;
 import com.group1.project3.view.validator.ChangeProfileFormValidator;
 import com.squareup.picasso.Picasso;

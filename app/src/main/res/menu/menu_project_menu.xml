@@ -10,9 +10,4 @@
     <item
         android:id="@+id/menu_sign_out"
         android:title="@string/menu_profile_option_signOut" />
-
-    <item
-        android:id="@+id/menu_card"
-        android:title="TODO" />
-
 </menu>
