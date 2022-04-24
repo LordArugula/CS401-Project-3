@@ -42,4 +42,7 @@
     <string name="card_default_date">04/26/22</string>
     <string name="menu_profile_option_account">Account</string>
     <string name="menu_profile_option_signOut">Sign Out</string>
+    <string name="dialog_createProject_section_backgroundColor">Background Color</string>
+    <string name="dialog_createProject_button_colorPicker">Edit Color</string>
+    <string name="dialog_createProject_input_hint_projectName">Project Name</string>
 </resources>
