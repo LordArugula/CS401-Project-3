@@ -1,7 +1,5 @@
 package com.group1.project3.model;
 
-import android.graphics.Color;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -30,7 +28,7 @@ public class Project {
     /**
      * The user ids and their roles of the users with access to this project.
      */
-    private final HashMap<String, Role> editors;
+    private final Map<String, Role> editors;
 
     /**
      * The project pipelines.
@@ -45,13 +43,15 @@ public class Project {
     /**
      * The project color.
      */
-    private Color color;
+    private int color;
 
     /**
      * Creates an empty project.
      */
     public Project() {
-        this(null, null, null);
+        editors = new HashMap<>();
+        pipelines = new ArrayList<>();
+        tags = new ArrayList<>();
     }
 
     /**
@@ -62,13 +62,11 @@ public class Project {
      * @param ownerId The user id of the project owner.
      */
     public Project(String id, String name, String ownerId) {
+        this();
         this.id = id;
         this.name = name;
         this.ownerId = ownerId;
-        editors = new HashMap<>();
-        editors.put(ownerId, Role.Owner);
-        pipelines = new ArrayList<>();
-        tags = new ArrayList<>();
+        editors.put(ownerId, Role.Admin);
     }
 
     /**
@@ -123,6 +121,7 @@ public class Project {
      */
     public void setOwnerId(String ownerId) {
         this.ownerId = ownerId;
+        editors.put(ownerId, Role.Admin);
     }
 
     /**
@@ -132,9 +131,9 @@ public class Project {
      * @return the {@link Role} of the user in this project.
      * Returns {@link Role}.None if the user does not have access to this project.
      */
-    public Role getRoleForUser(String userId) {
+    public Role getUserRole(String userId) {
         if (isEditor(userId)) {
-            return editors.get(userId);
+            return (editors.get(userId));
         }
         return Role.None;
     }
@@ -263,7 +262,7 @@ public class Project {
      *
      * @return the project color.
      */
-    public Color getColor() {
+    public int getColor() {
         return color;
     }
 
@@ -272,22 +271,7 @@ public class Project {
      *
      * @param color the project color.
      */
-    public void setColor(Color color) {
+    public void setColor(int color) {
         this.color = color;
     }
-
-//    @Override
-//    public Map<String, Object> serializeAsMap() {
-//        HashMap<String, Object> map = new HashMap<>();
-//        map.put("name", name);
-//        map.put("ownerId", ownerId);
-//        map.put("color", color.toString());
-//        List<Map<String, Object>> pipelinesAsMapArray = new ArrayList<>(pipelines.size());
-//        for (Pipeline pipeline : pipelines) {
-//            pipelinesAsMapArray.add(pipeline.serializeAsMap());
-//        }
-//        map.put("pipelines", pipelinesAsMapArray);
-//
-//        return Collections.unmodifiableMap(map);
-//    }
 }

@@ -20,5 +20,5 @@ public enum Role {
     /**
      * Has full permissions.
      */
-    Owner,
+    Admin,
 }
