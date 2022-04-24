@@ -1,4 +1,4 @@
-package com.group1.project3.view;
+package com.group1.project3.view.dialog;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -31,7 +31,7 @@ public class UploadImageDialogBuilder extends MaterialAlertDialogBuilder {
     private ImageView image_preview;
     private Button button_upload;
 
-    protected UploadImageDialogBuilder(@NonNull Context context) {
+    public UploadImageDialogBuilder(@NonNull Context context) {
         super(context);
     }
 
@@ -94,7 +94,7 @@ public class UploadImageDialogBuilder extends MaterialAlertDialogBuilder {
         alertDialog.setOnShowListener(dialogInterface -> {
             input_imageUrl = alertDialog.findViewById(R.id.imageURLDialog_input_imageUrl);
             image_preview = alertDialog.findViewById(R.id.imageURLDialog_image_preview);
-            ;
+
             Picasso.get()
                     .load(imageUri)
                     .config(Bitmap.Config.ARGB_8888)

@@ -73,11 +73,11 @@ public class ChangeProfileFormValidator implements TextWatcher {
     }
 
     private boolean hasChanges(String username, String firstName, String lastName, String email) {
-        return !(user.getUsername().equals(username)
-                && user.getFirstName().equals(firstName)
-                && user.getLastName().equals(lastName)
-                && user.getEmail().equals(email)
-                && areProfileUrisEqual());
+        return user != null && (!user.getUsername().equals(username)
+                || !user.getFirstName().equals(firstName)
+                || !user.getLastName().equals(lastName)
+                || !user.getEmail().equals(email)
+                || !areProfileUrisEqual());
     }
 
     private boolean areProfileUrisEqual() {
