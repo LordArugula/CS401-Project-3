@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.group1.project3.R;
 import com.group1.project3.adapter.ProjectAdapter;
 import com.group1.project3.model.Project;
@@ -82,10 +83,13 @@ public class ProjectMenuActivity extends AppCompatActivity {
         }
 
         this.user = user;
-        for (String projectId : user.getProjectIds()) {
-            projectRepository.getProject(projectId)
-                    .addOnSuccessListener(project -> projects.add(project));
-        }
+        projectRepository.getProjects(user.getProjectIds())
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (DocumentSnapshot snapshot : queryDocumentSnapshots.getDocuments()) {
+                        projects.add(snapshot.toObject(Project.class));
+                    }
+                    projectAdapter.notifyDataSetChanged();
+                });
     }
 
     private void launchProjectActivity(Project project) {
