@@ -14,7 +14,11 @@ public class Tag {
     /**
      * The tag color.
      */
-    private Color color;
+    private int color;
+
+    public Tag() {
+        this(null);
+    }
 
     /**
      * Creates a tag with name with a default white color.
@@ -22,7 +26,7 @@ public class Tag {
      * @param name The name of the tag.
      */
     public Tag(String name) {
-        this(name, Color.valueOf(1, 1, 1));
+        this(name, Color.argb(1, 1, 1, 1));
     }
 
     /**
@@ -31,7 +35,7 @@ public class Tag {
      * @param name  The name of the tag.
      * @param color The color of the tag.
      */
-    public Tag(String name, Color color) {
+    public Tag(String name, int color) {
         this.name = name;
         this.color = color;
     }
@@ -59,7 +63,7 @@ public class Tag {
      *
      * @return the color of the tag.
      */
-    public Color getColor() {
+    public int getColor() {
         return color;
     }
 
@@ -68,7 +72,7 @@ public class Tag {
      *
      * @param color the color of the tag.
      */
-    public void setColor(Color color) {
+    public void setColor(int color) {
         this.color = color;
     }
 }

@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".view.ProjectActivity">
+    android:padding="8dp">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/project_recyclerView_cards"
+    <EditText
+        android:id="@+id/card_edit_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        tools:listitem="@layout/item_pipeline" />
-
+        android:gravity="top"
+        android:inputType="text|textMultiLine"
+        android:minLines="6"
+        android:scrollbars="vertical"
+        android:text="Hello world"
+        android:textSize="24sp" />
 </LinearLayout>
+

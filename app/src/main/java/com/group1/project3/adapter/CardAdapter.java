@@ -1,6 +1,6 @@
 package com.group1.project3.adapter;
 
-import android.content.Intent;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,18 +10,27 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.group1.project3.view.CardActivity;
 import com.group1.project3.R;
 import com.group1.project3.model.Card;
+
+import org.commonmark.node.Node;
+import org.commonmark.parser.Parser;
+import org.commonmark.renderer.html.HtmlRenderer;
 
 import java.util.List;
 
 public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
-    private List<Card> data;
+    public interface OnClickListener {
+        void onClick(View view, Card card);
+    }
 
-    public CardAdapter(List<Card> cards) {
+    private List<Card> data;
+    private final OnClickListener onClickListener;
+
+    public CardAdapter(List<Card> cards, OnClickListener onClickListener) {
         data = cards;
+        this.onClickListener = onClickListener;
     }
 
     @NonNull
@@ -35,22 +44,14 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Card card = data.get(position);
-        holder.text_title.setText(card.getTitle());
+
+        Parser parser = Parser.builder().build();
+        Node document = parser.parse(card.getTitle());
+        HtmlRenderer renderer = HtmlRenderer.builder().build();
+        holder.text_title.setText(Html.fromHtml(renderer.render(document), Html.FROM_HTML_MODE_LEGACY));
         holder.text_date.setText(card.getAssignedDate() == null ? "" : card.getAssignedDate().toString());
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), CardActivity.class);
-//                String cardAsJson = new Gson().toJson(card);
-//                intent.putExtra("card", cardAsJson);
-                view.getContext().startActivity(intent);
-            }
-        });
-//        TagAdapter tagAdapter = new TagAdapter(card.getTags());
-//        LinearLayoutManager layoutManager = new LinearLayoutManager(holder.recyclerView_tags.getContext(), LinearLayoutManager.HORIZONTAL, true);
-//        holder.recyclerView_tags.setLayoutManager(layoutManager);
-//        holder.recyclerView_tags.setAdapter(tagAdapter);
+        holder.itemView.setOnClickListener(view -> onClickListener.onClick(view, card));
     }
 
     @Override
