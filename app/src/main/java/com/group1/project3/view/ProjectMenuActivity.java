@@ -19,14 +19,16 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.group1.project3.R;
 import com.group1.project3.adapter.ProjectAdapter;
+import com.group1.project3.model.Pipeline;
 import com.group1.project3.model.Project;
+import com.group1.project3.model.Tag;
 import com.group1.project3.model.User;
 import com.group1.project3.repository.FirestoreProjectRepository;
 import com.group1.project3.repository.FirestoreUserRepository;
 import com.group1.project3.repository.ProjectRepository;
 import com.group1.project3.repository.UserRepository;
 import com.group1.project3.util.FirebaseUtil;
-import com.group1.project3.view.dialog.CreateProjectDialogBuilder;
+import com.group1.project3.view.dialog.EditProjectDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +43,18 @@ public class ProjectMenuActivity extends AppCompatActivity {
 
     private UserRepository userRepository;
     private User user;
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        projects.clear();
+        loadCurrentUser()
+                .addOnSuccessListener(this::loadProjectsForUser)
+                .addOnFailureListener(exception -> {
+                    Toast.makeText(this, exception.getMessage(), Toast.LENGTH_SHORT).show();
+                    signOut();
+                });
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +108,7 @@ public class ProjectMenuActivity extends AppCompatActivity {
 
     private void launchProjectActivity(Project project) {
         Intent intent = new Intent(this, ProjectActivity.class);
+        intent.putExtra("projectId", project.getId());
         startActivity(intent);
     }
 
@@ -134,18 +149,34 @@ public class ProjectMenuActivity extends AppCompatActivity {
     }
 
     private void openCreateProjectDialog() {
-        AlertDialog createProjectDialog = new CreateProjectDialogBuilder(this)
+        AlertDialog createProjectDialog = new EditProjectDialogBuilder(this)
                 .setTitle("New Project")
+                .setProject(getDefaultProject())
                 .setPositiveButton("Create Project", this::onClickCreateProject)
                 .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
                 .show();
     }
 
-    private void onClickCreateProject(DialogInterface dialogInterface, int i, Project project) {
-        createProject(project);
+    private void onClickCreateProject(DialogInterface dialogInterface, int position, Project project) {
+        saveProject(project);
     }
 
-    private void createProject(Project project) {
+    private Project getDefaultProject() {
+        Project project = new Project();
+        project.setColor(getColor(R.color.project_defaultColor));
+        project.addPipeline(new Pipeline("In Progress"));
+        project.addPipeline(new Pipeline("Review"));
+        project.addPipeline(new Pipeline("Backlog"));
+        project.addPipeline(new Pipeline("Done"));
+
+        project.addTag(new Tag("Bugs", getColor(R.color.bugs)));
+        project.addTag(new Tag("Sprint", getColor(R.color.sprint)));
+        project.addTag(new Tag("Documentation", getColor(R.color.documentation)));
+
+        return project;
+    }
+
+    private void saveProject(Project project) {
         project.setOwnerId(user.getId());
         projectRepository.createProject(project)
                 .addOnSuccessListener(unused -> {

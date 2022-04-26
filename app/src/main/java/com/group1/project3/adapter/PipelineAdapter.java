@@ -3,6 +3,7 @@ package com.group1.project3.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,11 +18,18 @@ import java.util.List;
 public class PipelineAdapter extends RecyclerView.Adapter<PipelineAdapter.ViewHolder> {
 
     private final List<Pipeline> data;
-    private final RecyclerView.RecycledViewPool viewPool;
 
-    public PipelineAdapter(List<Pipeline> pipelines) {
+    public interface OnPipelineClickListener {
+        void onClick(View view, int position);
+    }
+
+    private final OnPipelineClickListener onClickAddCardListener;
+    private final OnPipelineClickListener onClickMenuListener;
+
+    public PipelineAdapter(List<Pipeline> pipelines, OnPipelineClickListener onClickAddCardListener, OnPipelineClickListener onClickMenuListener) {
         data = pipelines;
-        viewPool = new RecyclerView.RecycledViewPool();
+        this.onClickAddCardListener = onClickAddCardListener;
+        this.onClickMenuListener = onClickMenuListener;
     }
 
     @NonNull
@@ -38,6 +46,8 @@ public class PipelineAdapter extends RecyclerView.Adapter<PipelineAdapter.ViewHo
 
         holder.text_pipelineName.setText(pipeline.getName());
 
+        holder.button_addCard.setOnClickListener(view -> onClickAddCardListener.onClick(view, position));
+        holder.button_menu.setOnClickListener(view -> onClickMenuListener.onClick(view, position));
         CardAdapter adapter = new CardAdapter(pipeline.getCards());
         LinearLayoutManager layoutManager = new LinearLayoutManager(holder.recyclerView_cards.getContext(), LinearLayoutManager.VERTICAL, false);
 
@@ -53,12 +63,16 @@ public class PipelineAdapter extends RecyclerView.Adapter<PipelineAdapter.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView text_pipelineName;
+        ImageButton button_addCard;
+        ImageButton button_menu;
         RecyclerView recyclerView_cards;
         CardAdapter cardAdapter;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             text_pipelineName = itemView.findViewById(R.id.item_pipeline_name);
+            button_addCard = itemView.findViewById(R.id.item_pipeline_button_add);
+            button_menu = itemView.findViewById(R.id.item_pipeline_button_menu);
             recyclerView_cards = itemView.findViewById(R.id.item_pipeline_card_recyclerView);
         }
 

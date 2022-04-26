@@ -37,12 +37,20 @@
     <string name="profile_input_hint_confirmPassword">Confirm Password</string>
     <string name="profile_button_text_updatePassword">Change Password</string>
 
+    <string name="project_menu_fab_createProject_description">Add Project</string>
+    <string name="project_menu_action_account">Account</string>
+    <string name="project_menu_action_signOut">Sign Out</string>
+
+    <string name="dialog_createProject_section_backgroundColor">Background Color</string>
+    <string name="dialog_createProject_button_colorPicker">Edit Color</string>
+    <string name="dialog_editProject_input_hint_projectName">Project Name</string>
+
+    <string name="project_action_editProject">Edit Project</string>
+    <string name="project_action_addPipeline">Add Pipeline</string>
+
+    <string name="dialog_editTag_button_colorPicker">Tag Color</string>
+
     <string name="card_default_title">Card Title</string>
     <string name="user_profile_image_description">User profile image</string>
     <string name="card_default_date">04/26/22</string>
-    <string name="menu_profile_option_account">Account</string>
-    <string name="menu_profile_option_signOut">Sign Out</string>
-    <string name="dialog_createProject_section_backgroundColor">Background Color</string>
-    <string name="dialog_createProject_button_colorPicker">Edit Color</string>
-    <string name="dialog_createProject_input_hint_projectName">Project Name</string>
 </resources>

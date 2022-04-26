@@ -3,10 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="200dp"
     android:layout_margin="4dp"
-    android:maxHeight="240dp"
-    android:minHeight="240dp"
     app:cardBackgroundColor="@color/cardview_dark_background"
     app:cardCornerRadius="10dp">
 
@@ -28,20 +26,14 @@
             android:textColor="@color/cardview_light_background"
             android:textSize="24sp" />
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/item_card_tag_recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layoutDirection="rtl"
             android:orientation="horizontal"
+            android:layoutDirection="rtl"
             android:padding="4dp"
-            tools:ignore="SpeakableTextPresentCheck"
-            tools:listitem="@layout/item_tag">
+            tools:listitem="@layout/item_tag_icon">
 
         </androidx.recyclerview.widget.RecyclerView>
 

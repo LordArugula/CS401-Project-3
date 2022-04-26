@@ -12,5 +12,9 @@ public interface ProjectRepository {
     Task<Project> getProject(String projectId);
 
     Task<QuerySnapshot> getProjects(List<String> projectIds);
+
+    Task<Void> updateProject(Project project);
+
+    Task<Void> deleteProject(Project project);
 }
 
