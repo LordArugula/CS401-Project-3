@@ -5,9 +5,9 @@
 
     <item
         android:id="@+id/menu_open_account_profile"
-        android:title="@string/menu_profile_option_account" />
+        android:title="@string/project_menu_action_account" />
 
     <item
         android:id="@+id/menu_sign_out"
-        android:title="@string/menu_profile_option_signOut" />
+        android:title="@string/project_menu_action_signOut" />
 </menu>

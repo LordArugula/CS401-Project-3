@@ -50,4 +50,16 @@ public class FirestoreProjectRepository implements ProjectRepository {
         return projectCollection.whereIn("id", projectIds)
                 .get();
     }
+
+    @Override
+    public Task<Void> updateProject(Project project) {
+        return projectCollection.document(project.getId())
+                .set(project);
+    }
+
+    @Override
+    public Task<Void> deleteProject(Project project) {
+        return projectCollection.document(project.getId())
+                .delete();
+    }
 }
