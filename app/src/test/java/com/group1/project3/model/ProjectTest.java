@@ -108,9 +108,9 @@ public class ProjectTest extends TestCase {
         List<Tag> tags = new ArrayList<>();
         Project test = new Project();
         String name = "name";
-        Color color = Color.valueOf(123);
+        int color = 123;
         String name2 = "name2";
-        Color color2 = Color.valueOf(321);
+        int color2 = 321;
         //int color = Color.parseColor("#00ff00");
         Tag testTag = new Tag(name, color);
         Tag testTag2 = new Tag(name2, color2);

@@ -21,7 +21,7 @@ public class CardTest extends TestCase {
         String empty = "";
         List<Tag> tags = new ArrayList<>();
         String assignedUser = "assignedUser";
-        Date assigneDate = new Date(1 / 12);
+        Date assignedDate = new Date(1 / 12);
         Card card = new Card();
 
         card.setId(id);
@@ -36,8 +36,8 @@ public class CardTest extends TestCase {
         card.setAssignedUser(assignedUser);
         assertEquals(card.getAssignedUser(), assignedUser);
 
-        card.setAssignedDate(assigneDate);
-        assertEquals(card.getAssignedDate(), assigneDate);
+        card.setAssignedDate(assignedDate);
+        assertEquals(card.getAssignedDate(), assignedDate);
 
         assertEquals(card.getTags(), tags);
     }
@@ -55,5 +55,16 @@ public class CardTest extends TestCase {
         Card card = new Card(id);
 
         assertTrue(card.addTag(tag));
+        assertTrue(card.addTag(tag2));
+        tags.add(tag);
+        tags.add(tag2);
+        assertEquals(card.getTags(), tags);
+
+        assertTrue(card.hasTag(tag));
+        assertFalse(card.hasTag(new Tag("asdf")));
+
+        assertTrue(card.removeTag(tag));
+        tags.remove(tag);
+        assertEquals(card.getTags(), tags);
     }
 }
