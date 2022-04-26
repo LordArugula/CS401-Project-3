@@ -1,7 +1,5 @@
 package com.group1.project3.model;
 
-import android.graphics.Color;
-
 import junit.framework.TestCase;
 
 /**
@@ -15,7 +13,7 @@ public class TagTest extends TestCase {
     public void testSetterAndGetters() {
         String name = "name";
         String newName = "newName";
-        Color color = Color.valueOf(0, 0, 0);
+        int color = 123;
         Tag test = new Tag(name);
 
         test.setColor(color);
