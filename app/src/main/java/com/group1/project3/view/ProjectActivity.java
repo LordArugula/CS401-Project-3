@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.group1.project3.R;
 import com.group1.project3.adapter.PipelineAdapter;
+import com.group1.project3.model.Card;
 import com.group1.project3.model.Pipeline;
 import com.group1.project3.model.Project;
 import com.group1.project3.model.Role;
@@ -27,12 +28,13 @@ import com.group1.project3.repository.FirestoreProjectRepository;
 import com.group1.project3.repository.FirestoreUserRepository;
 import com.group1.project3.repository.ProjectRepository;
 import com.group1.project3.repository.UserRepository;
-import com.group1.project3.view.dialog.EditCardDialogFragment;
+import com.group1.project3.view.dialog.EditCardDialogBuilder;
 import com.group1.project3.view.dialog.EditPipelineDialogBuilder;
 import com.group1.project3.view.dialog.EditProjectDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.UUID;
 
 public class ProjectActivity extends AppCompatActivity {
 
@@ -137,16 +139,27 @@ public class ProjectActivity extends AppCompatActivity {
                 });
     }
 
-    private void openCreateCardDialog() {
-        EditCardDialogFragment dialogFragment = new EditCardDialogFragment();
-        dialogFragment.show(getSupportFragmentManager(), EditCardDialogFragment.TAG);
+    private void openCreateCardDialog(Pipeline pipeline) {
+
+        EditCardDialogBuilder dialog = new EditCardDialogBuilder(this)
+                .setTitle("Create card")
+                .setView(R.layout.dialog_edit_card)
+                .setProject(project)
+                .setCard(new Card(UUID.randomUUID().toString()))
+                .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
+                .setPositiveButton("Save", (dialogInterface, i, card) -> {
+                    pipeline.addCard(card);
+                    pipelineAdapter.notifyDataSetChanged();
+                    projectRepository.updateProject(project);
+                });
+        dialog.show();
     }
 
     private void onLoadProject(Project project) {
         this.project = project;
         getSupportActionBar().setTitle(project.getName());
 
-        pipelineAdapter = new PipelineAdapter(project.getPipelines(), this::onClickCreateCardButton, this::onClickPipelineMenu);
+        pipelineAdapter = new PipelineAdapter(project, this::onClickCreateCardButton, this::onClickPipelineMenu);
 
         pipelineRecyclerView = findViewById(R.id.project_recyclerView_cards);
         pipelineRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -154,7 +167,7 @@ public class ProjectActivity extends AppCompatActivity {
     }
 
     private void onClickCreateCardButton(View view, int position) {
-        openCreateCardDialog();
+        openCreateCardDialog(project.getPipelines().get(position));
     }
 
     private void onClickPipelineMenu(View view, int position) {

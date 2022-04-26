@@ -11,13 +11,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.group1.project3.R;
+import com.group1.project3.model.Card;
 import com.group1.project3.model.Pipeline;
+import com.group1.project3.model.Project;
+import com.group1.project3.repository.FirestoreProjectRepository;
+import com.group1.project3.repository.ProjectRepository;
+import com.group1.project3.view.dialog.EditCardDialogBuilder;
 
-import java.util.List;
+import java.util.UUID;
 
 public class PipelineAdapter extends RecyclerView.Adapter<PipelineAdapter.ViewHolder> {
 
-    private final List<Pipeline> data;
+    private final Project project;
+    private ProjectRepository projectRepository;
 
     public interface OnPipelineClickListener {
         void onClick(View view, int position);
@@ -26,10 +32,11 @@ public class PipelineAdapter extends RecyclerView.Adapter<PipelineAdapter.ViewHo
     private final OnPipelineClickListener onClickAddCardListener;
     private final OnPipelineClickListener onClickMenuListener;
 
-    public PipelineAdapter(List<Pipeline> pipelines, OnPipelineClickListener onClickAddCardListener, OnPipelineClickListener onClickMenuListener) {
-        data = pipelines;
+    public PipelineAdapter(Project project, OnPipelineClickListener onClickAddCardListener, OnPipelineClickListener onClickMenuListener) {
+        this.project = project;
         this.onClickAddCardListener = onClickAddCardListener;
         this.onClickMenuListener = onClickMenuListener;
+        projectRepository = new FirestoreProjectRepository();
     }
 
     @NonNull
@@ -42,22 +49,36 @@ public class PipelineAdapter extends RecyclerView.Adapter<PipelineAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Pipeline pipeline = data.get(position);
+        Pipeline pipeline = project.getPipelines().get(position);
 
         holder.text_pipelineName.setText(pipeline.getName());
 
         holder.button_addCard.setOnClickListener(view -> onClickAddCardListener.onClick(view, position));
         holder.button_menu.setOnClickListener(view -> onClickMenuListener.onClick(view, position));
-        CardAdapter adapter = new CardAdapter(pipeline.getCards());
+        CardAdapter adapter = new CardAdapter(pipeline.getCards(), (view, card) -> onClickCard(view, pipeline, card));
         LinearLayoutManager layoutManager = new LinearLayoutManager(holder.recyclerView_cards.getContext(), LinearLayoutManager.VERTICAL, false);
 
         holder.recyclerView_cards.setLayoutManager(layoutManager);
         holder.setAdapter(adapter);
     }
 
+    private void onClickCard(View view, Pipeline pipeline, Card card) {
+        EditCardDialogBuilder dialog = new EditCardDialogBuilder(view.getContext())
+                .setTitle("Create card")
+                .setView(R.layout.dialog_edit_card)
+                .setProject(project)
+                .setCard(card)
+                .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
+                .setPositiveButton("Save", (dialogInterface, i, _card) -> {
+                    notifyDataSetChanged();
+                    projectRepository.updateProject(project);
+                });
+        dialog.show();
+    }
+
     @Override
     public int getItemCount() {
-        return data.size();
+        return project.getPipelines().size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
