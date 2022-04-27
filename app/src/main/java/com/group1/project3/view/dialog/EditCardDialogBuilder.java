@@ -145,7 +145,7 @@ public class EditCardDialogBuilder extends MaterialAlertDialogBuilder {
         contentContainer.removeAllViews();
 
         if (isPreview) {
-            neutralButton.setText("Preview");
+            neutralButton.setText(R.string.edit_card_dialog_builder_neutralButton_text_preview);
             View _view = alertDialog.getLayoutInflater().inflate(R.layout.item_edit_card, contentContainer, false);
             contentContainer.addView(_view);
             cardEditContent = _view.findViewById(R.id.card_edit_content);
@@ -168,7 +168,7 @@ public class EditCardDialogBuilder extends MaterialAlertDialogBuilder {
             cardEditContent.setText(cardContent);
             isPreview = false;
         } else {
-            neutralButton.setText("Edit");
+            neutralButton.setText(R.string.edit_card_dialog_builder_neutralButton_text_edit);
             View _view = alertDialog.getLayoutInflater().inflate(R.layout.item_preview_card, contentContainer, false);
             contentContainer.addView(_view);
             cardPreviewContent = _view.findViewById(R.id.card_preview_content);
@@ -199,11 +199,21 @@ public class EditCardDialogBuilder extends MaterialAlertDialogBuilder {
                     for (int i = 0, documentsSize = documents.size(); i < documentsSize; i++) {
                         DocumentSnapshot snapshot = documents.get(i);
                         User user = snapshot.toObject(User.class);
+                        //System.out.println(user.toString());
+                        usernames[i] = user.getUsername();
+                        if (userIds.contains(user.getId())) {
+                            checked = i;
+                        }
+                    }
+
+                    /*for (int i = 0, documentsSize = documents.size(); i < documentsSize; i++) {
+                        DocumentSnapshot snapshot = documents.get(i);
+                        User user = snapshot.toObject(User.class);
                         usernames[i] = user.getUsername();
                         if (this.userId.equals(user.getId())) {
                             checked = i;
                         }
-                    }
+                    }*/
 
                     MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
                     builder.setTitle("Edit tags")
