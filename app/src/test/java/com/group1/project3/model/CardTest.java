@@ -24,21 +24,26 @@ public class CardTest extends TestCase {
         Date assignedDate = new Date(1 / 12);
         Card card = new Card();
 
+        //test id
         card.setId(id);
         assertEquals(card.getId(), id);
 
+        //test title and content
         card.setContent(empty);
         assertEquals(card.getTitle(), empty);
         card.setContent(content);
         assertEquals(card.getTitle(), title);
         assertEquals(card.getContent(), content);
 
+        //test assigned user
         card.setAssignedUser(assignedUser);
         assertEquals(card.getAssignedUser(), assignedUser);
 
+        //tests assigned date
         card.setAssignedDate(assignedDate);
         assertEquals(card.getAssignedDate(), assignedDate);
 
+        //test tags
         assertEquals(card.getTags(), tags);
     }
 
@@ -54,15 +59,18 @@ public class CardTest extends TestCase {
         Tag tag2 = new Tag(name2);
         Card card = new Card(id);
 
+        //test add tag
         assertTrue(card.addTag(tag));
         assertTrue(card.addTag(tag2));
         tags.add(tag);
         tags.add(tag2);
         assertEquals(card.getTags(), tags);
 
+        //test has tag
         assertTrue(card.hasTag(tag));
         assertFalse(card.hasTag(new Tag("asdf")));
 
+        //test remove tag
         assertTrue(card.removeTag(tag));
         tags.remove(tag);
         assertEquals(card.getTags(), tags);
