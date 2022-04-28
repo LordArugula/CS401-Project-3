@@ -1,7 +1,5 @@
 package com.group1.project3.model;
 
-import android.graphics.Color;
-
 /**
  * Tags are labels that can be added to {@link Card cards}.
  */
@@ -26,7 +24,7 @@ public class Tag {
      * @param name The name of the tag.
      */
     public Tag(String name) {
-        this(name, Color.argb(1, 1, 1, 1));
+        this(name, -1);
     }
 
     /**
