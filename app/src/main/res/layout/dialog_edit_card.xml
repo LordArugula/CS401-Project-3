@@ -89,6 +89,12 @@
                 android:text="Tags" />
 
         </LinearLayout>
+
+        <Button
+            android:id="@+id/dialog_editCard_button_remove"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Remove" />
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

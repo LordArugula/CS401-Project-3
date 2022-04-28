@@ -185,13 +185,10 @@ public class ProjectActivity extends AppCompatActivity {
                                 projectRepository.updateProject(project);
                             })
                             .setTitle("Rename Pipeline")
+                            .setPipeline(pipeline)
                             .setView(R.layout.dialog_edit_pipeline)
                             .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
                             .create();
-                    alertDialog.setOnShowListener(dialogInterface -> {
-                        EditText input_pipelineName = alertDialog.findViewById(R.id.dialog_editPipeline_name);
-                        input_pipelineName.setText(pipeline.getName());
-                    });
                     alertDialog.show();
                     return true;
                 case R.id.menu_pipeline_delete:

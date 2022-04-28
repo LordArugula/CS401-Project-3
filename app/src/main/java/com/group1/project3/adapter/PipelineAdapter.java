@@ -18,8 +18,6 @@ import com.group1.project3.repository.FirestoreProjectRepository;
 import com.group1.project3.repository.ProjectRepository;
 import com.group1.project3.view.dialog.EditCardDialogBuilder;
 
-import java.util.UUID;
-
 public class PipelineAdapter extends RecyclerView.Adapter<PipelineAdapter.ViewHolder> {
 
     private final Project project;
@@ -67,6 +65,12 @@ public class PipelineAdapter extends RecyclerView.Adapter<PipelineAdapter.ViewHo
                 .setTitle("Create card")
                 .setView(R.layout.dialog_edit_card)
                 .setProject(project)
+                .setRemoveButton((dialogInterface, i) -> {
+                    dialogInterface.dismiss();
+                    pipeline.removeCard(card);
+                    notifyDataSetChanged();
+                    projectRepository.updateProject(project);
+                })
                 .setCard(card)
                 .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
                 .setPositiveButton("Save", (dialogInterface, i, _card) -> {

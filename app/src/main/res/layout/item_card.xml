@@ -10,14 +10,15 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="16dp">
 
         <TextView
             android:id="@+id/item_card_title"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:breakStrategy="simple"
             android:ellipsize="end"
             android:maxLines="3"
@@ -29,7 +30,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/item_card_tag_recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="32dp"
             android:orientation="horizontal"
             android:layoutDirection="rtl"
             android:padding="4dp"
@@ -39,8 +40,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="36dp"
+            android:layout_height="36dp"
             android:orientation="horizontal"
             android:padding="4dp">
 
