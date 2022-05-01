@@ -7,6 +7,7 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
+import android.text.format.DateUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -31,6 +32,8 @@ import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -54,6 +57,7 @@ public class EditCardDialogBuilder extends MaterialAlertDialogBuilder {
     private TextView cardPreviewContent;
 
     private TextView text_date;
+    private DialogInterface.OnClickListener onClickRemoveListener;
 
     public interface OnClickListener {
         void onClick(DialogInterface dialogInterface, int i, Card card);
@@ -92,6 +96,11 @@ public class EditCardDialogBuilder extends MaterialAlertDialogBuilder {
         return this;
     }
 
+    public EditCardDialogBuilder setRemoveButton(DialogInterface.OnClickListener listener) {
+        onClickRemoveListener = listener;
+        return this;
+    }
+
     @NonNull
     @Override
     public EditCardDialogBuilder setNegativeButton(@Nullable CharSequence text, @Nullable DialogInterface.OnClickListener listener) {
@@ -123,7 +132,9 @@ public class EditCardDialogBuilder extends MaterialAlertDialogBuilder {
         alertDialog.setOnShowListener(dialogInterface -> {
             Button neutralButton = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
             contentContainer = alertDialog.findViewById(R.id.dialog_editCard_card_content_container);
+
             text_date = alertDialog.findViewById(R.id.dialog_editCard_date);
+            text_date.setText(date == null ? "" : DateFormat.format("MM/dd/yyyy", date));
 
             Button datePicker = alertDialog.findViewById(R.id.dialog_editCard_button_date);
             datePicker.setOnClickListener(view -> openDatePicker());
@@ -133,6 +144,13 @@ public class EditCardDialogBuilder extends MaterialAlertDialogBuilder {
 
             Button tagButton = alertDialog.findViewById(R.id.dialog_editCard_button_tags);
             tagButton.setOnClickListener(view -> openTagsDialog());
+
+            Button removeButton = alertDialog.findViewById(R.id.dialog_editCard_button_remove);
+            if (onClickRemoveListener != null) {
+                removeButton.setOnClickListener(view -> onClickRemoveListener.onClick(alertDialog, 1));
+            } else {
+                removeButton.setVisibility(View.INVISIBLE);
+            }
 
             setCardContent(alertDialog, neutralButton);
             neutralButton.setOnClickListener(view -> setCardContent(alertDialog, neutralButton));
@@ -190,29 +208,40 @@ public class EditCardDialogBuilder extends MaterialAlertDialogBuilder {
     private void openUserDialog() {
         UserRepository userRepository = new FirestoreUserRepository();
         List<String> userIds = new ArrayList<>(project.getEditors().keySet());
-        String[] usernames = new String[userIds.size()];
 
         userRepository.getUsers(userIds)
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     int checked = -1;
                     List<DocumentSnapshot> documents = queryDocumentSnapshots.getDocuments();
+                    String[] usernames = new String[userIds.size()];
                     for (int i = 0, documentsSize = documents.size(); i < documentsSize; i++) {
                         DocumentSnapshot snapshot = documents.get(i);
                         User user = snapshot.toObject(User.class);
                         usernames[i] = user.getUsername();
-                        if (this.userId.equals(user.getId())) {
+                        if (user.getId().equals(userId)) {
                             checked = i;
                         }
                     }
 
+                    final String[] tempUser = new String[1];
                     MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
-                    builder.setTitle("Edit tags")
-                            .setSingleChoiceItems(usernames, checked, null)
+                    AlertDialog dialog = builder.setTitle("Edit tags")
+                            .setSingleChoiceItems(usernames, checked, (dialogInterface, i) -> {
+                                tempUser[0] = userIds.get(i);
+                            })
                             .setPositiveButton("Assign User", (dialogInterface, i) -> {
-                                this.userId = userIds.get(i);
+                                userId = tempUser[0];
                             })
                             .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
+                            .setNeutralButton("Unassign User", ((dialogInterface, i) -> {
+                                userId = null;
+                                dialogInterface.dismiss();
+                            }))
                             .show();
+
+                    this.setOnDismissListener(dialogInterface -> {
+                        dialog.dismiss();
+                    });
                 });
     }
 
@@ -244,19 +273,24 @@ public class EditCardDialogBuilder extends MaterialAlertDialogBuilder {
 
     private void openDatePicker() {
         Calendar calendar = Calendar.getInstance();
-        if (card.getAssignedDate() != null) {
-            calendar.setTime(card.getAssignedDate());
-        }
         long minDate = calendar.getTimeInMillis();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int year, month, day;
+        if (card.getAssignedDate() != null) {
+            ZonedDateTime zonedDateTime = card.getAssignedDate().toInstant().atZone(ZoneId.systemDefault());
+            year = zonedDateTime.getYear();
+            month = zonedDateTime.getMonthValue();
+            day = zonedDateTime.getDayOfMonth();
+        } else {
+            year = calendar.get(Calendar.YEAR);
+            month = calendar.get(Calendar.MONTH);
+            day = calendar.get(Calendar.DAY_OF_MONTH);
+        }
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), (datePicker, _year, _month, _day) -> {
             Calendar _calendar = Calendar.getInstance();
             _calendar.set(_year, _month, _day);
             Date date = _calendar.getTime();
-            card.setAssignedDate(date);
+            this.date = date;
 
             text_date.setText(DateFormat.format("MM/dd/yyyy", _calendar));
         }, year, month, day);

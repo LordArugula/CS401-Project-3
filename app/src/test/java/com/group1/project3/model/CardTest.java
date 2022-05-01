@@ -30,9 +30,9 @@ public class CardTest extends TestCase {
 
         //test title and content
         card.setContent(empty);
-        assertEquals(card.getTitle(), empty);
+        assertEquals(card.title(), empty);
         card.setContent(content);
-        assertEquals(card.getTitle(), title);
+        assertEquals(card.title(), title);
         assertEquals(card.getContent(), content);
 
         //test assigned user

@@ -88,8 +88,10 @@ public class Card {
      *
      * @return this card's title.
      */
-    public String getTitle() {
-
+    public String title() {
+        if (content == null) {
+            return "";
+        }
         int i = content.indexOf('\n');
         if (i == -1) {
             return content;

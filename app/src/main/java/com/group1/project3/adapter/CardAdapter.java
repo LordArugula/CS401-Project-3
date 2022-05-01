@@ -1,6 +1,7 @@
 package com.group1.project3.adapter;
 
 import android.text.Html;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,11 +46,16 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Card card = data.get(position);
 
-        Parser parser = Parser.builder().build();
-        Node document = parser.parse(card.getTitle());
-        HtmlRenderer renderer = HtmlRenderer.builder().build();
-        holder.text_title.setText(Html.fromHtml(renderer.render(document), Html.FROM_HTML_MODE_LEGACY));
-        holder.text_date.setText(card.getAssignedDate() == null ? "" : card.getAssignedDate().toString());
+        if (card.getContent() != null) {
+            Parser parser = Parser.builder().build();
+            Node document = parser.parse(card.title());
+            HtmlRenderer renderer = HtmlRenderer.builder().build();
+            holder.text_title.setText(Html.fromHtml(renderer.render(document), Html.FROM_HTML_MODE_LEGACY));
+        } else {
+            holder.text_title.setText("");
+        }
+
+        holder.text_date.setText(card.getAssignedDate() == null ? "" : DateFormat.format("MM/dd/yyyy", card.getAssignedDate()));
 
         holder.itemView.setOnClickListener(view -> onClickListener.onClick(view, card));
     }
