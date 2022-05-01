@@ -50,18 +50,9 @@ public class ProfileController {
 
     public Task<Void> updateProfile(String email, String username, String first, String last, Uri profilePicUri) {
         return userRepository.updateProfile(email, username, profilePicUri);
-//                .onSuccessTask(unused -> {
-//                    Log.d("Profile", "Setting user");
-//                    currentUser.setEmail(email);
-//                    currentUser.setUsername(username);
-//                    currentUser.setFirstName(first);
-//                    currentUser.setLastName(last);
-//                    currentUser.setProfilePicUri(profilePicUri == null ? null : profilePicUri.toString());
-//                    return userRepository.updateUser(currentUser);
-//                });
     }
 
     public Task<Void> updateUser(User user) {
-        return userRepository.updateUser(currentUser);
+        return userRepository.updateUser(user);
     }
 }
