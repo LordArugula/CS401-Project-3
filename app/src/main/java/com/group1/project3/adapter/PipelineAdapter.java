@@ -55,7 +55,6 @@ public class PipelineAdapter extends RecyclerView.Adapter<PipelineAdapter.ViewHo
         holder.button_menu.setOnClickListener(view -> onClickMenuListener.onClick(view, position));
         CardAdapter adapter = new CardAdapter(pipeline.getCards(), (view, card) -> onClickCard(view, pipeline, card));
         LinearLayoutManager layoutManager = new LinearLayoutManager(holder.recyclerView_cards.getContext(), LinearLayoutManager.VERTICAL, false);
-
         holder.recyclerView_cards.setLayoutManager(layoutManager);
         holder.setAdapter(adapter);
     }

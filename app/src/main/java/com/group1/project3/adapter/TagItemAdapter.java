@@ -18,11 +18,11 @@ import com.group1.project3.view.dialog.EditTagDialogBuilder;
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Tag}.
  */
-public class TagAdapter extends RecyclerView.Adapter<TagAdapter.ViewHolder> {
+public class TagItemAdapter extends RecyclerView.Adapter<TagItemAdapter.ViewHolder> {
 
     private final Project project;
 
-    public TagAdapter(Project project) {
+    public TagItemAdapter(Project project) {
         this.project = project;
     }
 

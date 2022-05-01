@@ -28,7 +28,7 @@
             android:textSize="24sp" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/item_card_tag_recyclerView"
+            android:id="@+id/item_card_recylerView_tags"
             android:layout_width="match_parent"
             android:layout_height="32dp"
             android:orientation="horizontal"

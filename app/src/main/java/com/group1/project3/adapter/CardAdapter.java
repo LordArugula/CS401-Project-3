@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.group1.project3.R;
@@ -58,6 +59,11 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         holder.text_date.setText(card.getAssignedDate() == null ? "" : DateFormat.format("MM/dd/yyyy", card.getAssignedDate()));
 
         holder.itemView.setOnClickListener(view -> onClickListener.onClick(view, card));
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(holder.recyclerView_tags.getContext(), LinearLayoutManager.VERTICAL, false);
+        holder.recyclerView_tags.setLayoutManager(layoutManager);
+        TagIconAdapter tagAdapter = new TagIconAdapter(card.getTags());
+        holder.setAdapter(tagAdapter);
     }
 
     @Override
@@ -69,19 +75,19 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
         TextView text_title;
         TextView text_date;
         ImageView image_userProfile;
-        RecyclerView recyclerView_tags;
 
-        TagAdapter tagAdapter;
+        RecyclerView recyclerView_tags;
+        TagIconAdapter tagAdapter;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             text_title = itemView.findViewById(R.id.item_card_title);
             text_date = itemView.findViewById(R.id.item_card_date);
             image_userProfile = itemView.findViewById(R.id.item_card_assigned_user_profile_image);
-            recyclerView_tags = itemView.findViewById(R.id.item_card_tag_recyclerView);
+            recyclerView_tags = itemView.findViewById(R.id.item_card_recylerView_tags);
         }
 
-        public void setAdapter(TagAdapter adapter) {
+        public void setAdapter(TagIconAdapter adapter) {
             this.tagAdapter = adapter;
             recyclerView_tags.setAdapter(adapter);
         }

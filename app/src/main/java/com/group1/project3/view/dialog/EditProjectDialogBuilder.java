@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.group1.project3.R;
-import com.group1.project3.adapter.TagAdapter;
+import com.group1.project3.adapter.TagItemAdapter;
 import com.group1.project3.model.Project;
 import com.group1.project3.model.Tag;
 import com.group1.project3.view.validator.CreateProjectFormValidator;
@@ -130,9 +130,9 @@ public class EditProjectDialogBuilder extends MaterialAlertDialogBuilder {
             }
 
             RecyclerView recyclerView_tags = alertDialog.findViewById(R.id.dialog_editProject_recyclerView_tags);
-            TagAdapter tagAdapter = new TagAdapter(project);
+            TagItemAdapter tagItemAdapter = new TagItemAdapter(project);
             recyclerView_tags.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-            recyclerView_tags.setAdapter(tagAdapter);
+            recyclerView_tags.setAdapter(tagItemAdapter);
         });
 
         return alertDialog;
