@@ -1,27 +1,54 @@
 package com.group1.project3.adapter;
 
 import junit.framework.TestCase;
+
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 import static org.hamcrest.CoreMatchers.instanceOf;
 
 import android.content.Context;
+import android.text.Layout;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
+import com.group1.project3.R;
 import com.group1.project3.model.Card;
+
+import org.junit.Assert;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * tests the {@link CardAdapter} class
+ */
+public class CardAdapterTest {
 
-public class CardAdapterTest extends TestCase {
-
+    /**
+     * tests the onCreateViewHolder() method
+     */
+    @Test
     public void testOnCreateViewHolder() {
+        CardAdapter cardAdapter = mock(CardAdapter.class);
+        CardAdapter.ViewHolder mockViewHolder = mock(CardAdapter.ViewHolder.class);
+        ViewGroup parent = mock(ViewGroup.class);
+        when(cardAdapter.onCreateViewHolder(parent, 1)).thenReturn(mockViewHolder);
+
+        Assert.assertSame(cardAdapter.onCreateViewHolder(parent, 1), mockViewHolder);
     }
 
+    @Test
     public void testOnBindViewHolder() {
+
     }
 
+    /**
+     * tests the getItemCount() method
+     */
+    @Test
     public void testGetItemCount() {
         //create mock view and card for use when creating mock onClickListener
         View mockedView = mock(View.class);
@@ -35,8 +62,8 @@ public class CardAdapterTest extends TestCase {
             Card card = invocation.getArgument(1);
 
             //assert that the passed argument matches
-            assertEquals(mockedView, view);
-            assertEquals(mockedCard, card);
+            Assert.assertEquals(mockedView, view);
+            Assert.assertEquals(mockedCard, card);
 
             return null;
         }).when(mockedOnClickListener).onClick(any(View.class), any(Card.class));
@@ -52,6 +79,6 @@ public class CardAdapterTest extends TestCase {
         verify(mockedOnClickListener, times(1));
 
         //check that the created card adapter has the correct number of cards
-        assertEquals(cardAdapter.getItemCount(), 2);
+        Assert.assertEquals(cardAdapter.getItemCount(), 2);
     }
 }
