@@ -71,6 +71,15 @@ public class User {
     }
 
     /**
+     * sets the user's id
+     *
+     * @param id the user id
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    /**
      * returns the user's first name
      *
      * @return the user's first name

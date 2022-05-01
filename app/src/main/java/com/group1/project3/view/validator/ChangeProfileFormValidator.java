@@ -16,16 +16,18 @@ public class ChangeProfileFormValidator implements TextWatcher {
     private final EditText lastNameText;
     private final EditText emailText;
     private final Button submitButton;
+    private final Button revertButton;
     private Uri profilePicUri;
     private User user;
 
-    public ChangeProfileFormValidator(EditText usernameText, EditText firstNameText, EditText lastNameText, EditText emailText, Uri profilePicUri, Button submitButton) {
+    public ChangeProfileFormValidator(EditText usernameText, EditText firstNameText, EditText lastNameText, EditText emailText, Uri profilePicUri, Button submitButton, Button revertButton) {
         this.usernameText = usernameText;
         this.firstNameText = firstNameText;
         this.lastNameText = lastNameText;
         this.emailText = emailText;
         this.profilePicUri = profilePicUri;
         this.submitButton = submitButton;
+        this.revertButton = revertButton;
     }
 
     public void setUser(User user) {
@@ -70,6 +72,7 @@ public class ChangeProfileFormValidator implements TextWatcher {
         }
 
         submitButton.setEnabled(canUpdateProfile);
+        revertButton.setEnabled(canUpdateProfile);
     }
 
     private boolean hasChanges(String username, String firstName, String lastName, String email) {
