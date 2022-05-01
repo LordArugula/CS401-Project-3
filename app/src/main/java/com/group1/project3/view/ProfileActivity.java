@@ -18,7 +18,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.group1.project3.R;
-import com.group1.project3.controller.ProfileController;
+import com.group1.project3.controller.UserController;
 import com.group1.project3.model.User;
 import com.group1.project3.repository.FirestoreUserRepository;
 import com.group1.project3.view.dialog.UploadImageDialogBuilder;
@@ -43,7 +43,7 @@ public class ProfileActivity extends AppCompatActivity {
     private Button button_updatePassword;
     private ChangeProfileFormValidator profileWatcher;
 
-    private ProfileController profileController;
+    private UserController profileController;
     private User user;
 
     @Override
@@ -88,7 +88,7 @@ public class ProfileActivity extends AppCompatActivity {
         actionBar.setTitle(R.string.profile_title);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        profileController = new ProfileController(new FirestoreUserRepository());
+        profileController = new UserController(new FirestoreUserRepository());
         profileController.getCurrentUser()
                 .addOnSuccessListener(user -> {
                     this.user = user;

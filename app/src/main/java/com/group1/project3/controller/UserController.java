@@ -9,13 +9,13 @@ import com.google.android.gms.tasks.Tasks;
 import com.group1.project3.model.User;
 import com.group1.project3.repository.UserRepository;
 
-public class ProfileController {
+public class UserController {
 
     private final UserRepository userRepository;
 
     private User currentUser;
 
-    public ProfileController(UserRepository userRepository) {
+    public UserController(UserRepository userRepository) {
         if (userRepository == null) {
             throw new IllegalArgumentException("userRepository cannot be null.");
         }

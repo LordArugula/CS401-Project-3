@@ -14,7 +14,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.group1.project3.R;
-import com.group1.project3.controller.ProfileController;
+import com.group1.project3.controller.UserController;
 import com.group1.project3.model.User;
 import com.group1.project3.repository.FirestoreUserRepository;
 import com.group1.project3.view.validator.RegisterFormValidator;
@@ -79,7 +79,7 @@ public class RegisterActivity extends AppCompatActivity {
         String username = input_username.getText().toString().trim();
 
         User user = new User("", firstName, lastName, username, email);
-        ProfileController profileController = new ProfileController(new FirestoreUserRepository());
+        UserController profileController = new UserController(new FirestoreUserRepository());
         profileController.register(user, password)
                 .addOnSuccessListener(unused -> {
                     Log.d("Register", "Registered Account");
