@@ -1,5 +1,7 @@
 package com.group1.project3.model;
 
+import java.util.Objects;
+
 /**
  * Tags are labels that can be added to {@link Card cards}.
  */
@@ -72,5 +74,18 @@ public class Tag {
      */
     public void setColor(int color) {
         this.color = color;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Tag tag = (Tag) o;
+        return color == tag.color && name.equals(tag.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, color);
     }
 }

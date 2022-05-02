@@ -192,16 +192,10 @@ public class Card {
         return tags.remove(tag);
     }
 
-//    @Override
-//    public Map<String, Object> serializeAsMap() {
-//        HashMap<String, Object> map = new HashMap<>();
-//
-//        map.put("id", id);
-//        map.put("content", content);
-//        map.put("assignedUser", assignedUser);
-//        map.put("assignedDate", assignedDate);
-//        map.put("tags", new ArrayList<Tag>(tags));
-//
-//        return Collections.unmodifiableMap(map);
-//    }
+    /**
+     * Removes all tags from this card.
+     */
+    public void clearTags() {
+        tags.clear();
+    }
 }
