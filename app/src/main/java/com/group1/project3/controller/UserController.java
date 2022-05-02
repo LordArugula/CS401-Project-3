@@ -5,7 +5,7 @@ import android.net.Uri;
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
+import com.group1.project3.model.Project;
 import com.group1.project3.model.User;
 import com.group1.project3.repository.UserRepository;
 
@@ -21,27 +21,24 @@ public class UserController {
         }
 
         this.userRepository = userRepository;
-        getCurrentUser()
-                .addOnSuccessListener(user -> currentUser = user);
+        loadCurrentUser().addOnSuccessListener(user -> currentUser = user);
     }
 
     public Task<Void> register(@NonNull User user, String password) {
         return userRepository.registerUser(user.getEmail(), password)
-                .onSuccessTask(authResult -> {
-                    assert authResult.getUser() != null;
-
+                .onSuccessTask(userId -> {
                     currentUser = user;
-                    user.setId(authResult.getUser().getUid());
+                    user.setId(userId);
                     return userRepository.createUserProfile(user);
                 });
     }
 
-    public Task<User> getCurrentUser() {
-        if (currentUser != null) {
-            return Tasks.forResult(currentUser);
-        }
-
+    public Task<User> loadCurrentUser() {
         return userRepository.getCurrentUser();
+    }
+
+    public User getCurrentUser() {
+        return currentUser;
     }
 
     public Task<Void> updatePassword(String oldPassword, String newPassword) {
@@ -49,10 +46,15 @@ public class UserController {
     }
 
     public Task<Void> updateProfile(String email, String username, String first, String last, Uri profilePicUri) {
-        return userRepository.updateProfile(email, username, profilePicUri);
+        return userRepository.updateProfile(currentUser, email, username, first, last, profilePicUri);
     }
 
     public Task<Void> updateUser(User user) {
         return userRepository.updateUser(user);
+    }
+
+    public Task<Void> addProject(Project project) {
+        currentUser.addProject(project.getId());
+        return userRepository.updateUser(currentUser);
     }
 }

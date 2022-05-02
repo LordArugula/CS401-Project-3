@@ -3,7 +3,6 @@ package com.group1.project3.repository;
 import android.net.Uri;
 
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.group1.project3.model.User;
 
@@ -19,9 +18,10 @@ public interface UserRepository {
      *
      * @param email    The user email address.
      * @param password The user password.
-     * @return a {@link Task<AuthResult>} representing the register request.
+     * @return a {@link Task<String>} representing the register request that
+     * returns the registered user id.
      */
-    Task<AuthResult> registerUser(String email, String password);
+    Task<String> registerUser(String email, String password);
 
     /**
      * Updates the user's password.
@@ -80,6 +80,6 @@ public interface UserRepository {
      * @param profilePicUri the user profile picture {@link Uri}.
      * @return a {@link Task<Void>} representing the change profile request.
      */
-    Task<Void> updateProfile(String email, String username, Uri profilePicUri);
+    Task<Void> updateProfile(User user, String email, String username, String first, String last, Uri profilePicUri);
 }
 

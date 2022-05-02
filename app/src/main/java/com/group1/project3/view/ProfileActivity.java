@@ -89,13 +89,13 @@ public class ProfileActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         profileController = new UserController(new FirestoreUserRepository());
-        profileController.getCurrentUser()
-                .addOnSuccessListener(user -> {
-                    this.user = user;
-                    bindUser(user);
-                    profileWatcher.setUser(user);
-                    profileWatcher.validateForm();
-                });
+        User user = profileController.getCurrentUser();
+//                .addOnSuccessListener(user -> {
+        this.user = user;
+        bindUser(user);
+        profileWatcher.setUser(user);
+        profileWatcher.validateForm();
+//                });
     }
 
     private void onClickUpdateImageButton(View view) {
@@ -154,14 +154,6 @@ public class ProfileActivity extends AppCompatActivity {
         String last = input_lastName.getText().toString().trim();
 
         profileController.updateProfile(email, username, first, last, profilePicUri)
-                .onSuccessTask(unused -> {
-                    user.setUsername(username);
-                    user.setEmail(email);
-                    user.setFirstName(first);
-                    user.setLastName(last);
-                    user.setProfilePicUri(profilePicUri.toString());
-                    return profileController.updateUser(user);
-                })
                 .addOnSuccessListener(unused -> {
                     Log.d("Profile", "Updated user profile.");
                     bindUser(user);

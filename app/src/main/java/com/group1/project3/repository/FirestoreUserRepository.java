@@ -4,8 +4,8 @@ import android.net.Uri;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.group1.project3.model.User;
@@ -23,9 +23,15 @@ public class FirestoreUserRepository implements UserRepository {
     }
 
     @Override
-    public Task<AuthResult> registerUser(String email, String password) {
+    public Task<String> registerUser(String email, String password) {
         FirebaseAuth auth = FirebaseUtil.getAuth();
-        return auth.createUserWithEmailAndPassword(email, password);
+
+        return auth.createUserWithEmailAndPassword(email, password)
+                .onSuccessTask(authResult -> {
+                    FirebaseUser user = authResult.getUser();
+                    assert user != null;
+                    return Tasks.forResult(user.getUid());
+                });
     }
 
     @Override
@@ -73,8 +79,16 @@ public class FirestoreUserRepository implements UserRepository {
     }
 
     @Override
-    public Task<Void> updateProfile(String email, String username, Uri profilePicUri) {
+    public Task<Void> updateProfile(User user, String email, String username, String first, String last, Uri profilePicUri) {
         return FirebaseUtil.updateEmail(email)
-                .onSuccessTask(unused -> FirebaseUtil.updateProfile(username, profilePicUri));
+                .onSuccessTask(unused -> FirebaseUtil.updateProfile(username, profilePicUri))
+                .onSuccessTask(unused -> {
+                    user.setEmail(email);
+                    user.setUsername(username);
+                    user.setFirstName(first);
+                    user.setLastName(last);
+                    user.setProfilePicUri(profilePicUri == null ? "" : profilePicUri.toString());
+                    return updateUser(user);
+                });
     }
 }
