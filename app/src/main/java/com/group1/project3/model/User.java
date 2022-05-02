@@ -45,12 +45,21 @@ public class User {
     private String profilePic;
 
     /**
-     * Constructor for User class
+     * Creates an empty user.
      */
     public User() {
         projectIds = new ArrayList<>();
     }
 
+    /**
+     * Creates a user with an id, first and last name, username, and email address.
+     *
+     * @param id       the user id
+     * @param first    the user first name
+     * @param last     the user last name
+     * @param username the username
+     * @param email    the email address
+     */
     public User(String id, String first, String last, String username, String email) {
         this();
         this.id = id;
@@ -68,6 +77,15 @@ public class User {
      */
     public String getId() {
         return id;
+    }
+
+    /**
+     * sets the user's id
+     *
+     * @param id the user id
+     */
+    public void setId(String id) {
+        this.id = id;
     }
 
     /**

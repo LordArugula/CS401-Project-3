@@ -16,73 +16,107 @@ import com.group1.project3.model.Tag;
 import com.skydoves.colorpickerview.ColorPickerDialog;
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
 
+/**
+ * The EditTagDialog builder.
+ */
 public class EditTagDialogBuilder extends MaterialAlertDialogBuilder {
 
+    /**
+     * The tag name EditText.
+     */
     private EditText input_tagName;
+    /**
+     * The background color view.
+     */
     private View view_bgColor;
+    /**
+     * The background color.
+     */
     private int color;
-
+    /**
+     * The tag.
+     */
     private Tag tag;
 
+    /**
+     * The OnClickListener interface.
+     */
     public interface OnClickListener {
+        /**
+         * The onClick callback.
+         *
+         * @param dialogInterface the dialog interface.
+         * @param i               the button index.
+         * @param tag             the tag.
+         */
         void onClick(DialogInterface dialogInterface, int i, Tag tag);
     }
 
+    /**
+     * Creates the dialog builder.
+     *
+     * @param context the context.
+     */
     public EditTagDialogBuilder(@NonNull Context context) {
         super(context);
     }
 
+    /**
+     * Sets the tag to edit.
+     *
+     * @param tag the tag.
+     * @return the builder.
+     */
     public EditTagDialogBuilder setTag(Tag tag) {
         this.tag = tag;
         this.color = tag.getColor();
         return this;
     }
 
-    @NonNull
-    @Override
-    public EditTagDialogBuilder setTitle(int titleId) {
-        return (EditTagDialogBuilder) super.setTitle(titleId);
-    }
-
+    /**
+     * Sets the title of the dialog.
+     *
+     * @param title the title.
+     * @return the builder.
+     */
     @NonNull
     @Override
     public EditTagDialogBuilder setTitle(@Nullable CharSequence title) {
         return (EditTagDialogBuilder) super.setTitle(title);
     }
 
-    @NonNull
-    @Override
-    public EditTagDialogBuilder setView(@Nullable View view) {
-        return (EditTagDialogBuilder) super.setView(view);
-    }
-
+    /**
+     * Sets the view of the dialog.
+     *
+     * @param layoutResId the view id.
+     * @return the builder.
+     */
     @NonNull
     @Override
     public EditTagDialogBuilder setView(int layoutResId) {
         return (EditTagDialogBuilder) super.setView(layoutResId);
     }
 
-    @NonNull
-    @Override
-    public EditTagDialogBuilder setNegativeButton(int textId, @Nullable DialogInterface.OnClickListener listener) {
-        return (EditTagDialogBuilder) super.setNegativeButton(textId, listener);
-    }
-
+    /**
+     * Sets the negative button text and listener.
+     *
+     * @param text     the text.
+     * @param listener the listener.
+     * @return the builder.
+     */
     @NonNull
     @Override
     public EditTagDialogBuilder setNegativeButton(@Nullable CharSequence text, @Nullable DialogInterface.OnClickListener listener) {
         return (EditTagDialogBuilder) super.setNegativeButton(text, listener);
     }
 
-    @NonNull
-    public EditTagDialogBuilder setPositiveButton(int textId, @Nullable OnClickListener onClickListener) {
-        return (EditTagDialogBuilder) super.setPositiveButton(textId, (dialogInterface, i) -> {
-            tag.setName(input_tagName.getText().toString().trim());
-            tag.setColor(color);
-            onClickListener.onClick(dialogInterface, i, tag);
-        });
-    }
-
+    /**
+     * Sets the positive button text and listener.
+     *
+     * @param text            the text.
+     * @param onClickListener the listener.
+     * @return the builder.
+     */
     @NonNull
     public EditTagDialogBuilder setPositiveButton(CharSequence text, @Nullable OnClickListener onClickListener) {
         return (EditTagDialogBuilder) super.setPositiveButton(text, (dialogInterface, i) -> {
@@ -92,15 +126,33 @@ public class EditTagDialogBuilder extends MaterialAlertDialogBuilder {
         });
     }
 
+    /**
+     * Whether to show the delete button or not.
+     */
     private boolean useDeleteButton = false;
+    /**
+     * The delete button onClick listener.
+     */
     private OnClickListener onDeleteTagListener;
 
+    /**
+     * Sets the delete button listener.
+     *
+     * @param enabled         whether to use the delete button.
+     * @param onClickListener the delete button listener.
+     * @return the builder.
+     */
     public EditTagDialogBuilder setDeleteButton(boolean enabled, OnClickListener onClickListener) {
         useDeleteButton = enabled;
         onDeleteTagListener = onClickListener;
         return this;
     }
 
+    /**
+     * Creates the alert dialog.
+     *
+     * @return
+     */
     @NonNull
     @Override
     public AlertDialog create() {
@@ -131,6 +183,11 @@ public class EditTagDialogBuilder extends MaterialAlertDialogBuilder {
         return alertDialog;
     }
 
+    /**
+     * Opens the color picker dialog.
+     *
+     * @param view the color picker button.
+     */
     private void onClickColorPickerButton(View view) {
 
         ColorPickerDialog.Builder builder = new ColorPickerDialog.Builder(getContext())

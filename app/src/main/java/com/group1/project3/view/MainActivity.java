@@ -14,12 +14,20 @@ import com.group1.project3.util.FirebaseUtil;
  */
 public class MainActivity extends AppCompatActivity {
 
+    /**
+     * Called when the activity is created.
+     *
+     * @param savedInstanceState the saved instance state.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
 
+    /**
+     * Called when the activity starts.
+     */
     @Override
     protected void onStart() {
         super.onStart();

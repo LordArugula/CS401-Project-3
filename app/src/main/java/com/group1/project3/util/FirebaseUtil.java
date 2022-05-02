@@ -20,7 +20,7 @@ public final class FirebaseUtil {
     /**
      * Use emulators only in debug builds
      **/
-    private static final boolean sUseEmulators = BuildConfig.DEBUG;
+    private static final boolean sUseEmulators = BuildConfig.DEBUG && false;
 
     /**
      * The FirebaseFirestore instance.

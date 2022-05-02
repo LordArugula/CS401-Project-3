@@ -12,17 +12,29 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.group1.project3.R;
 import com.group1.project3.util.FirebaseUtil;
 import com.group1.project3.view.validator.LoginFormValidator;
 
+/**
+ * The Login Activity.
+ */
 public class LoginActivity extends AppCompatActivity {
 
+    /**
+     * The email EditText.
+     */
     private EditText input_email;
+    /**
+     * The password EditText.
+     */
     private EditText input_password;
 
+    /**
+     * Called when the activity is created.
+     *
+     * @param savedInstanceState the saved instance state.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,11 +63,20 @@ public class LoginActivity extends AppCompatActivity {
      * @param view the button that was clicked on.
      */
     private void onClickSignInButton(View view) {
-        signIn()
+        String email = input_email.getText().toString().trim();
+        String password = input_password.getText().toString();
+
+        FirebaseUtil.signIn(email, password)
                 .addOnSuccessListener(authResult -> finish())
                 .addOnFailureListener(exception -> Toast.makeText(LoginActivity.this, exception.getMessage(), Toast.LENGTH_SHORT).show());
     }
 
+    /**
+     * The options menu handler
+     *
+     * @param item the menu item.
+     * @return based on the selected option.
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -63,12 +84,5 @@ public class LoginActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private Task<AuthResult> signIn() {
-        String email = input_email.getText().toString().trim();
-        String password = input_password.getText().toString();
-
-        return FirebaseUtil.signIn(email, password);
     }
 }

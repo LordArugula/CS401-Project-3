@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Patterns;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -22,67 +21,134 @@ import com.group1.project3.R;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+/**
+ * The UploadImageDialog builder.
+ */
 public class UploadImageDialogBuilder extends MaterialAlertDialogBuilder {
 
+    /**
+     * The Uri for the image.
+     */
     private Uri imageUri;
+    /**
+     * The placeholder resource id.
+     */
     private int placeholderResId;
 
+    /**
+     * The image url EditText.
+     */
     private EditText input_imageUrl;
+    /**
+     * The preview ImageView.
+     */
     private ImageView image_preview;
+    /**
+     * The upload button.
+     */
     private Button button_upload;
 
+    /**
+     * Creates the builder.
+     *
+     * @param context the context.
+     */
     public UploadImageDialogBuilder(@NonNull Context context) {
         super(context);
     }
 
-    @NonNull
-    @Override
-    public UploadImageDialogBuilder setTitle(int titleId) {
-        return (UploadImageDialogBuilder) super.setTitle(titleId);
-    }
-
+    /**
+     * Sets teh title of the dialog.
+     *
+     * @param title the title
+     * @return the builder
+     */
     @NonNull
     @Override
     public UploadImageDialogBuilder setTitle(@Nullable CharSequence title) {
         return (UploadImageDialogBuilder) super.setTitle(title);
     }
 
+    /**
+     * Sets the view of the dialog.
+     *
+     * @param layoutResId the view id.
+     * @return the builder.
+     */
     @NonNull
     @Override
     public UploadImageDialogBuilder setView(int layoutResId) {
         return (UploadImageDialogBuilder) super.setView(layoutResId);
     }
 
+    /**
+     * Sets the default image Uri.
+     *
+     * @param imageUri the image Uri
+     * @return the builder.
+     */
     @NonNull
     public UploadImageDialogBuilder setImageUri(Uri imageUri) {
         this.imageUri = imageUri;
         return this;
     }
 
+    /**
+     * Sets the placeholder image resource id.
+     *
+     * @param placeholderResId the resource id.
+     * @return the builder.
+     */
     @NonNull
     public UploadImageDialogBuilder setPlaceholderImage(int placeholderResId) {
         this.placeholderResId = placeholderResId;
         return this;
     }
 
+    /**
+     * Sets the negative button text and listener.
+     *
+     * @param text     the text.
+     * @param listener the listener.
+     * @return the builder.
+     */
     @NonNull
     @Override
     public UploadImageDialogBuilder setNegativeButton(@Nullable CharSequence text, @Nullable DialogInterface.OnClickListener listener) {
         return (UploadImageDialogBuilder) super.setNegativeButton(text, listener);
     }
 
+    /**
+     * Sets the neutral button text and listener.
+     *
+     * @param text     the text.
+     * @param listener the listener.
+     * @return the builder.
+     */
     @NonNull
     @Override
     public UploadImageDialogBuilder setNeutralButton(@Nullable CharSequence text, @Nullable DialogInterface.OnClickListener listener) {
         return (UploadImageDialogBuilder) super.setNeutralButton(text, listener);
     }
 
+    /**
+     * Sets the positive button text and listener.
+     *
+     * @param text            the text.
+     * @param onClickListener the listener.
+     * @return the builder.
+     */
     @NonNull
     public UploadImageDialogBuilder setPositiveButton(@Nullable CharSequence text, @Nullable OnClickListener onClickListener) {
         setPositiveButton(text, (dialogInterface, i) -> onClickListener.onClick(dialogInterface, i, imageUri));
         return this;
     }
 
+    /**
+     * Creates the dialog.
+     *
+     * @return the dialog.
+     */
     @NonNull
     @Override
     public AlertDialog create() {
@@ -105,30 +171,27 @@ public class UploadImageDialogBuilder extends MaterialAlertDialogBuilder {
 
             button_upload = alertDialog.findViewById(R.id.imageURLDialog_button_upload);
             button_upload.setEnabled(false);
-            button_upload.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String imageUrlString = input_imageUrl.getText().toString().trim();
-                    Uri _imageUri = Uri.parse(imageUrlString);
+            button_upload.setOnClickListener(view -> {
+                String imageUrlString = input_imageUrl.getText().toString().trim();
+                Uri _imageUri = Uri.parse(imageUrlString);
 
-                    Picasso.get()
-                            .load(_imageUri)
-                            .resize(64, 64)
-                            .config(Bitmap.Config.ARGB_8888)
-                            .placeholder(placeholderResId)
-                            .into(image_preview, new Callback() {
-                                @Override
-                                public void onSuccess() {
-                                    imageUri = _imageUri;
-                                    image_preview.setClipToOutline(true);
-                                }
+                Picasso.get()
+                        .load(_imageUri)
+                        .resize(64, 64)
+                        .config(Bitmap.Config.ARGB_8888)
+                        .placeholder(placeholderResId)
+                        .into(image_preview, new Callback() {
+                            @Override
+                            public void onSuccess() {
+                                imageUri = _imageUri;
+                                image_preview.setClipToOutline(true);
+                            }
 
-                                @Override
-                                public void onError(Exception e) {
-                                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                }
+                            @Override
+                            public void onError(Exception e) {
+                                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
             });
 
             input_imageUrl.addTextChangedListener(new TextWatcher() {
@@ -152,7 +215,17 @@ public class UploadImageDialogBuilder extends MaterialAlertDialogBuilder {
         return alertDialog;
     }
 
+    /**
+     * The OnClickListener interface.
+     */
     public interface OnClickListener {
+        /**
+         * The onClick callback.
+         *
+         * @param dialogInterface the dialog interface.
+         * @param i               the dialog button index.
+         * @param imageUri        the image Uri.
+         */
         void onClick(DialogInterface dialogInterface, int i, Uri imageUri);
     }
 }

@@ -7,7 +7,6 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
-import android.text.format.DateUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -17,10 +16,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.group1.project3.R;
+import com.group1.project3.adapter.TagIconAdapter;
 import com.group1.project3.model.Card;
 import com.group1.project3.model.Project;
 import com.group1.project3.model.Tag;
@@ -37,82 +39,178 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+/**
+ * Builds the EditCardDialog.
+ */
 public class EditCardDialogBuilder extends MaterialAlertDialogBuilder {
 
+    /**
+     * The project the card belongs to.
+     */
     private Project project;
+    /**
+     * The card to edit.
+     */
     private Card card;
+    /**
+     * Whether to preview the card content or not.
+     */
     private boolean isPreview;
 
+    /**
+     * The card content.
+     */
     private String cardContent;
+    /**
+     * The card date.
+     */
     private Date date;
+    /**
+     * The card assigned user id.
+     */
     private String userId;
-    private Map<Tag, Boolean> changedTags;
+    /**
+     * The card tags.
+     */
+    private List<Tag> _tags;
+    /**
+     * The tag icon adapter.
+     */
+    private TagIconAdapter tagIconAdapter;
 
+    /**
+     * The card content container ViewGroup.
+     */
     private ViewGroup contentContainer;
-    private EditText cardEditContent;
-    private TextView cardPreviewContent;
 
+    /**
+     * The card date TextView.
+     */
     private TextView text_date;
+    /**
+     * The onClickListener for the remove button.
+     */
     private DialogInterface.OnClickListener onClickRemoveListener;
 
+    /**
+     * The onClickListener interface.
+     */
     public interface OnClickListener {
+        /**
+         * The onClick callback.
+         *
+         * @param dialogInterface the dialogInterface.
+         * @param i               the button index.
+         * @param card            the card.
+         */
         void onClick(DialogInterface dialogInterface, int i, Card card);
     }
 
+    /**
+     * Creates the builder.
+     *
+     * @param context the context.
+     */
     public EditCardDialogBuilder(@NonNull Context context) {
         super(context);
     }
 
+    /**
+     * Sets the dialog title
+     *
+     * @param title the title.
+     * @return the builder.
+     */
     @NonNull
     @Override
     public EditCardDialogBuilder setTitle(@Nullable CharSequence title) {
         return (EditCardDialogBuilder) super.setTitle(title);
     }
 
+    /**
+     * Sets the dialog view.
+     *
+     * @param layoutResId the id for the view.
+     * @return the builder.
+     */
     @NonNull
     @Override
     public EditCardDialogBuilder setView(int layoutResId) {
         return (EditCardDialogBuilder) super.setView(layoutResId);
     }
 
+    /**
+     * Sets the project that the card belongs to.
+     *
+     * @param project the project.
+     * @return the builder.
+     */
     public EditCardDialogBuilder setProject(Project project) {
         this.project = project;
         return this;
     }
 
+    /**
+     * Sets the card to edit.
+     *
+     * @param card the card.
+     * @return the builder.
+     */
     public EditCardDialogBuilder setCard(Card card) {
         this.card = card;
         cardContent = card.getContent();
         userId = card.getAssignedUser();
         date = card.getAssignedDate();
-        changedTags = new HashMap<>();
-        for (Tag tag : project.getTags()) {
-            changedTags.put(tag, card.getTags().contains(tag));
-        }
+        _tags = new ArrayList<>(card.getTags());
         return this;
     }
 
+    /**
+     * Sets the remove button listener.
+     *
+     * @param listener the onClick listener.
+     * @return the builder.
+     */
     public EditCardDialogBuilder setRemoveButton(DialogInterface.OnClickListener listener) {
         onClickRemoveListener = listener;
         return this;
     }
 
+    /**
+     * Sets the negative button text and listener.
+     *
+     * @param text     the text.
+     * @param listener the listener.
+     * @return the builder.
+     */
     @NonNull
     @Override
     public EditCardDialogBuilder setNegativeButton(@Nullable CharSequence text, @Nullable DialogInterface.OnClickListener listener) {
         return (EditCardDialogBuilder) super.setNegativeButton(text, listener);
     }
 
+    /**
+     * Sets the neutral button text and listener.
+     *
+     * @param text     the text.
+     * @param listener the listener.
+     * @return the builder.
+     */
     @NonNull
     @Override
     public EditCardDialogBuilder setNeutralButton(@Nullable CharSequence text, @Nullable DialogInterface.OnClickListener listener) {
         return (EditCardDialogBuilder) super.setNeutralButton(text, listener);
     }
 
+    /**
+     * Sets the positive button text and listener.
+     *
+     * @param text            the text.
+     * @param onClickListener the listener.
+     * @return the builder.
+     */
     public EditCardDialogBuilder setPositiveButton(CharSequence text, OnClickListener onClickListener) {
         super.setPositiveButton(text, ((dialogInterface, i) -> {
             card.setContent(cardContent);
@@ -123,6 +221,11 @@ public class EditCardDialogBuilder extends MaterialAlertDialogBuilder {
         return this;
     }
 
+    /**
+     * Creates the dialog.
+     *
+     * @return the dialog.
+     */
     @NonNull
     @Override
     public AlertDialog create() {
@@ -130,11 +233,17 @@ public class EditCardDialogBuilder extends MaterialAlertDialogBuilder {
 
         AlertDialog alertDialog = super.create();
         alertDialog.setOnShowListener(dialogInterface -> {
+            // Hooks up events and binding data.
             Button neutralButton = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
             contentContainer = alertDialog.findViewById(R.id.dialog_editCard_card_content_container);
 
             text_date = alertDialog.findViewById(R.id.dialog_editCard_date);
             text_date.setText(date == null ? "" : DateFormat.format("MM/dd/yyyy", date));
+
+            tagIconAdapter = new TagIconAdapter(_tags);
+            RecyclerView recyclerView_tags = alertDialog.findViewById(R.id.dialog_editCard_recyclerView_tags);
+            recyclerView_tags.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+            recyclerView_tags.setAdapter(tagIconAdapter);
 
             Button datePicker = alertDialog.findViewById(R.id.dialog_editCard_button_date);
             datePicker.setOnClickListener(view -> openDatePicker());
@@ -158,15 +267,22 @@ public class EditCardDialogBuilder extends MaterialAlertDialogBuilder {
         return alertDialog;
     }
 
+    /**
+     * Sets the card content based on whether the user is in preview or edit mode.
+     *
+     * @param alertDialog   the dialog.
+     * @param neutralButton the neutral button.
+     */
     private void setCardContent(AlertDialog alertDialog, Button neutralButton) {
 
         contentContainer.removeAllViews();
 
         if (isPreview) {
+            // Sets the edit mode view
             neutralButton.setText("Preview");
             View _view = alertDialog.getLayoutInflater().inflate(R.layout.item_edit_card, contentContainer, false);
             contentContainer.addView(_view);
-            cardEditContent = _view.findViewById(R.id.card_edit_content);
+            EditText cardEditContent = _view.findViewById(R.id.card_edit_content);
             cardEditContent.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -186,10 +302,11 @@ public class EditCardDialogBuilder extends MaterialAlertDialogBuilder {
             cardEditContent.setText(cardContent);
             isPreview = false;
         } else {
+            // Sets the preview mode view.
             neutralButton.setText("Edit");
             View _view = alertDialog.getLayoutInflater().inflate(R.layout.item_preview_card, contentContainer, false);
             contentContainer.addView(_view);
-            cardPreviewContent = _view.findViewById(R.id.card_preview_content);
+            TextView cardPreviewContent = _view.findViewById(R.id.card_preview_content);
 
             if (!(cardContent == null || cardContent.isEmpty())) {
                 String content = cardContent;
@@ -205,6 +322,9 @@ public class EditCardDialogBuilder extends MaterialAlertDialogBuilder {
         }
     }
 
+    /**
+     * Opens the assign user dialog.
+     */
     private void openUserDialog() {
         UserRepository userRepository = new FirestoreUserRepository();
         List<String> userIds = new ArrayList<>(project.getEditors().keySet());
@@ -226,12 +346,8 @@ public class EditCardDialogBuilder extends MaterialAlertDialogBuilder {
                     final String[] tempUser = new String[1];
                     MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
                     AlertDialog dialog = builder.setTitle("Edit tags")
-                            .setSingleChoiceItems(usernames, checked, (dialogInterface, i) -> {
-                                tempUser[0] = userIds.get(i);
-                            })
-                            .setPositiveButton("Assign User", (dialogInterface, i) -> {
-                                userId = tempUser[0];
-                            })
+                            .setSingleChoiceItems(usernames, checked, (dialogInterface, i) -> tempUser[0] = userIds.get(i))
+                            .setPositiveButton("Assign User", (dialogInterface, i) -> userId = tempUser[0])
                             .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
                             .setNeutralButton("Unassign User", ((dialogInterface, i) -> {
                                 userId = null;
@@ -239,38 +355,47 @@ public class EditCardDialogBuilder extends MaterialAlertDialogBuilder {
                             }))
                             .show();
 
-                    this.setOnDismissListener(dialogInterface -> {
-                        dialog.dismiss();
-                    });
+                    this.setOnDismissListener(dialogInterface -> dialog.dismiss());
                 });
     }
 
+    /**
+     * Opens the assign tags dialog.
+     */
     private void openTagsDialog() {
         List<Tag> tags = project.getTags();
         String[] tagNames = new String[tags.size()];
         boolean[] checked = new boolean[tags.size()];
 
         for (int i = 0; i < tags.size(); i++) {
-            tagNames[i] = tags.get(i).getName();
-            checked[i] = changedTags.get(tags.get(i));
+            Tag tag = tags.get(i);
+            tagNames[i] = tag.getName();
+            checked[i] = _tags.contains(tag);
         }
 
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
         builder.setTitle("Edit tags")
-                .setMultiChoiceItems(tagNames, checked, (dialogInterface, i, b) -> changedTags.put(tags.get(i), b))
-                .setPositiveButton("Set tags", (dialogInterface, i) -> {
-                    for (Map.Entry<Tag, Boolean> entry : changedTags.entrySet()) {
-                        if (entry.getValue()) {
-                            card.addTag(entry.getKey());
-                        } else {
-                            card.removeTag(entry.getKey());
-                        }
+                .setMultiChoiceItems(tagNames, checked, (dialogInterface, i, b) -> {
+                    if (b) {
+                        _tags.add(project.getTags().get(i));
+                    } else {
+                        _tags.remove(project.getTags().get(i));
                     }
+                })
+                .setPositiveButton("Set tags", (dialogInterface, i) -> {
+                    card.clearTags();
+                    for (Tag tag : _tags) {
+                        card.addTag(tag);
+                    }
+                    tagIconAdapter.notifyDataSetChanged();
                 })
                 .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
                 .show();
     }
 
+    /**
+     * Opens the assign date dialog.
+     */
     private void openDatePicker() {
         Calendar calendar = Calendar.getInstance();
         long minDate = calendar.getTimeInMillis();
@@ -289,8 +414,7 @@ public class EditCardDialogBuilder extends MaterialAlertDialogBuilder {
         DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), (datePicker, _year, _month, _day) -> {
             Calendar _calendar = Calendar.getInstance();
             _calendar.set(_year, _month, _day);
-            Date date = _calendar.getTime();
-            this.date = date;
+            this.date = _calendar.getTime();
 
             text_date.setText(DateFormat.format("MM/dd/yyyy", _calendar));
         }, year, month, day);
