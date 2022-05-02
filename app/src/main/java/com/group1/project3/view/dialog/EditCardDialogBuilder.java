@@ -24,6 +24,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.group1.project3.R;
 import com.group1.project3.adapter.TagIconAdapter;
 import com.group1.project3.model.Card;
+import com.group1.project3.model.Pipeline;
 import com.group1.project3.model.Project;
 import com.group1.project3.model.Tag;
 import com.group1.project3.model.User;
@@ -50,6 +51,10 @@ public class EditCardDialogBuilder extends MaterialAlertDialogBuilder {
      * The project the card belongs to.
      */
     private Project project;
+    /**
+     * The pipeline the card belongs to.
+     */
+    private Pipeline pipeline;
     /**
      * The card to edit.
      */
@@ -142,23 +147,16 @@ public class EditCardDialogBuilder extends MaterialAlertDialogBuilder {
     }
 
     /**
-     * Sets the project that the card belongs to.
-     *
-     * @param project the project.
-     * @return the builder.
-     */
-    public EditCardDialogBuilder setProject(Project project) {
-        this.project = project;
-        return this;
-    }
-
-    /**
      * Sets the card to edit.
      *
-     * @param card the card.
+     * @param card     the card.
+     * @param pipeline the pipeline the card belongs to.
+     * @param project  the project the card belongs to.
      * @return the builder.
      */
-    public EditCardDialogBuilder setCard(Card card) {
+    public EditCardDialogBuilder setCard(Card card, Pipeline pipeline, Project project) {
+        this.project = project;
+        this.pipeline = pipeline;
         this.card = card;
         cardContent = card.getContent();
         userId = card.getAssignedUser();
@@ -213,6 +211,9 @@ public class EditCardDialogBuilder extends MaterialAlertDialogBuilder {
      */
     public EditCardDialogBuilder setPositiveButton(CharSequence text, OnClickListener onClickListener) {
         super.setPositiveButton(text, ((dialogInterface, i) -> {
+            if (targetPipeline != -1){
+                pipeline.moveCard(card, project.getPipelines().get(targetPipeline));
+            }
             card.setContent(cardContent);
             card.setAssignedDate(date);
             card.setAssignedUser(userId);
@@ -261,10 +262,46 @@ public class EditCardDialogBuilder extends MaterialAlertDialogBuilder {
                 removeButton.setVisibility(View.INVISIBLE);
             }
 
+            Button moveButton = alertDialog.findViewById(R.id.dialog_editCard_button_move);
+            moveButton.setOnClickListener(view -> openPipelinePickerDialog());
+
             setCardContent(alertDialog, neutralButton);
             neutralButton.setOnClickListener(view -> setCardContent(alertDialog, neutralButton));
         });
         return alertDialog;
+    }
+
+    /**
+     * The pipeline index to move to the card to.
+     */
+    private int targetPipeline = -1;
+
+    /**
+     * Opens the pipeline picker dialog.
+     */
+    private void openPipelinePickerDialog() {
+        List<Pipeline> pipelines = project.getPipelines();
+        String[] _pipelines = new String[pipelines.size()];
+        for (int i = 0; i < pipelines.size(); i++) {
+            _pipelines[i] = pipelines.get(i).getName();
+        }
+        int checked = pipelines.indexOf(pipeline);
+
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
+        AlertDialog dialog = builder.setTitle("Move to")
+                .setSingleChoiceItems(_pipelines, checked, (dialogInterface, i) -> {
+                    targetPipeline = i;
+                })
+                .setPositiveButton("Move", (dialogInterface, i) -> {
+                })
+                .setNegativeButton("Cancel", (dialogInterface, i) -> {
+                    dialogInterface.dismiss();
+                    targetPipeline = -1;
+                })
+                .show();
+
+        this.setOnDismissListener(dialogInterface -> dialog.dismiss());
+
     }
 
     /**

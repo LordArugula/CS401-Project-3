@@ -115,17 +115,16 @@ public class PipelineAdapter extends RecyclerView.Adapter<PipelineAdapter.ViewHo
         EditCardDialogBuilder dialog = new EditCardDialogBuilder(view.getContext())
                 .setTitle("Create card")
                 .setView(R.layout.dialog_edit_card)
-                .setProject(project)
                 .setRemoveButton((dialogInterface, i) -> {
                     dialogInterface.dismiss();
                     pipeline.removeCard(card);
                     notifyDataSetChanged();
                     projectRepository.updateProject(project);
                 })
-                .setCard(card)
+                .setCard(card, pipeline, project)
                 .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
                 .setPositiveButton("Save", (dialogInterface, i, _card) -> {
-                    notifyItemChanged(cardIndex);
+                    notifyDataSetChanged();
                     projectRepository.updateProject(project);
                 });
         dialog.show();
