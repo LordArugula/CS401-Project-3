@@ -185,8 +185,7 @@ public class ProjectActivity extends AppCompatActivity {
         new EditCardDialogBuilder(this)
                 .setTitle("Create card")
                 .setView(R.layout.dialog_edit_card)
-                .setProject(project)
-                .setCard(new Card(UUID.randomUUID().toString()))
+                .setCard(new Card(UUID.randomUUID().toString()), pipeline, project)
                 .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
                 .setPositiveButton("Save", (dialogInterface, i, card) -> {
                     pipeline.addCard(card);

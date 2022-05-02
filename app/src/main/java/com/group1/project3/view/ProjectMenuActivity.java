@@ -129,12 +129,13 @@ public class ProjectMenuActivity extends AppCompatActivity {
         }
 
         this.user = user;
-        projects.clear();
         if (user.getProjectIds().isEmpty()) {
+            projects.clear();
             projectAdapter.notifyDataSetChanged();
         } else {
             projectRepository.getProjects(user.getProjectIds())
                     .addOnSuccessListener(queryDocumentSnapshots -> {
+                        projects.clear();
                         for (DocumentSnapshot snapshot : queryDocumentSnapshots.getDocuments()) {
                             projects.add(snapshot.toObject(Project.class));
                         }

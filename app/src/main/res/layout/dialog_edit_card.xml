@@ -70,6 +70,18 @@
                 android:layout_marginHorizontal="4dp"
                 android:text="Remove" />
 
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/dialog_editCard_button_move"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:text="Move" />
+
         </LinearLayout>
 
         <LinearLayout
