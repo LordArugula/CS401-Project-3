@@ -53,13 +53,14 @@ public class PipelineAdapter extends RecyclerView.Adapter<PipelineAdapter.ViewHo
 
         holder.button_addCard.setOnClickListener(view -> onClickAddCardListener.onClick(view, position));
         holder.button_menu.setOnClickListener(view -> onClickMenuListener.onClick(view, position));
-        CardAdapter adapter = new CardAdapter(pipeline.getCards(), (view, card) -> onClickCard(view, pipeline, card));
+        CardAdapter adapter = new CardAdapter(pipeline.getCards(), (view, card) -> onClickCard(view, pipeline, position));
         LinearLayoutManager layoutManager = new LinearLayoutManager(holder.recyclerView_cards.getContext(), LinearLayoutManager.VERTICAL, false);
         holder.recyclerView_cards.setLayoutManager(layoutManager);
         holder.setAdapter(adapter);
     }
 
-    private void onClickCard(View view, Pipeline pipeline, Card card) {
+    private void onClickCard(View view, Pipeline pipeline, int cardIndex) {
+        Card card = pipeline.getCards().get(cardIndex);
         EditCardDialogBuilder dialog = new EditCardDialogBuilder(view.getContext())
                 .setTitle("Create card")
                 .setView(R.layout.dialog_edit_card)
@@ -73,7 +74,7 @@ public class PipelineAdapter extends RecyclerView.Adapter<PipelineAdapter.ViewHo
                 .setCard(card)
                 .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
                 .setPositiveButton("Save", (dialogInterface, i, _card) -> {
-                    notifyDataSetChanged();
+                    notifyItemChanged(cardIndex);
                     projectRepository.updateProject(project);
                 });
         dialog.show();

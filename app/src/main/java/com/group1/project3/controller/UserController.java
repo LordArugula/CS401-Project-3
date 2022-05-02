@@ -49,10 +49,6 @@ public class UserController {
         return userRepository.updateProfile(currentUser, email, username, first, last, profilePicUri);
     }
 
-    public Task<Void> updateUser(User user) {
-        return userRepository.updateUser(user);
-    }
-
     public Task<Void> addProject(Project project) {
         currentUser.addProject(project.getId());
         return userRepository.updateUser(currentUser);

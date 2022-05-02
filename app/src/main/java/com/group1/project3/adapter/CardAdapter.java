@@ -1,5 +1,7 @@
 package com.group1.project3.adapter;
 
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.text.Html;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
@@ -14,6 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.group1.project3.R;
 import com.group1.project3.model.Card;
+import com.group1.project3.repository.FirestoreUserRepository;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.RequestCreator;
 
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
@@ -60,7 +65,26 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
         holder.itemView.setOnClickListener(view -> onClickListener.onClick(view, card));
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(holder.recyclerView_tags.getContext(), LinearLayoutManager.VERTICAL, false);
+        if (card.getAssignedUser() != null) {
+            FirestoreUserRepository userRepository = new FirestoreUserRepository();
+            userRepository.getUser(card.getAssignedUser())
+                    .addOnSuccessListener(user -> {
+                        holder.image_userProfile.setTooltipText(user.getUsername());
+                        Picasso picasso = Picasso.get();
+                        RequestCreator requestCreator;
+                        if (user.getProfilePicUri() != null && !user.getProfilePicUri().isEmpty()) {
+                            Uri uri = Uri.parse(user.getProfilePicUri());
+                            requestCreator = picasso.load(uri);
+                        }
+                        requestCreator = picasso.load(R.drawable.ic_baseline_person_24)
+                                .resize(64, 64)
+                                .config(Bitmap.Config.ARGB_8888)
+                                .placeholder(R.drawable.ic_baseline_person_24);
+                        requestCreator.into(holder.image_userProfile);
+                    });
+        }
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(holder.recyclerView_tags.getContext(), LinearLayoutManager.HORIZONTAL, false);
         holder.recyclerView_tags.setLayoutManager(layoutManager);
         TagIconAdapter tagAdapter = new TagIconAdapter(card.getTags());
         holder.setAdapter(tagAdapter);

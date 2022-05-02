@@ -9,7 +9,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,7 +37,6 @@ public class ProjectMenuActivity extends AppCompatActivity {
     private ProjectRepository projectRepository;
     private List<Project> projects;
 
-    private RecyclerView projectRecyclerView;
     private ProjectAdapter projectAdapter;
 
     private UserRepository userRepository;
@@ -47,7 +45,6 @@ public class ProjectMenuActivity extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        projects.clear();
         loadCurrentUser()
                 .addOnSuccessListener(this::loadProjectsForUser)
                 .addOnFailureListener(exception -> {
@@ -79,7 +76,7 @@ public class ProjectMenuActivity extends AppCompatActivity {
 
         projectAdapter = new ProjectAdapter(projects, this::launchProjectActivity);
 
-        projectRecyclerView = findViewById(R.id.project_menu_recyclerView_projects);
+        RecyclerView projectRecyclerView = findViewById(R.id.project_menu_recyclerView_projects);
         projectRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         projectRecyclerView.setAdapter(projectAdapter);
 
@@ -97,13 +94,18 @@ public class ProjectMenuActivity extends AppCompatActivity {
         }
 
         this.user = user;
-        projectRepository.getProjects(user.getProjectIds())
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    for (DocumentSnapshot snapshot : queryDocumentSnapshots.getDocuments()) {
-                        projects.add(snapshot.toObject(Project.class));
-                    }
-                    projectAdapter.notifyDataSetChanged();
-                });
+        projects.clear();
+        if (user.getProjectIds().isEmpty()) {
+            projectAdapter.notifyDataSetChanged();
+        } else {
+            projectRepository.getProjects(user.getProjectIds())
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                        for (DocumentSnapshot snapshot : queryDocumentSnapshots.getDocuments()) {
+                            projects.add(snapshot.toObject(Project.class));
+                        }
+                        projectAdapter.notifyDataSetChanged();
+                    });
+        }
     }
 
     private void launchProjectActivity(Project project) {
@@ -149,7 +151,7 @@ public class ProjectMenuActivity extends AppCompatActivity {
     }
 
     private void openCreateProjectDialog() {
-        AlertDialog createProjectDialog = new EditProjectDialogBuilder(this)
+        new EditProjectDialogBuilder(this)
                 .setTitle("New Project")
                 .setProject(getDefaultProject())
                 .setPositiveButton("Create Project", this::onClickCreateProject)
