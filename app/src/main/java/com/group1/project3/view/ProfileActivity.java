@@ -89,13 +89,13 @@ public class ProfileActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         profileController = new UserController(new FirestoreUserRepository());
-        User user = profileController.getCurrentUser();
-//                .addOnSuccessListener(user -> {
-        this.user = user;
-        bindUser(user);
-        profileWatcher.setUser(user);
-        profileWatcher.validateForm();
-//                });
+        profileController.loadCurrentUser()
+                .addOnSuccessListener(user -> {
+                    this.user = user;
+                    bindUser(user);
+                    profileWatcher.setUser(user);
+                    profileWatcher.validateForm();
+                });
     }
 
     private void onClickUpdateImageButton(View view) {
