@@ -19,14 +19,37 @@ import com.group1.project3.model.User;
 import com.group1.project3.repository.FirestoreUserRepository;
 import com.group1.project3.view.validator.RegisterFormValidator;
 
+/**
+ * The Register Activity.
+ */
 public class RegisterActivity extends AppCompatActivity {
 
+    /**
+     * The first name EditText.
+     */
     private EditText input_firstName;
+    /**
+     * The last name EditText.
+     */
     private EditText input_lastName;
+    /**
+     * The username EditText.
+     */
     private EditText input_username;
+    /**
+     * The email address EditText.
+     */
     private EditText input_email;
+    /**
+     * The password EditText.
+     */
     private EditText input_password;
 
+    /**
+     * Called when the activity is created.
+     *
+     * @param savedInstanceState the saved instance state.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +79,12 @@ public class RegisterActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
+    /**
+     * Handles the options menu.
+     *
+     * @param item the menu item
+     * @return based on the selected option.
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {

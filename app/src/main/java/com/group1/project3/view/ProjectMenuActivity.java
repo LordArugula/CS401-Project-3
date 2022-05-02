@@ -1,6 +1,5 @@
 package com.group1.project3.view;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -32,19 +31,40 @@ import com.group1.project3.view.dialog.EditProjectDialogBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The Project Menu Activity.
+ */
 public class ProjectMenuActivity extends AppCompatActivity {
 
+    /**
+     * The project repository.
+     */
     private ProjectRepository projectRepository;
+    /**
+     * The projects.
+     */
     private List<Project> projects;
 
+    /**
+     * The project adapter.
+     */
     private ProjectAdapter projectAdapter;
 
+    /**
+     * The user repository.
+     */
     private UserRepository userRepository;
+    /**
+     * The user.
+     */
     private User user;
 
+    /**
+     * Called when the activity starts.
+     */
     @Override
-    protected void onRestart() {
-        super.onRestart();
+    protected void onStart() {
+        super.onStart();
         loadCurrentUser()
                 .addOnSuccessListener(this::loadProjectsForUser)
                 .addOnFailureListener(exception -> {
@@ -53,6 +73,11 @@ public class ProjectMenuActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Called when the activity is created.
+     *
+     * @param savedInstanceState the saved instance state.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,10 +109,20 @@ public class ProjectMenuActivity extends AppCompatActivity {
         fab_createProject.setOnClickListener(view -> openCreateProjectDialog());
     }
 
+    /**
+     * Loads the current user.
+     *
+     * @return the get user request.
+     */
     private Task<User> loadCurrentUser() {
-        return userRepository.getUser(FirebaseUtil.getAuth().getCurrentUser().getUid());
+        return userRepository.getCurrentUser();
     }
 
+    /**
+     * Loads the projects for the user.
+     *
+     * @param user the user.
+     */
     private void loadProjectsForUser(User user) {
         if (user == null) {
             signOut();
@@ -108,18 +143,33 @@ public class ProjectMenuActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Launches the project activity for the project.
+     *
+     * @param project the project.
+     */
     private void launchProjectActivity(Project project) {
         Intent intent = new Intent(this, ProjectActivity.class);
         intent.putExtra("projectId", project.getId());
         startActivity(intent);
     }
 
+    /**
+     * Creates the options menu.
+     *
+     * @param menu the menu.
+     * @return true
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_project_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
+    /**
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -134,35 +184,64 @@ public class ProjectMenuActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Signs the user out.
+     */
     private void signOut() {
         FirebaseUtil.signOut();
         launchMainActivity();
     }
 
+    /**
+     * Launches the Main Activity.
+     */
     private void launchMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
     }
 
+    /**
+     * Launches the profile activity.
+     */
     private void launchProfileActivity() {
         Intent intent = new Intent(this, ProfileActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * Opens the CreateProjectDialog.
+     */
     private void openCreateProjectDialog() {
         new EditProjectDialogBuilder(this)
                 .setTitle("New Project")
                 .setProject(getDefaultProject())
-                .setPositiveButton("Create Project", this::onClickCreateProject)
+                .setPositiveButton("Create Project", (dialogInterface, i, project) -> createProject(project))
                 .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
                 .show();
     }
 
-    private void onClickCreateProject(DialogInterface dialogInterface, int position, Project project) {
-        saveProject(project);
+    /**
+     * Creates the project.
+     *
+     * @param project the project.
+     */
+    private void createProject(Project project) {
+        project.setOwnerId(user.getId());
+        projectRepository.createProject(project)
+                .addOnSuccessListener(unused -> {
+                    projects.add(project);
+                    user.addProject(project.getId());
+                    userRepository.updateUser(user);
+                    projectAdapter.notifyDataSetChanged();
+                });
     }
 
+    /**
+     * Creates a default project.
+     *
+     * @return the created project.
+     */
     private Project getDefaultProject() {
         Project project = new Project();
         project.setColor(getColor(R.color.project_defaultColor));
@@ -176,16 +255,5 @@ public class ProjectMenuActivity extends AppCompatActivity {
         project.addTag(new Tag("Documentation", getColor(R.color.documentation)));
 
         return project;
-    }
-
-    private void saveProject(Project project) {
-        project.setOwnerId(user.getId());
-        projectRepository.createProject(project)
-                .addOnSuccessListener(unused -> {
-                    projects.add(project);
-                    user.addProject(project.getId());
-                    userRepository.updateUser(user);
-                    projectAdapter.notifyDataSetChanged();
-                });
     }
 }

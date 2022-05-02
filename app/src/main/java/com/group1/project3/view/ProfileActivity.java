@@ -27,37 +27,82 @@ import com.group1.project3.view.validator.ChangeProfileFormValidator;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
 
+/**
+ * The user profile activity.
+ */
 public class ProfileActivity extends AppCompatActivity {
 
+    /**
+     * The profile pic ImageView.
+     */
     private ImageView image_profilePic;
+    /**
+     * The username EditText.
+     */
     private EditText input_username;
+    /**
+     * The first name EditText.
+     */
     private EditText input_firstName;
+    /**
+     * The last name EditText.
+     */
     private EditText input_lastName;
+    /**
+     * The email address EditText.
+     */
     private EditText input_emailAddress;
+    /**
+     * The old password EditText.
+     */
     private EditText text_oldPassword;
+    /**
+     * The new password EditText.
+     */
     private EditText text_newPassword;
+    /**
+     * The confirm password EditText.
+     */
     private EditText text_confirmPassword;
 
+    /**
+     * The profile picture Uri.
+     */
     private Uri profilePicUri;
 
+    /**
+     * The update password button.
+     */
     private Button button_updatePassword;
+    /**
+     * The profile form validator.
+     */
     private ChangeProfileFormValidator profileWatcher;
 
+    /**
+     * The user controller.
+     */
     private UserController profileController;
+    /**
+     * The user.
+     */
     private User user;
 
+    /**
+     * Called when the activity is created.
+     *
+     * @param savedInstanceState the saved instance state.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        // Binds the user profile
         input_username = findViewById(R.id.profile_input_username);
         input_firstName = findViewById(R.id.profile_input_firstName);
         input_lastName = findViewById(R.id.profile_input_lastName);
         input_emailAddress = findViewById(R.id.profile_input_email);
-        text_oldPassword = findViewById(R.id.profile_input_oldPassword);
-        text_newPassword = findViewById(R.id.profile_input_newPassword);
-        text_confirmPassword = findViewById(R.id.profile_input_confirmPassword);
 
         image_profilePic = findViewById(R.id.profile_image_profilePic);
         Button button_updateImage = findViewById(R.id.profile_button_updateImage);
@@ -78,11 +123,17 @@ public class ProfileActivity extends AppCompatActivity {
         input_lastName.addTextChangedListener(profileWatcher);
         input_emailAddress.addTextChangedListener(profileWatcher);
 
+        // Binds the password validator
+        text_oldPassword = findViewById(R.id.profile_input_oldPassword);
+        text_newPassword = findViewById(R.id.profile_input_newPassword);
+        text_confirmPassword = findViewById(R.id.profile_input_confirmPassword);
+
         TextWatcher passwordWatcher = new ChangePasswordFormValidator(text_oldPassword, text_newPassword, text_confirmPassword, button_updatePassword);
         text_oldPassword.addTextChangedListener(passwordWatcher);
         text_newPassword.addTextChangedListener(passwordWatcher);
         text_confirmPassword.addTextChangedListener(passwordWatcher);
 
+        // Sets the action bar
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.setTitle(R.string.profile_title);
@@ -98,6 +149,11 @@ public class ProfileActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Opens the UploadImageDialog.
+     *
+     * @param view the button.
+     */
     private void onClickUpdateImageButton(View view) {
         new UploadImageDialogBuilder(ProfileActivity.this)
                 .setTitle("Upload Image from Url")
@@ -110,6 +166,11 @@ public class ProfileActivity extends AppCompatActivity {
                 .show();
     }
 
+    /**
+     * Loads the image with the Uri.
+     *
+     * @param imageUri the image Uri.
+     */
     private void loadImage(@NonNull Uri imageUri) {
         Picasso picasso = Picasso.get();
 
@@ -131,6 +192,11 @@ public class ProfileActivity extends AppCompatActivity {
         profileWatcher.validateForm();
     }
 
+    /**
+     * The menu options handler.
+     * @param item the menu item.
+     * @return based on the option selected.
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {

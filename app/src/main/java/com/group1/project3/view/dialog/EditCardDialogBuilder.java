@@ -41,48 +41,123 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Builds the EditCardDialog.
+ */
 public class EditCardDialogBuilder extends MaterialAlertDialogBuilder {
 
+    /**
+     * The project the card belongs to.
+     */
     private Project project;
+    /**
+     * The card to edit.
+     */
     private Card card;
+    /**
+     * Whether to preview the card content or not.
+     */
     private boolean isPreview;
 
+    /**
+     * The card content.
+     */
     private String cardContent;
+    /**
+     * The card date.
+     */
     private Date date;
+    /**
+     * The card assigned user id.
+     */
     private String userId;
+    /**
+     * The card tags.
+     */
     private List<Tag> _tags;
+    /**
+     * The tag icon adapter.
+     */
     private TagIconAdapter tagIconAdapter;
 
+    /**
+     * The card content container ViewGroup.
+     */
     private ViewGroup contentContainer;
 
+    /**
+     * The card date TextView.
+     */
     private TextView text_date;
+    /**
+     * The onClickListener for the remove button.
+     */
     private DialogInterface.OnClickListener onClickRemoveListener;
 
+    /**
+     * The onClickListener interface.
+     */
     public interface OnClickListener {
+        /**
+         * The onClick callback.
+         *
+         * @param dialogInterface the dialogInterface.
+         * @param i               the button index.
+         * @param card            the card.
+         */
         void onClick(DialogInterface dialogInterface, int i, Card card);
     }
 
+    /**
+     * Creates the builder.
+     *
+     * @param context the context.
+     */
     public EditCardDialogBuilder(@NonNull Context context) {
         super(context);
     }
 
+    /**
+     * Sets the dialog title
+     *
+     * @param title the title.
+     * @return the builder.
+     */
     @NonNull
     @Override
     public EditCardDialogBuilder setTitle(@Nullable CharSequence title) {
         return (EditCardDialogBuilder) super.setTitle(title);
     }
 
+    /**
+     * Sets the dialog view.
+     *
+     * @param layoutResId the id for the view.
+     * @return the builder.
+     */
     @NonNull
     @Override
     public EditCardDialogBuilder setView(int layoutResId) {
         return (EditCardDialogBuilder) super.setView(layoutResId);
     }
 
+    /**
+     * Sets the project that the card belongs to.
+     *
+     * @param project the project.
+     * @return the builder.
+     */
     public EditCardDialogBuilder setProject(Project project) {
         this.project = project;
         return this;
     }
 
+    /**
+     * Sets the card to edit.
+     *
+     * @param card the card.
+     * @return the builder.
+     */
     public EditCardDialogBuilder setCard(Card card) {
         this.card = card;
         cardContent = card.getContent();
@@ -92,23 +167,50 @@ public class EditCardDialogBuilder extends MaterialAlertDialogBuilder {
         return this;
     }
 
+    /**
+     * Sets the remove button listener.
+     *
+     * @param listener the onClick listener.
+     * @return the builder.
+     */
     public EditCardDialogBuilder setRemoveButton(DialogInterface.OnClickListener listener) {
         onClickRemoveListener = listener;
         return this;
     }
 
+    /**
+     * Sets the negative button text and listener.
+     *
+     * @param text     the text.
+     * @param listener the listener.
+     * @return the builder.
+     */
     @NonNull
     @Override
     public EditCardDialogBuilder setNegativeButton(@Nullable CharSequence text, @Nullable DialogInterface.OnClickListener listener) {
         return (EditCardDialogBuilder) super.setNegativeButton(text, listener);
     }
 
+    /**
+     * Sets the neutral button text and listener.
+     *
+     * @param text     the text.
+     * @param listener the listener.
+     * @return the builder.
+     */
     @NonNull
     @Override
     public EditCardDialogBuilder setNeutralButton(@Nullable CharSequence text, @Nullable DialogInterface.OnClickListener listener) {
         return (EditCardDialogBuilder) super.setNeutralButton(text, listener);
     }
 
+    /**
+     * Sets the positive button text and listener.
+     *
+     * @param text            the text.
+     * @param onClickListener the listener.
+     * @return the builder.
+     */
     public EditCardDialogBuilder setPositiveButton(CharSequence text, OnClickListener onClickListener) {
         super.setPositiveButton(text, ((dialogInterface, i) -> {
             card.setContent(cardContent);
@@ -119,6 +221,11 @@ public class EditCardDialogBuilder extends MaterialAlertDialogBuilder {
         return this;
     }
 
+    /**
+     * Creates the dialog.
+     *
+     * @return the dialog.
+     */
     @NonNull
     @Override
     public AlertDialog create() {
@@ -126,6 +233,7 @@ public class EditCardDialogBuilder extends MaterialAlertDialogBuilder {
 
         AlertDialog alertDialog = super.create();
         alertDialog.setOnShowListener(dialogInterface -> {
+            // Hooks up events and binding data.
             Button neutralButton = alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL);
             contentContainer = alertDialog.findViewById(R.id.dialog_editCard_card_content_container);
 
@@ -159,11 +267,18 @@ public class EditCardDialogBuilder extends MaterialAlertDialogBuilder {
         return alertDialog;
     }
 
+    /**
+     * Sets the card content based on whether the user is in preview or edit mode.
+     *
+     * @param alertDialog   the dialog.
+     * @param neutralButton the neutral button.
+     */
     private void setCardContent(AlertDialog alertDialog, Button neutralButton) {
 
         contentContainer.removeAllViews();
 
         if (isPreview) {
+            // Sets the edit mode view
             neutralButton.setText("Preview");
             View _view = alertDialog.getLayoutInflater().inflate(R.layout.item_edit_card, contentContainer, false);
             contentContainer.addView(_view);
@@ -187,6 +302,7 @@ public class EditCardDialogBuilder extends MaterialAlertDialogBuilder {
             cardEditContent.setText(cardContent);
             isPreview = false;
         } else {
+            // Sets the preview mode view.
             neutralButton.setText("Edit");
             View _view = alertDialog.getLayoutInflater().inflate(R.layout.item_preview_card, contentContainer, false);
             contentContainer.addView(_view);
@@ -206,6 +322,9 @@ public class EditCardDialogBuilder extends MaterialAlertDialogBuilder {
         }
     }
 
+    /**
+     * Opens the assign user dialog.
+     */
     private void openUserDialog() {
         UserRepository userRepository = new FirestoreUserRepository();
         List<String> userIds = new ArrayList<>(project.getEditors().keySet());
@@ -240,6 +359,9 @@ public class EditCardDialogBuilder extends MaterialAlertDialogBuilder {
                 });
     }
 
+    /**
+     * Opens the assign tags dialog.
+     */
     private void openTagsDialog() {
         List<Tag> tags = project.getTags();
         String[] tagNames = new String[tags.size()];
@@ -271,6 +393,9 @@ public class EditCardDialogBuilder extends MaterialAlertDialogBuilder {
                 .show();
     }
 
+    /**
+     * Opens the assign date dialog.
+     */
     private void openDatePicker() {
         Calendar calendar = Calendar.getInstance();
         long minDate = calendar.getTimeInMillis();

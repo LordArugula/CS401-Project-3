@@ -20,12 +20,27 @@ import com.group1.project3.view.dialog.EditTagDialogBuilder;
  */
 public class TagItemAdapter extends RecyclerView.Adapter<TagItemAdapter.ViewHolder> {
 
+    /**
+     * The project that contains the tags list.
+     */
     private final Project project;
 
+    /**
+     * Creates the Tag Item adapter.
+     *
+     * @param project the project.
+     */
     public TagItemAdapter(Project project) {
         this.project = project;
     }
 
+    /**
+     * Creates the tag item ViewHolder
+     *
+     * @param parent   the parent of the ViewHolder.
+     * @param viewType the type of view.
+     * @return the created tag item ViewHolder
+     */
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -33,6 +48,12 @@ public class TagItemAdapter extends RecyclerView.Adapter<TagItemAdapter.ViewHold
         return new ViewHolder(inflater.inflate(R.layout.item_tag_entry, parent, false));
     }
 
+    /**
+     * Binds the tag to the ViewHolder.
+     *
+     * @param holder   the ViewHolder.
+     * @param position the index of the tag.
+     */
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         Tag tag = project.getTags().get(position);
@@ -42,6 +63,12 @@ public class TagItemAdapter extends RecyclerView.Adapter<TagItemAdapter.ViewHold
         holder.button_edit.setOnClickListener(view -> openEditTagDialog(holder, tag));
     }
 
+    /**
+     * Opens the EditTagDialog.
+     *
+     * @param holder the ViewHolder that was clicked on.
+     * @param tag    the tag.
+     */
     private void openEditTagDialog(ViewHolder holder, Tag tag) {
         EditTagDialogBuilder dialogBuilder = new EditTagDialogBuilder(holder.itemView.getContext())
                 .setTitle("Edit Tag")
@@ -63,16 +90,38 @@ public class TagItemAdapter extends RecyclerView.Adapter<TagItemAdapter.ViewHold
                 .show();
     }
 
+    /**
+     * Gets the number of tags.
+     *
+     * @return the number of tags.
+     */
     @Override
     public int getItemCount() {
         return project.getTags().size();
     }
 
+    /**
+     * The tag ViewHolder.
+     */
     public class ViewHolder extends RecyclerView.ViewHolder {
+        /**
+         * The tag name TextView.
+         */
         public final TextView text_tagName;
+        /**
+         * The icon view.
+         */
         public final View view_tagColor;
+        /**
+         * The edit button.
+         */
         public final Button button_edit;
 
+        /**
+         * Creates the ViewHolder.
+         *
+         * @param itemView the tag view.
+         */
         public ViewHolder(View itemView) {
             super(itemView);
             text_tagName = itemView.findViewById(R.id.item_tag_entry_text_name);

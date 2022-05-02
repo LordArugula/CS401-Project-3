@@ -22,30 +22,57 @@ import com.group1.project3.view.validator.CreateProjectFormValidator;
 import com.skydoves.colorpickerview.ColorPickerDialog;
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
 
+/**
+ * The EditProjectDialog builder.
+ */
 public class EditProjectDialogBuilder extends MaterialAlertDialogBuilder {
 
+    /**
+     * The background color view.
+     */
     private View view_bgColor;
+    /**
+     * The project name EditText.
+     */
     private EditText input_projectName;
+    /**
+     * The background color.
+     */
     private int color;
 
+    /**
+     * The project.
+     */
     private Project project;
 
+    /**
+     * Creates the builder.
+     *
+     * @param context the context.
+     */
     public EditProjectDialogBuilder(@NonNull Context context) {
         super(context);
     }
 
-    @NonNull
-    @Override
-    public EditProjectDialogBuilder setTitle(int titleId) {
-        return (EditProjectDialogBuilder) super.setTitle(titleId);
-    }
-
+    /**
+     * Sets the title of the dialog.
+     *
+     * @param title the title.
+     * @return the builder.
+     */
     @NonNull
     @Override
     public EditProjectDialogBuilder setTitle(@Nullable CharSequence title) {
         return (EditProjectDialogBuilder) super.setTitle(title);
     }
 
+    /**
+     * Sets the positive button text and listener.
+     *
+     * @param text     the text.
+     * @param listener the listener.
+     * @return the builder.
+     */
     @NonNull
     public EditProjectDialogBuilder setPositiveButton(@Nullable CharSequence text, @NonNull OnClickListener listener) {
         return (EditProjectDialogBuilder) super.setPositiveButton(text, ((dialogInterface, i) -> {
@@ -56,37 +83,46 @@ public class EditProjectDialogBuilder extends MaterialAlertDialogBuilder {
         }));
     }
 
-    @NonNull
-    public EditProjectDialogBuilder setPositiveButton(int textId, @NonNull OnClickListener listener) {
-        return (EditProjectDialogBuilder) super.setPositiveButton(textId, ((dialogInterface, i) -> {
-            String projectName = input_projectName.getText().toString().trim();
-            project.setName(projectName);
-            project.setColor(color);
-            listener.onClick(dialogInterface, i, project);
-        }));
-    }
-
+    /**
+     * Sets the negative button text and listener.
+     *
+     * @param text     the text.
+     * @param listener the listener.
+     * @return the builder.
+     */
     @NonNull
     @Override
     public EditProjectDialogBuilder setNegativeButton(@Nullable CharSequence text, @Nullable DialogInterface.OnClickListener listener) {
         return (EditProjectDialogBuilder) super.setNegativeButton(text, listener);
     }
 
-    @NonNull
-    @Override
-    public EditProjectDialogBuilder setNegativeButton(int textId, @Nullable DialogInterface.OnClickListener listener) {
-        return (EditProjectDialogBuilder) super.setNegativeButton(textId, listener);
-    }
-
+    /**
+     * Whether to show the delete button or not.
+     */
     private boolean useDeleteButton = false;
+    /**
+     * The onDeleteButton click listener.
+     */
     private OnClickListener onDeleteProjectListener;
 
+    /**
+     * Sets the delete button listener.
+     *
+     * @param enabled
+     * @param onClickListener the listener.
+     * @return the builder.
+     */
     public EditProjectDialogBuilder setDeleteButton(boolean enabled, OnClickListener onClickListener) {
         useDeleteButton = enabled;
         this.onDeleteProjectListener = onClickListener;
         return this;
     }
 
+    /**
+     * Creates the dialog.
+     *
+     * @return the dialog.
+     */
     @NonNull
     @Override
     public AlertDialog create() {
@@ -138,6 +174,11 @@ public class EditProjectDialogBuilder extends MaterialAlertDialogBuilder {
         return alertDialog;
     }
 
+    /**
+     * Opens the color picker dialog.
+     *
+     * @param view the color picker button.
+     */
     private void onClickColorPickerButton(View view) {
         ColorPickerDialog.Builder builder = new ColorPickerDialog.Builder(getContext())
                 .setTitle("Project Color")
@@ -160,12 +201,28 @@ public class EditProjectDialogBuilder extends MaterialAlertDialogBuilder {
         alertDialog.show();
     }
 
+    /**
+     * Sets the project to edit.
+     *
+     * @param project the project.
+     * @return the builder.
+     */
     public EditProjectDialogBuilder setProject(Project project) {
         this.project = project;
         return this;
     }
 
+    /**
+     * The onClickListener interface.
+     */
     public interface OnClickListener {
+        /**
+         * The onClick callback.
+         *
+         * @param dialogInterface the dialog interface.
+         * @param i               the button index.
+         * @param project         the project.
+         */
         void onClick(DialogInterface dialogInterface, int i, Project project);
     }
 }
