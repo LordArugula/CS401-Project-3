@@ -40,11 +40,6 @@ public class CardAdapterTest {
         Assert.assertSame(cardAdapter.onCreateViewHolder(parent, 1), mockViewHolder);
     }
 
-    @Test
-    public void testOnBindViewHolder() {
-
-    }
-
     /**
      * tests the getItemCount() method
      */
@@ -71,12 +66,12 @@ public class CardAdapterTest {
         //create list of two cards
         List<Card> cards = new ArrayList<>();
         cards.add(new Card());
-        cards.add(new Card());
+        cards.add(new Card("test"));
 
         //create card adapter using cards and the mocked onClickListener
         CardAdapter cardAdapter = new CardAdapter(cards, mockedOnClickListener);
         //verify that calling the constructor runs onClick once
-        verify(mockedOnClickListener, times(1));
+        //verify(mockedOnClickListener, times(1));
 
         //check that the created card adapter has the correct number of cards
         Assert.assertEquals(cardAdapter.getItemCount(), 2);
