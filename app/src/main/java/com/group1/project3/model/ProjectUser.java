@@ -1,5 +1,8 @@
 package com.group1.project3.model;
 
+/**
+ * Represents the user with a role in a project.
+ */
 public class ProjectUser {
     /**
      * The user id.
@@ -18,7 +21,7 @@ public class ProjectUser {
      * Creates a project user from the user email and role.
      *
      * @param userId
-     * @param email the user email.
+     * @param email  the user email.
      * @param role   the user role.
      */
     public ProjectUser(String userId, String email, String role) {
@@ -31,7 +34,7 @@ public class ProjectUser {
      * Creates a project user from the user email and role.
      *
      * @param userId
-     * @param email the user email.
+     * @param email  the user email.
      * @param role   the user role.
      */
     public ProjectUser(String userId, String email, Role role) {

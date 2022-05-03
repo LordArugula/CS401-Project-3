@@ -98,8 +98,6 @@ public class ProjectActivity extends AppCompatActivity {
                                 .addOnSuccessListener(this::onLoadProject);
                     }
                 });
-
-
     }
 
     /**
@@ -125,6 +123,7 @@ public class ProjectActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_project_editProject:
+                // Handles the edit project menu option
                 switch (Role.valueOf(user.getRole())) {
                     case None:
                     case Viewer:
@@ -137,6 +136,7 @@ public class ProjectActivity extends AppCompatActivity {
                 }
                 return true;
             case R.id.menu_project_addPipeline:
+                // Handles the add pipeline menu option
                 switch (Role.valueOf(user.getRole())) {
                     case None:
                     case Viewer:
@@ -149,6 +149,7 @@ public class ProjectActivity extends AppCompatActivity {
                 }
                 return true;
             case R.id.menu_project_editUsers:
+                // Handles the edit users menu option.
                 switch (Role.valueOf(user.getRole())) {
                     case None:
                     case Viewer:
@@ -161,6 +162,7 @@ public class ProjectActivity extends AppCompatActivity {
                 }
                 return true;
             case android.R.id.home:
+                // handles the home button.
                 finish();
                 return true;
             default:
@@ -168,12 +170,16 @@ public class ProjectActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Opens the EditUsersDialog.
+     */
     private void openEditUsersDialog() {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this)
                 .setTitle("Edit Project Users")
                 .setView(R.layout.dialog_edit_project_users)
                 .setNegativeButton("Close", (dialogInterface, i) -> dialogInterface.dismiss());
 
+        // Gets the project user ids, emails, and roles.
         List<ProjectUser> projectUsers = new ArrayList<>();
         List<String> editorIds = new ArrayList<>(project.getEditors().keySet());
         ProjectUserAdapter projectUserAdapter = new ProjectUserAdapter(project.getId(), projectUsers);
@@ -187,6 +193,7 @@ public class ProjectActivity extends AppCompatActivity {
 
                     }
                 });
+        // Hook up UI and events.
         AlertDialog alertDialog = builder.create();
         alertDialog.setOnShowListener(dialogInterface -> {
             List<String> roles = new ArrayList<>();
@@ -205,6 +212,7 @@ public class ProjectActivity extends AppCompatActivity {
 
             Button button_add = alertDialog.findViewById(R.id.dialog_edit_project_users_button_add);
             button_add.setOnClickListener(view -> {
+                // Update project and users
                 String email = input_email.getText().toString().trim();
                 if (!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                     userRepository.findUserIdFromEmail(email)
@@ -252,6 +260,7 @@ public class ProjectActivity extends AppCompatActivity {
                 .setTitle("Edit Project")
                 .setProject(project)
                 .setDeleteButton(true, (dialogInterface, i, project) -> {
+                    // Updates the project and user
                     dialogInterface.dismiss();
                     Map<String, Role> editors = project.getEditors();
                     userRepository.getUsers(new ArrayList<>(editors.keySet()))
