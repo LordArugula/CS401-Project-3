@@ -12,4 +12,10 @@
         android:title="@string/project_action_addPipeline"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/menu_project_editUsers"
+        android:title="Edit Users"
+        app:showAsAction="never"
+        />
+
 </menu>

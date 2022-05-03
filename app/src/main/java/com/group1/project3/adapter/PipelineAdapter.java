@@ -14,6 +14,8 @@ import com.group1.project3.R;
 import com.group1.project3.model.Card;
 import com.group1.project3.model.Pipeline;
 import com.group1.project3.model.Project;
+import com.group1.project3.model.ProjectUser;
+import com.group1.project3.model.Role;
 import com.group1.project3.repository.FirestoreProjectRepository;
 import com.group1.project3.repository.ProjectRepository;
 import com.group1.project3.view.dialog.EditCardDialogBuilder;
@@ -45,6 +47,7 @@ public class PipelineAdapter extends RecyclerView.Adapter<PipelineAdapter.ViewHo
         void onClick(View view, int position);
     }
 
+    private final ProjectUser user;
     /**
      * The listener for clicking on the add card button.
      */
@@ -58,11 +61,13 @@ public class PipelineAdapter extends RecyclerView.Adapter<PipelineAdapter.ViewHo
      * Creates the adapter with a project and the onClickListeners.
      *
      * @param project                the project.
+     * @param user
      * @param onClickAddCardListener the add card click listener.
      * @param onClickMenuListener    the menu click listener.
      */
-    public PipelineAdapter(Project project, OnPipelineClickListener onClickAddCardListener, OnPipelineClickListener onClickMenuListener) {
+    public PipelineAdapter(Project project, ProjectUser user, OnPipelineClickListener onClickAddCardListener, OnPipelineClickListener onClickMenuListener) {
         this.project = project;
+        this.user = user;
         this.onClickAddCardListener = onClickAddCardListener;
         this.onClickMenuListener = onClickMenuListener;
         projectRepository = new FirestoreProjectRepository();
@@ -95,6 +100,10 @@ public class PipelineAdapter extends RecyclerView.Adapter<PipelineAdapter.ViewHo
 
         holder.text_pipelineName.setText(pipeline.getName());
 
+        if (user.getRole().equals(Role.Viewer.name()) || user.getRole().equals(Role.None.name())) {
+            holder.button_addCard.setVisibility(View.INVISIBLE);
+            holder.button_menu.setVisibility(View.INVISIBLE);
+        }
         holder.button_addCard.setOnClickListener(view -> onClickAddCardListener.onClick(view, position));
         holder.button_menu.setOnClickListener(view -> onClickMenuListener.onClick(view, position));
         CardAdapter adapter = new CardAdapter(pipeline.getCards(), (view, card) -> onClickCard(view, pipeline, position));
@@ -112,9 +121,10 @@ public class PipelineAdapter extends RecyclerView.Adapter<PipelineAdapter.ViewHo
      */
     private void onClickCard(View view, Pipeline pipeline, int cardIndex) {
         Card card = pipeline.getCards().get(cardIndex);
-        EditCardDialogBuilder dialog = new EditCardDialogBuilder(view.getContext())
+        EditCardDialogBuilder builder = new EditCardDialogBuilder(view.getContext())
                 .setTitle("Create card")
                 .setView(R.layout.dialog_edit_card)
+                .setReadOnly(!Role.Admin.name().equals(user.getRole()) && !Role.Editor.name().equals(user.getRole()))
                 .setRemoveButton((dialogInterface, i) -> {
                     dialogInterface.dismiss();
                     pipeline.removeCard(card);
@@ -127,7 +137,7 @@ public class PipelineAdapter extends RecyclerView.Adapter<PipelineAdapter.ViewHo
                     notifyDataSetChanged();
                     projectRepository.updateProject(project);
                 });
-        dialog.show();
+        builder.show();
     }
 
     /**

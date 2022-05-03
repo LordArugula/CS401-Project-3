@@ -81,5 +81,13 @@ public interface UserRepository {
      * @return a {@link Task<Void>} representing the change profile request.
      */
     Task<Void> updateProfile(User user, String email, String username, String first, String last, Uri profilePicUri);
+
+    /**
+     * Finds the user id who has the email address.
+     *
+     * @param email the email address.
+     * @return the find user id request.
+     */
+    Task<String> findUserIdFromEmail(String email);
 }
 

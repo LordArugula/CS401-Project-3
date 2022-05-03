@@ -62,7 +62,7 @@ public class EditCardDialogBuilder extends MaterialAlertDialogBuilder {
     /**
      * Whether to preview the card content or not.
      */
-    private boolean isPreview;
+    private boolean isPreview = true;
 
     /**
      * The card content.
@@ -98,6 +98,13 @@ public class EditCardDialogBuilder extends MaterialAlertDialogBuilder {
      * The onClickListener for the remove button.
      */
     private DialogInterface.OnClickListener onClickRemoveListener;
+
+    private boolean readonly;
+
+    public EditCardDialogBuilder setReadOnly(boolean readonly) {
+        this.readonly = readonly;
+        return this;
+    }
 
     /**
      * The onClickListener interface.
@@ -211,7 +218,7 @@ public class EditCardDialogBuilder extends MaterialAlertDialogBuilder {
      */
     public EditCardDialogBuilder setPositiveButton(CharSequence text, OnClickListener onClickListener) {
         super.setPositiveButton(text, ((dialogInterface, i) -> {
-            if (targetPipeline != -1){
+            if (targetPipeline != -1) {
                 pipeline.moveCard(card, project.getPipelines().get(targetPipeline));
             }
             card.setContent(cardContent);
@@ -267,6 +274,17 @@ public class EditCardDialogBuilder extends MaterialAlertDialogBuilder {
 
             setCardContent(alertDialog, neutralButton);
             neutralButton.setOnClickListener(view -> setCardContent(alertDialog, neutralButton));
+
+            if (readonly) {
+                neutralButton.setVisibility(View.INVISIBLE);
+                removeButton.setVisibility(View.INVISIBLE);
+                moveButton.setVisibility(View.INVISIBLE);
+                datePicker.setVisibility(View.INVISIBLE);
+                userButton.setVisibility(View.INVISIBLE);
+                tagButton.setVisibility(View.INVISIBLE);
+                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setVisibility(View.INVISIBLE);
+                alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setVisibility(View.INVISIBLE);
+            }
         });
         return alertDialog;
     }
@@ -314,7 +332,7 @@ public class EditCardDialogBuilder extends MaterialAlertDialogBuilder {
 
         contentContainer.removeAllViews();
 
-        if (isPreview) {
+        if (isPreview && !readonly) {
             // Sets the edit mode view
             neutralButton.setText("Preview");
             View _view = alertDialog.getLayoutInflater().inflate(R.layout.item_edit_card, contentContainer, false);

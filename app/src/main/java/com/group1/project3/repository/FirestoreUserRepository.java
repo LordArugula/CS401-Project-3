@@ -155,4 +155,15 @@ public class FirestoreUserRepository implements UserRepository {
                     return updateUser(user);
                 });
     }
+
+    public Task<String> findUserIdFromEmail(String email) {
+        return userCollection.whereEqualTo("email", email)
+                .get()
+                .onSuccessTask(snapshot -> {
+                    if (snapshot.isEmpty()) {
+                        return Tasks.forException(new Exception("No user exists with email address:" + email));
+                    }
+                    return Tasks.forResult(snapshot.getDocuments().get(0).getString("id"));
+                });
+    }
 }
