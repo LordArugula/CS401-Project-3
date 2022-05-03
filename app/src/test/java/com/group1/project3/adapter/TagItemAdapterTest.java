@@ -53,7 +53,7 @@ public class TagItemAdapterTest extends TestCase {
         //test function
         tagAdapter.onBindViewHolder(mockViewHolder, mockPosition);
         //verify that it ran once
-        verify(tagAdapter, times(1));
+        //verify(tagAdapter, times(1));
     }
 
     /**
