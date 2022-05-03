@@ -123,6 +123,7 @@ public class ProjectActivity extends AppCompatActivity {
     private void addPipeline() {
         Pipeline pipeline = new Pipeline();
         new EditPipelineDialogBuilder(this)
+                .setPipeline(pipeline)
                 .setPositiveButton("Confirm", (dialogInterface, i, name) -> {
                     pipeline.setName(name);
                     project.addPipeline(pipeline);
