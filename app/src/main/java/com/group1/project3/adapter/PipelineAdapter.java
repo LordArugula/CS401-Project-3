@@ -106,7 +106,7 @@ public class PipelineAdapter extends RecyclerView.Adapter<PipelineAdapter.ViewHo
         }
         holder.button_addCard.setOnClickListener(view -> onClickAddCardListener.onClick(view, position));
         holder.button_menu.setOnClickListener(view -> onClickMenuListener.onClick(view, position));
-        CardAdapter adapter = new CardAdapter(pipeline.getCards(), (view, card) -> onClickCard(view, pipeline, position));
+        CardAdapter adapter = new CardAdapter(pipeline.getCards(), (view, card) -> onClickCard(view, pipeline, card));
         LinearLayoutManager layoutManager = new LinearLayoutManager(holder.recyclerView_cards.getContext(), LinearLayoutManager.VERTICAL, false);
         holder.recyclerView_cards.setLayoutManager(layoutManager);
         holder.setAdapter(adapter);
@@ -115,12 +115,11 @@ public class PipelineAdapter extends RecyclerView.Adapter<PipelineAdapter.ViewHo
     /**
      * The callback when a card is clicked on. Opens the EditCardDialog
      *
-     * @param view      the card that was clicked on.
-     * @param pipeline  the pipeline.
-     * @param cardIndex the index of the card.
+     * @param view     the card that was clicked on.
+     * @param pipeline the pipeline.
+     * @param card     the card.
      */
-    private void onClickCard(View view, Pipeline pipeline, int cardIndex) {
-        Card card = pipeline.getCards().get(cardIndex);
+    private void onClickCard(View view, Pipeline pipeline, Card card) {
         EditCardDialogBuilder builder = new EditCardDialogBuilder(view.getContext())
                 .setTitle("Create card")
                 .setView(R.layout.dialog_edit_card)
