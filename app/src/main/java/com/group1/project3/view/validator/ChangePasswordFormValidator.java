@@ -26,7 +26,7 @@ public class ChangePasswordFormValidator implements TextWatcher {
     private final EditText confirmPasswordText;
 
     /**
-     * The submmit button.
+     * The submit button.
      */
     private final Button submitButton;
 
