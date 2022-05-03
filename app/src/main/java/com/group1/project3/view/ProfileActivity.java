@@ -219,6 +219,11 @@ public class ProfileActivity extends AppCompatActivity {
         String first = input_firstName.getText().toString().trim();
         String last = input_lastName.getText().toString().trim();
 
+        user.setEmail(email);
+        user.setUsername(username);
+        user.setFirstName(first);
+        user.setLastName(last);
+        user.setProfilePicUri(profilePicUri == null ? "" : profilePicUri.toString());
         profileController.updateProfile(email, username, first, last, profilePicUri)
                 .addOnSuccessListener(unused -> {
                     Log.d("Profile", "Updated user profile.");

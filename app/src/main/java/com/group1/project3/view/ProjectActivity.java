@@ -123,6 +123,7 @@ public class ProjectActivity extends AppCompatActivity {
     private void addPipeline() {
         Pipeline pipeline = new Pipeline();
         new EditPipelineDialogBuilder(this)
+                .setPipeline(pipeline)
                 .setPositiveButton("Confirm", (dialogInterface, i, name) -> {
                     pipeline.setName(name);
                     project.addPipeline(pipeline);
@@ -185,8 +186,7 @@ public class ProjectActivity extends AppCompatActivity {
         new EditCardDialogBuilder(this)
                 .setTitle("Create card")
                 .setView(R.layout.dialog_edit_card)
-                .setProject(project)
-                .setCard(new Card(UUID.randomUUID().toString()))
+                .setCard(new Card(UUID.randomUUID().toString()), pipeline, project)
                 .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.dismiss())
                 .setPositiveButton("Save", (dialogInterface, i, card) -> {
                     pipeline.addCard(card);

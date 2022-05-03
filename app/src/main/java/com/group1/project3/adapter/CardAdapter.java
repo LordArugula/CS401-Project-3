@@ -116,7 +116,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                             Uri uri = Uri.parse(user.getProfilePicUri());
                             requestCreator = picasso.load(uri);
                         }
-                        requestCreator = picasso.load(R.drawable.ic_baseline_person_24)
+                        requestCreator = picasso.load(user.getProfilePicUri())
                                 .resize(64, 64)
                                 .config(Bitmap.Config.ARGB_8888)
                                 .placeholder(R.drawable.ic_baseline_person_24);
